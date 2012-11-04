@@ -7,13 +7,14 @@
 
 #include "DAOBinder.h"
 
-void DAOBinder::BindingFrameBySprite(sprite& sprite) {
+void npBindingDAO::BindingFrameBySprite(sprite& sprite) {
 	//Binding 순서
 	//넘겨진 Sprite 객체의 Current Screenplay가 가진 Frame ID를 가져온다.
 	int currentPlayFrameID = sprite.currentScreenplay->getKernel();
 
 	//가져온 Frame ID에 맞추어서 FramePalette에서 GL Texture ID와 UV정보를 얻어온다.
-	UVPacket* uvPacket = npFramePalette::getInstance().FrameContainer.find(currentPlayFrameID);
+	TextureAtlasIter textureAtlasIterator =  npAtlasMap::getInstance().FrameContainer.find(currentPlayFrameID);
+	UVPacket* uvPacket = &textureAtlasIterator->second;
 
 	//OpenGL API를 이용하여 Texture 정보를 Bind한다.
 	glBindTexture(GL_TEXTURE_2D,  uvPacket->bindTextureID );
@@ -25,8 +26,8 @@ void DAOBinder::BindingFrameBySprite(sprite& sprite) {
 	sprite.ReadyForNextScreenplay();
 }
 
-DAOBinder::DAOBinder() {
+npBindingDAO::npBindingDAO() {
 }
 
-DAOBinder::~DAOBinder() {
+npBindingDAO::~npBindingDAO() {
 }

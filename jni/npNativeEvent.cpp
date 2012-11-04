@@ -2,11 +2,13 @@
 #include <jni.h>
 #include <iostream>
 //#include "nitroFrame/NitroFrame.h"
-#include "npNativeEvent.h"
+//#include "npNativeEvent.h"
 
 //#include "nitroFrame/DebugUtill.h"
 //#include "pbMainFrame.h"
 //#include "pbTouchLayer.h"
+
+
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNIEnv *env, jclass thiz, jint w, jint h,jobject assetManager, jstring apkPath)
 {
@@ -23,12 +25,12 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNI
 		gameFrame->npGameCreate(env,w,h, assetManager, str);
 	}*/
 
-	npInsertModuleDAO* dummyInsertDAO = new npInsertModuleDAO;
+	/*
+	npInsertDAO* dummyInsertDAO = new npInsertDAO;
 	dummyInsertDAO->InsertDummyRawSource();
 	dummyInsertDAO->DeleteDummyRawSource();
 	dummyInsertDAO->PrintDummyRawSource();
-
-
+*/
 	/*
 	npLinkNode<int>* destList = new npLinkNode<int>;
 	npLinkNode<int>* sourceList = new npLinkNode<int>;

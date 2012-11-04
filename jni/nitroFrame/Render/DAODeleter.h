@@ -8,7 +8,10 @@
 #ifndef DAODELETER_H_
 #define DAODELETER_H_
 
-#include "../NitroFrame.h"
+#include "../xmlParser/npDeleterParser.h"
+#include "TextureAtlas.h"
+#include "ScreenplayStore.h"
+#include "npRenderTypedef.h"
 
 /***
  * @author 박성민
@@ -17,10 +20,16 @@
  * Deleter는 Scene을 연출 하기 위해 사용된 texture XML들을 읽어들이면서 객체를 Container에 담겨져 있는 내용을 삭제 한다.
  *
  */
-class DAODeleter{
+
+class npDeleteDAO {
 public:
-	DAODeleter();
-	~DAODeleter();
+	npDeleteDAO();
+	~npDeleteDAO();
+
+	void DeleteFrameByTag(const screenplayTag& deleteTag); //ContainerDAO 에서 호출할 Module 실행 함수
+
+private:
+	bool IsFindingTagFromScreenplayStore(screenMapIter& iterator);
 };
 
 

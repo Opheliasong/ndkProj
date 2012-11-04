@@ -7,49 +7,22 @@
 
 #include "npXMLParer.h"
 
-void npXMLParser::ParseTextureDataByPath(xmlPath path) {
-	const char* TextureXMLText = OpenAssetsByPath(path);
-
-	TiXmlDocument tiXMLdocument;
-	tiXMLdocument.Parse(TextureXMLText);		//TextureText의 내용을 tinyXML 분석한다.
-
-	if(tiXMLdocument.Error()){
-		LOGE("npXMLParser::ParseByPath)Encounter tiXML Error/ Escape the parse Logic");
-		return;
-	}
-	npTextureRawPacket* returnRawPacket = new npTextureRawPacket;
-
-
-	const char* texturePath = TextureNode->ToElement()->GetText();
-	npTextureGenerator::getInstance()->GenerateTextureByPNGPath(
-			texturePath(texturePath));
-
-	//-----------------UV 파싱----------------------//
-	GLfloat TempUV[8] = {0,1, 0,0, 1,1, 1,0};
-	TextureSize* pBindTexSize = pbDataStorage::GetBindTexSize();
-	TiXmlNode* DataHeadNode = xmlDoc.FirstChild("Texture");
-
-	TiXmlNode* UVNode = DataHeadNode->FirstChild("UV");
-	while(UVNode !=NULL)
-	{
-		//UVNode->ToElement()->Attribute("BindID", &BindID);
-		//UVNode->ToElement()->Attribute("X", &x);
-		//UVNode->ToElement()->Attribute("Y", &y);
-		//UVNode->ToElement()->Attribute("Width", &width);
-		//UVNode->ToElement()->Attribute("Height", &height);
-
-		//LOGI(UVNode->ToElement()->GetText());
-
-		//SetUVByLeftTop(TempUV,  pBindTexSize[BindID].Width,  pBindTexSize[BindID].Height, x, y, width, height);
-		//pbDataStorage::makeUVPacket(BindID, TempUV, (float)width, (float)height);
-
-		UVNode = UVNode->NextSibling();
-	}
-
+/***
+ * @fn 기본 SetUPXMLPath함수. OpenAssetsByPath를 통해 AssetManager를 통해 Asset을 생성하고 Assets폴더에서 XML Raw Data를 가져올 준비를 한다.
+ * @param path
+ * @details 세부적인 Open Setup내용들은 Drived Class에서 작성해야 한다.
+ */
+void npXMLParser::SetupXMLPath(xmlPath path){
+	this->xmlTextBuffer = OpenAssetsByPath(path);
 }
 
+/***
+ * @fn Asset을 여는 함수.
+ * @param path xml데이터가 위치한 곳의 Path를 받아와서 이를 open 한다
+ * @return
+ */
 char* npXMLParser::OpenAssetsByPath(xmlPath path) {
-	AAssetManager* manager = AAssetManager_fromJava(this->env,this->assetManager);
+	AAssetManager* manager = AAssetManager_fromJava(this->env,*this->assetManager);
 	if(manager == NULL){
 		LOGE("Not Have AssetManager");
 		return NULL;
@@ -70,9 +43,6 @@ char* npXMLParser::OpenAssetsByPath(xmlPath path) {
 	return buffer;
 }
 
-
-
-
 /***
  * @fn asset을 닫는 함수.
  * @param buffer char*타입의 Text 정보가 담겨져 있는 buffer를 말한다.
@@ -86,10 +56,14 @@ void npXMLParser::CloseAssetsAndBuffer(char* buffer) {
 	this->assets = NULL;
 }
 
-npXMLParser::npXMLParser(JNIEnv* aEnv, jobject* aAssetManager):env(aEnv),assetManager(aAssetManager),assets(NULL) {
+npXMLParser::npXMLParser(JNIEnv* aEnv, jobject* aAssetManager):env(aEnv),assetManager(aAssetManager),assets(NULL),xmlTextBuffer(NULL) {
+
 }
-npXMLParser::npXMLParser():env(NULL),assetManager(NULL),assets(NULL){
+
+npXMLParser::npXMLParser():env(NULL),assetManager(NULL),assets(NULL),xmlTextBuffer(NULL){
+
 }
 
 npXMLParser::~npXMLParser() {
+
 }

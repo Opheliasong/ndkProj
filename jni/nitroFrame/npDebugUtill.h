@@ -1,9 +1,11 @@
 #ifndef __NPDEBUGUTILL_H__
 #define __NPDEBUGUTILL_H__
 
-
+#include <GLES/gl.h>
+#include <GLES/glext.h>
+#include <stdio.h>
 #include "log.h"
-#include "NitroFrame.h"
+//#include "NitroFrame.h"
 
 //-----게임 프레임 관련-------------------------------//
 const float WIDTH = 800;

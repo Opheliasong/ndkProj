@@ -51,11 +51,20 @@ npNativeEvent.cpp\
 /nitroFrame/npAudioSystem.cpp\
 /nitroFrame/NitroFrame.cpp\
 /nitroFrame/npEngineFrames.cpp\
-/nitroFrame/Render/DAOInsert.cpp\
-/nitroFrame/Render/FramePalette.cpp\
+/nitroFrame/xmlParser/npXMLParser.cpp\
+/nitroFrame/xmlParser/npDeleterParser.cpp\
+/nitroFrame/xmlParser/npInsertParser.cpp\
+/nitroFrame/Render/npTextureGenerator.cpp\
+/nitroFrame/Render/TextureAtlas.cpp\
 /nitroFrame/Render/ScreenplayStore.cpp\
 /nitroFrame/Render/Sprite.cpp\
+/nitroFrame/Render/DAOInsert.cpp\
 /nitroFrame/Render/DAOFactory.cpp\
+/nitroFrame/Render/DAOBinder.cpp\
+/nitroFrame/Render/DAODeleter.cpp\
+/nitroFrame/Render/npContainerDAO.cpp\
+/nitroFrame/Drawable/npDrawable.cpp\
+/nitroFrame/Drawable/npTextureRect.cpp\
 
 LOCAL_LDLIBS:= -L$(SYSROOT)usr/lib -llog -lEGL -lGLESv1_CM -landroid
 LOCAL_LDLIBS+=-L$(SYSROOT)/usr/lib -ldl

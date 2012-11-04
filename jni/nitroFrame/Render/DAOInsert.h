@@ -8,23 +8,44 @@
 #ifndef DAOINSERT_H_
 #define DAOINSERT_H_
 
-#include "../NitroFrame.h"
-#include "FramePalette.h"
+//#include "../NitroFrame.h"
+#include "TextureAtlas.h"
 #include "ScreenplayStore.h"
-/**
- * @author 박성민
- * @brif Container와의 통신을 위한 module 중 하나로 Insert에 관련된 기능을 수행한다.
- * InsertModule은 Texture Generater와 XML Parser와 관련이 깊다.
- */
-class npInsertModuleDAO{
+#include "TextureRawPacket.h"
+#include "npRenderTypedef.h"
+
+
+class npInsertDAO{
+protected:
+	class ScreenplayPacket{
+	public:
+		screenplayTag tag;
+		int screenplayID;
+
+		ScreenplayPacket& operator=(const ScreenplayPacket& rightSide){
+			this->screenplayID = rightSide.screenplayID;
+			this->tag = rightSide.tag;
+			return *this;
+		}
+	};
 public:
-	//Logical 더미 테스팅용
+	//Logical 테스팅용 더미 함수
 	void InsertDummyRawSource();		//Testing용 Dummy를 삽입한다.
 	void DeleteDummyRawSource();		//Testing용 Dummy를 하나 지운다.
 	void PrintDummyRawSource();		//삽입된 Dummy의 ID를 Print한다.
 
-	npInsertModuleDAO();
-	~npInsertModuleDAO();
+	npInsertDAO();
+	~npInsertDAO();
+
+	void SendRawSourceByModule(const RawDataPacket& rawSource);
+
+private:
+	void ParsingRawSource(const RawDataPacket& rawSource, UVPacket& outputUvPacket, ScreenplayPacket& screenOutputPacket);
+	void CalcUVArrayByRawSource(const RawDataPacket& rawSource, UVPacket& UVoutputPacket);
+	void InsertUVPacket(UVPacket& UvPacketsUvPackets,int UvKeys);	//
+	void InsertScreenplayPackets(ScreenplayPacket& screenplayPacket);
+
+	int GetFramewIndex();
 };
 
 

@@ -8,37 +8,44 @@
 #ifndef NPXMLPARER_H_
 #define NPXMLPARER_H_
 
-#include "../NitroFrame.h"
+#include <jni.h>
+#include <string>
 #include "../include/tinyxml.h"
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
+#include "../npDebugUtill.h"
 
 /***
  * @author 박성민
- * @brief Scene이 가지고 있는 xml Data를 기반으로 XML을 Parsing하여 데이터를 추출해내는 객체
+ * @brief XML Parser들의 Interface Class
  * @details xmlParser는 env객체와 assetManager가 있어야 객체를 생성 할 수 있다.
- *
+ * xmlParser인터페이스는 Private  method로 OpenAssetByPath와 CloseAssetsAndBuffer를 가지고 있는데
+ * xmlParser는 DoParsing()을 통해 인터페이스가 묶여져 있는데 DeleteParser와 InsertParser는 이 DoParsing을 실체화 한다.
+ * SetupXMLPath()함수를 통해 xmlPath를 입력하고 asset을 Open 해둔다.
  */
-
-class npTextureRawPacket;
 
 typedef std::string xmlPath;
 
 class npXMLParser{
 public:
-	void ParseTextureDataByPath(xmlPath path);
-
+	//void ParseTextureDataByPath(xmlPath path);
+	virtual void SetupXMLPath(xmlPath path);
+	virtual void DoParsing()=0;
 
 	npXMLParser(JNIEnv* aEnv, jobject* aAssetManager);
-	~npXMLParser();
+	virtual ~npXMLParser();
 private:
-	char* OpenAssetsByPath(xmlPath path);
-	void CloseAssetsAndBuffer(char* buffer);
+	virtual char* OpenAssetsByPath(xmlPath path);
+	virtual void CloseAssetsAndBuffer(char* buffer);
 
+protected:
 	npXMLParser();
+
+	char* xmlTextBuffer;
 
 	JNIEnv* env;
 	jobject* assetManager;
 	AAsset* assets;
-
 };
 
 #endif /* NPXMLPARER_H_ */

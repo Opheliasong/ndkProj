@@ -8,7 +8,9 @@
 #ifndef DAOBINDER_H_
 #define DAOBINDER_H_
 
-#include "../NitroFrame.h"
+//#include "../NitroFrame.h"
+#include "TextureAtlas.h"
+#include "Sprite.h"
 
 /***
  * @author 박성민
@@ -19,17 +21,18 @@
  * 이후 Drawable에서 삽입되어진 Vertex 정보와 함께, 위치값(Transform)을 지정후 glDrawArrays 를 하게 되면 Drawing 이 된다.
  *
  */
-class DAOBinder{
-public:
+//npInsertModuleDAO
+class sprite;
 
+class npBindingDAO{
+public:
 	void BindingFrameBySprite(sprite& sprite);
 	
-	DAOBinder();
-	~DAOBinder();
-
+	npBindingDAO();
+	~npBindingDAO();
 private:
 	//복사 대입연산자를 막는다.
-	DAOBinder(const DAOBinder& copyRefence){};
+	npBindingDAO(const npBindingDAO& copyRefence){};
 
 };
 

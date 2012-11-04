@@ -7,8 +7,10 @@
 
 #ifndef SPRITE_H_
 #define SPRITE_H_
-#include "../NitroFrame.h"
+//#include "../NitroFrame.h"
 #include <string>
+#include "ScreenplayStore.h"
+#include "npRenderTypedef.h"
 
 /**
  * \author 박성민
@@ -18,13 +20,11 @@
  *
  */
 
-typedef std::string screenplayTag;
-typedef void (CCObject::*SEL_SCHEDULE)(float);
+//typedef std::string screenplayTag;
+
 typedef void (*SEL_SCHEDULE)(float);
 class sprite {
 public:
-	//TODO SCREENPLAY_TAG ';' 에러처리
-	//static sprite* GetSpriteByTAG(SCREENPLAY_TAG tagName);
 	void BindThisSprite();
 
 	void ReadyForNextScreenplay();

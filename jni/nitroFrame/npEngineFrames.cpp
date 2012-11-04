@@ -8,15 +8,6 @@
 #include "npEngineFrames.h"
 
 namespace nitroFrame{
-npEngineFrame::npEngineFrame():m_env(0),m_FPS(0),m_Height(0),m_Width(0),m_beforeTime(0),m_timeDelta(0),m_GameStates(GAMECREATE), m_bFirstLoad(true)
-{
-	m_Asset= NULL;
-}
-
-npEngineFrame::~npEngineFrame(){
-
-}
-
 void npEngineFrame::npGameCreate(JNIEnv* env,int width, int height){
 	//기본적으로 해상도값을 가지고 있는다
 	m_Width = width;
@@ -24,12 +15,8 @@ void npEngineFrame::npGameCreate(JNIEnv* env,int width, int height){
 
 	//Env를 넣어둔다
 	m_env = env;
-}
 
-void npEngineFrame::setOrth(int width, int height, float zNear, float zFar){
-	glOrthof(-width/2, width/2, -height/2, height/2, zNear, -zFar);
-}
-void npEngineFrame::setFrustum(int width, int hegith, float zNear, float zFar){
+	npContainerDAO::SetupTheAPKPath(apkPath);
 }
 
 void npEngineFrame::npGameDestroy(){
@@ -98,4 +85,11 @@ double npEngineFrame::npCheckTimeDelta(){
 
 }
 
+npEngineFrame::npEngineFrame(const char* apkPath):m_env(0),m_FPS(0),m_Height(0),m_Width(0),m_beforeTime(0),m_timeDelta(0),m_GameStates(GAMECREATE), m_bFirstLoad(true){
+	this->apkPath = const_cast<char*>(apkPath);
 }
+
+
+}
+
+

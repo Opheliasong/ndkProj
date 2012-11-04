@@ -11,7 +11,7 @@
 	/***
 	 * @author 박성민
 	 */
-sprite* DAOspriteFactory::getSpriteByTAG(screenplayTag tag) {
+sprite* npFactoryDAO::getSpriteByTAG(screenplayTag tag) {
 	screenMapIter iter;
 	screenplayMap* screenplayContainer = &screenplayStore::getInstance().screenplayContainer;
 
@@ -21,7 +21,6 @@ sprite* DAOspriteFactory::getSpriteByTAG(screenplayTag tag) {
 		sprite* retSprite = new sprite;
 		retSprite->screenplay = &iter->second;
 		retSprite->currentScreenplay = retSprite->screenplay;
-
 		LOGI("Done Copy Sprite Node");
 
 		return retSprite;
@@ -30,8 +29,8 @@ sprite* DAOspriteFactory::getSpriteByTAG(screenplayTag tag) {
 	}
 }
 
-DAOspriteFactory::DAOspriteFactory() {
+npFactoryDAO::npFactoryDAO() {
 }
 
-DAOspriteFactory::~DAOspriteFactory() {
+npFactoryDAO::~npFactoryDAO() {
 }

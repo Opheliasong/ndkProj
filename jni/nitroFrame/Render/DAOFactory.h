@@ -8,9 +8,9 @@
 #ifndef DAOFACTORY_H_
 #define DAOFACTORY_H_
 
-#include "../NitroFrame.h"
+//#include "../NitroFrame.h"
 #include "Sprite.h"
-#include <string>
+#include "npRenderTypedef.h"
 
 /***
  * @author 박성민
@@ -19,18 +19,18 @@
  * 상태나 변수를 가지지 않고 method기반으로 이루어져 있다.
  */
 
-typedef std::string screenplayTag;
+//typedef std::string screenplayTag;
+
 class sprite;
 
-class DAOspriteFactory{
+class npFactoryDAO{
 private:
 //	void copyLinkedList();
 public:
-	static sprite* getSpriteByTAG(screenplayTag tag);
+	sprite* getSpriteByTAG(screenplayTag tag);
 
-
-	DAOspriteFactory();
-	~DAOspriteFactory();
+	npFactoryDAO();
+	~npFactoryDAO();
 };
 
 

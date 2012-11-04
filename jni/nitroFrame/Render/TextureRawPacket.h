@@ -8,7 +8,9 @@
 #ifndef TEXTURERAWPACKET_H_
 #define TEXTURERAWPACKET_H_
 
-#include "../NitroFrame.h"
+//#include "../NitroFrame.h"
+#include "TextureAtlas.h"
+#include "ScreenplayStore.h"
 
 /***
  * @author 박성민
@@ -20,6 +22,8 @@
  * Deleter는 TAG를 읽어 들여서 ScreenplayStore의 Container와 FramePalette의 Container를 earse한다.
  *
  */
+class UVPacket;
+
 class npTextureRawPacket{
 public:
 	UVPacket UvPacket;
