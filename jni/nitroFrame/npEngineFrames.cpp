@@ -8,7 +8,7 @@
 #include "npEngineFrames.h"
 
 namespace nitroFrame{
-void npEngineFrame::npGameCreate(JNIEnv* env,int width, int height){
+void npEngineFrame::npGameCreate(JNIEnv* env,int width, int height,const char* apkPath){
 	//기본적으로 해상도값을 가지고 있는다
 	m_Width = width;
 	m_Height = height;
@@ -16,7 +16,7 @@ void npEngineFrame::npGameCreate(JNIEnv* env,int width, int height){
 	//Env를 넣어둔다
 	m_env = env;
 
-	npContainerDAO::SetupTheAPKPath(apkPath);
+	npContainerDAO::SetupTheAPKPath(const_cast<char*>(apkPath));
 }
 
 void npEngineFrame::npGameDestroy(){

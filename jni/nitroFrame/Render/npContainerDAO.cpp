@@ -8,6 +8,8 @@
 #include "npContainerDAO.h"
 
 char* npContainerDAO::apkPath = NULL;
+JNIEnv* npContainerDAO::env = NULL;
+jobject npContainerDAO::AssetManager;
 
 /**
  * @fn RawDataPacket을 받아와서 RawPacket의 내용을 InsertModule에 전달하는 작업을 한다.
@@ -58,8 +60,8 @@ npContainerDAO::npContainerDAO() {
 	FactoryModule = new npFactoryDAO;
 	DeleteModule = new npDeleteDAO;
 	InsertModule = new npInsertDAO;
-	InsertXMLParser = new npInsertParser;
-	DeleteXMLParser = new npDeleterParser;
+	InsertXMLParser = new npInsertParser(env,&AssetManager);
+	DeleteXMLParser = new npDeleterParser(env,&AssetManager);
 	TextureGenerator = new npTextureGenerator(apkPath);
 }
 
@@ -72,7 +74,6 @@ npContainerDAO& npContainerDAO::GetInstance() {
 	static npContainerDAO Instance;
 	return Instance;
 }
-
 
 /***
  * @fn XMLParser에서 호출하는 Interface로, rawDataPacket을 넘겨주어서
@@ -89,7 +90,9 @@ void npContainerDAO::DeleteUVData(const screenplayTag& deleteTag){
  * @brief Scene쪽에서 Data를 Container에게 불러오게 하기 위한 Interface.
  */
 void npContainerDAO::LoadTextureByXMLpath(const char* xmlPath) {
+	LOGE("Load Texture By XML Path: %s",xmlPath);
 	InsertXMLParser->SetupXMLPath(xmlPath);
+	LOGE("Done Setup XML path");
 	InsertXMLParser->DoParsing();
 }
 
@@ -106,6 +109,19 @@ void npContainerDAO::DeleteTextureByXMlpath(const char* xmlPath) {
 void npContainerDAO::SetupTheAPKPath(char* aApkPath) {
 	apkPath = aApkPath;
 }
+
+/***
+ *
+ * @param aEnv
+ * @param aAssetManager
+ * @param aApkPath
+ */
+void npContainerDAO::SetupBaseInitialize(JNIEnv* aEnv, jobject& aAssetManager,char* aApkPath){
+	env = aEnv;
+	AssetManager = aAssetManager;
+	apkPath = aApkPath;
+}
+
 
 GLuint npContainerDAO::GenerateTextureByPNGPath(const char* textureName) {
 	TextureGenerator->GenerateTextureByPNGPath(textureName);

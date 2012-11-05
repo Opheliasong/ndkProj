@@ -23,19 +23,20 @@ void npXMLParser::SetupXMLPath(xmlPath path){
  */
 char* npXMLParser::OpenAssetsByPath(xmlPath path) {
 	AAssetManager* manager = AAssetManager_fromJava(this->env,*this->assetManager);
-	if(manager == NULL){
+	if(NP_IS_EMPTY(manager)){
 		LOGE("Not Have AssetManager");
 		return NULL;
 	}
 
-	this->assets= AAssetManager_open(manager, path.c_str(),AASSET_MODE_UNKNOWN);
-	if(this->assets == NULL){
+	this->assets = AAssetManager_open(manager, path.c_str(),AASSET_MODE_UNKNOWN);
+	LOGE("Open Asset Manager");
+
+	if(NP_IS_EMPTY(this->assets)){
 		LOGE("Asset not found");
 		return NULL;
 	}
 
 	off_t size = AAsset_getLength(assets);
-	//LOGfloatString("Size", size);
 	char* buffer = new char[size];
 	AAsset_read(this->assets,buffer,size);
 	LOGI("Done Asset Reads");

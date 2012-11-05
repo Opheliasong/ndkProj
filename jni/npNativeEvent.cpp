@@ -1,10 +1,10 @@
 #include <string.h>
 #include <jni.h>
 #include <iostream>
+#include "./TestUnit/HelloWorld.h"
+#include "npNativeEvent.h"
 //#include "nitroFrame/NitroFrame.h"
-//#include "npNativeEvent.h"
-
-//#include "nitroFrame/DebugUtill.h"
+#include "./nitroFrame/npDebugUtill.h"
 //#include "pbMainFrame.h"
 //#include "pbTouchLayer.h"
 
@@ -13,7 +13,6 @@
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNIEnv *env, jclass thiz, jint w, jint h,jobject assetManager, jstring apkPath)
 {
 	/*
-	//onSurfaceCreate(env,w,h);
 	if( projectBean::pbProjectBeanFrame::MainFrame == NULL)
 	{
 		projectBean::pbProjectBeanFrame::MainFrame = new projectBean::pbProjectBeanFrame;
@@ -24,7 +23,12 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNI
 		str = env->GetStringUTFChars(apkPath, &isCopy);
 		gameFrame->npGameCreate(env,w,h, assetManager, str);
 	}*/
+	char* str;
+	jboolean isCopy;
+	str = const_cast<char*>(env->GetStringUTFChars(apkPath, &isCopy));
+	nitroFrame::HelloWorld::GetInstance(str)->npGameCreate(env,w,h,str);
 
+	npContainerDAO::SetupBaseInitialize(env, assetManager, str);
 	/*
 	npInsertDAO* dummyInsertDAO = new npInsertDAO;
 	dummyInsertDAO->InsertDummyRawSource();
@@ -76,6 +80,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npUpdateGame(JNIEnv
 	projectBean::pbProjectBeanFrame* gameFrame = projectBean::pbProjectBeanFrame::MainFrame;
 	gameFrame->npGameLoop();
 	*/
+	nitroFrame::HelloWorld::GetInstance()->npGameLoop();
 }
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npDestroy(JNIEnv* env, jclass thiz)
@@ -85,6 +90,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npDestroy(JNIEnv* e
 	gameFrame->npGameDestroy();
 	delete projectBean::pbProjectBeanFrame::MainFrame;
 	*/
+	nitroFrame::HelloWorld::GetInstance()->npGameDestroy();
 }
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npRendering(JNIEnv *env, jclass thiz){
@@ -92,6 +98,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npRendering(JNIEnv 
 	projectBean::pbProjectBeanFrame* gameFrame = projectBean::pbProjectBeanFrame::MainFrame;
 	gameFrame->npGameDisplay();
 	*/
+	nitroFrame::HelloWorld::GetInstance()->npGameDisplay();
 }
 
 

@@ -1,0 +1,14 @@
+<texture filename="running.png" width="512" height="512">
+	<sprite tag="run" x="0" y="0" width="102" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="102" y="0" width="101" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="203" y="0" width="101" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="304" y="0" width="101" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="405" y="0" width="102" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="0" y="102" width="102" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="102" y="102" width="101" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="203" y="102" width="101" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="304" y="102" width="101" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="405" y="102" width="102" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="0" y="204" width="102" height="102" transformpoint="center">run.png</sprite>
+	<sprite tag="run" x="102" y="204" width="101" height="102" transformpoint="center">run.png</sprite>
+</texture>

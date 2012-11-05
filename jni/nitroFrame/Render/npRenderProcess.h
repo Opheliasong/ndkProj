@@ -16,17 +16,17 @@
 
 class npRenderprocess{
 public:
+	npRenderprocess();
 	~npRenderprocess();
 
-	npRenderprocess& getInstance();
+public:
+	static npRenderprocess& getInstance();
 
 	void DoDraw(npDrawable& drawTarget);
-
 
 	void setOrth(int width, int height, float zNear, float zFar);
 	void setFrustum(int width, int hegith, float zNear, float zFar);
 
-private:	npRenderprocess();
 };
 
 

@@ -29,14 +29,12 @@ npInsertParser::~npInsertParser() {
 void npInsertParser::DoParsing(){
 
 	if(xmlTextBuffer == NULL){
-		//textBuffer Not Ready!!
 		LOGE("InsertPartser)  textBuffer Not Ready!!");
 		return;
 	}
 
 	TiXmlDocument tiXMLdocument;
 	tiXMLdocument.Parse(xmlTextBuffer);		//TextureText의 내용을 tinyXML 분석한다.
-
 
 	if(tiXMLdocument.Error()){
 		LOGE("npXMLParser::ParseByPath)Encounter tiXML Error/ Escape the parse Logic");
@@ -56,6 +54,8 @@ void npInsertParser::DoParsing(){
 	//-----------------UV 파싱----------------------//
 
 	RawDataPacket tempRawPacket;
+	tempRawPacket.textureHeight = textureHeight;
+	tempRawPacket.textureWidth = textureWidth;
 	TiXmlNode* spriteNode = textureHeadNode->FirstChild("sprite");
 	char* tempTag;
 	while(spriteNode !=NULL)
@@ -74,6 +74,7 @@ void npInsertParser::DoParsing(){
 		npContainerDAO::GetInstance().InsertUVData(tempRawPacket);
 		spriteNode = spriteNode->NextSibling();
 	}
+	LOGE("Done Insert Parser");
 }
 
 

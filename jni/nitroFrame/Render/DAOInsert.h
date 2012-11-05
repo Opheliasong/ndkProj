@@ -29,11 +29,6 @@ protected:
 		}
 	};
 public:
-	//Logical 테스팅용 더미 함수
-	void InsertDummyRawSource();		//Testing용 Dummy를 삽입한다.
-	void DeleteDummyRawSource();		//Testing용 Dummy를 하나 지운다.
-	void PrintDummyRawSource();		//삽입된 Dummy의 ID를 Print한다.
-
 	npInsertDAO();
 	~npInsertDAO();
 

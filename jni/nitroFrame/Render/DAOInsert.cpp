@@ -76,17 +76,13 @@ void npInsertDAO::InsertScreenplayPackets(ScreenplayPacket& screenplayPacket) {
 
 	screenMapIter screenplayIter = screenplayStore->screenplayContainer.find(screenplayPacket.tag);
 
-
 	if(screenplayIter == screenplayStore->screenplayContainer.end()){
 		//TODO Pair의 Second인 List를 추가해야 한다
 		npLinkNode<int>* insertSceond = new npLinkNode<int>;
 		insertSceond->setKernel(screenplayPacket.screenplayID);
 		screenplayStore->screenplayContainer.insert(ScreenplayPair(screenplayPacket.tag, *insertSceond));
-
-		LOGI("Insert Dummy");
 	}else{
 		npLinkNode<int>::addTail(screenplayPacket.screenplayID , &screenplayIter->second);
-		LOGI("Add List Dummy");
 	}
 }
 
@@ -99,116 +95,41 @@ void npInsertDAO::InsertScreenplayPackets(ScreenplayPacket& screenplayPacket) {
 void npInsertDAO::CalcUVArrayByRawSource(const RawDataPacket& rawSource,UVPacket& outputPacket) {
 	outputPacket.bindTextureID = rawSource.textureBindIndex;
 
-	outputPacket.texture[0] = rawSource.x/ rawSource.textureWidth;
-	outputPacket.texture[1] = rawSource.y / rawSource.textureHeight;
+	outputPacket.texture[0] = (float)rawSource.x/ (float)rawSource.textureWidth;
+	outputPacket.texture[1] = (float)rawSource.y / (float)rawSource.textureHeight;
 
-	outputPacket.texture[2] = rawSource.x / rawSource.textureWidth;
-	outputPacket.texture[3] = (rawSource.y + rawSource.height) / rawSource.textureHeight;
+	outputPacket.texture[2] = (float)rawSource.x / (float)rawSource.textureWidth;
+	outputPacket.texture[3] = (float)(rawSource.y + rawSource.height) / (float)rawSource.textureHeight;
 
-	outputPacket.texture[4] = (rawSource.x + rawSource.width) / rawSource.textureWidth;
-	outputPacket.texture[5] = rawSource.y / rawSource.textureHeight;
+	outputPacket.texture[4] = (float)(rawSource.x + rawSource.width) / (float)rawSource.textureWidth;
+	outputPacket.texture[5] = (float)rawSource.y / (float)rawSource.textureHeight;
 
-	outputPacket.texture[6] = (rawSource.x + rawSource.width) / rawSource.textureWidth;
-	outputPacket.texture[7] = (rawSource.y + rawSource.height) / rawSource.textureHeight;
-}
-
-void npInsertDAO::InsertDummyRawSource(){
+	outputPacket.texture[6] = (float)(rawSource.x + rawSource.width) / (float)rawSource.textureWidth;
+	outputPacket.texture[7] = (float)(rawSource.y + rawSource.height) / (float)rawSource.textureHeight;
 	/*
-	npAtlasMap* paletteInstance;
-	paletteInstance = &npAtlasMap::getInstance();
+	LOGE("RawSource x: %d",rawSource.x);
+	LOGE("RawSource Texture Width: %d",rawSource.textureWidth);
+	LOGE("RawSource y: %d",rawSource.y);
 
-	UVPacket dummy;
-	dummy.bindTextureID = 0;
-	GLfloat dummyArray[8] = {0.f ,0.f ,0.f ,0.f ,0.f, 0.f, 0.f, 0.f};
-	memcpy(dummy.texture, dummyArray, 8*sizeof(GLfloat));
-	paletteInstance->FrameContainer.insert(TextureAtlasPair(0, dummy));
-
-	dummy.bindTextureID = 1;
-	GLfloat dummyArray1[8] = {1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f};
-	memcpy(dummy.texture, dummyArray1, 8*sizeof(GLfloat));
-	paletteInstance->FrameContainer.insert(TextureAtlasPair(1, dummy));
-
-	dummy.bindTextureID = 3;
-	GLfloat dummyArray2[8] = {1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f};
-	memcpy(dummy.texture, dummyArray1, 8*sizeof(GLfloat));
-	paletteInstance->FrameContainer.insert(TextureAtlasPair(2, dummy));
-
-	//Screenplay Dummy code
-	screenplayStore* screenplayStore;
-	screenplayStore = &screenplayStore::getInstance();
-
-	screenplayTag dummyTag1 = "DUMMY1_Screenplay";
-	npLinkNode<int>* dummyScreenplay = new npLinkNode<int>;
-	int dummyFrameNumber = 1;
-	dummyScreenplay->setKernel(dummyFrameNumber);
-
-	screenMapIter screenplayIter = screenplayStore->screenplayContainer.find(dummyTag1);
-
-	if(screenplayIter == screenplayStore->screenplayContainer.end()){
-		screenplayStore->screenplayContainer.insert(ScreenplayPair(dummyTag1, *dummyScreenplay));
-		LOGI("Insert Dummy");
-	}else{
-		//npLinkNode<int>::addTail(dummyFrameNumber, &screenplayIter->second);
-		LOGI("Add List Dummy");
-	}
-
-	screenplayTag dummyTag2 = "DUMMY1_Screenplay";
-	npLinkNode<int>* dummyScreenplay2 = new npLinkNode<int>;
-	int dummyFrameNumber2 = 2;
-	dummyScreenplay2->setKernel(dummyFrameNumber2);
-
-	screenMapIter screenplayIter2 = screenplayStore->screenplayContainer.find(dummyTag2);
-
-	if(screenplayIter2 == screenplayStore->screenplayContainer.end()){
-		screenplayStore->screenplayContainer.insert(ScreenplayPair(dummyTag2, *dummyScreenplay2));
-	}else{
-		npLinkNode<int>::addTail(dummyFrameNumber2, &screenplayIter2->second);
-		LOGfloatString("Insert Second Dummy Screenplay Value:",dummyScreenplay2->getKernel());
-	}
-
-	delete dummyScreenplay;
-	delete dummyScreenplay2;
+	LOGE("texture[0]:%f",(float)((float)rawSource.x/ (float)rawSource.textureWidth));
 	*/
-}
+/*
+	LOGE("texture[0]:%f",outputPacket.texture[0]);
+	LOGE("texture[1]:%f",outputPacket.texture[1]);
+	LOGE("texture[2]:%f",outputPacket.texture[2]);
+	LOGE("texture[3]:%f",outputPacket.texture[3]);
+	LOGE("texture[4]:%f",outputPacket.texture[4]);
+	LOGE("texture[5]:%f",outputPacket.texture[5]);
+	LOGE("texture[6]:%f",outputPacket.texture[6]);
+	LOGE("texture[7]:%f",outputPacket.texture[7]);
+*/
+	//LOGfloatString("texture[0]: ",(float)(rawSource.x / rawSource.textureWidth));
 
-void npInsertDAO::DeleteDummyRawSource(){
 	/*
-	npAtlasMap* paletteInstance;
-	paletteInstance = &npAtlasMap::getInstance();
+	LOGE("RawSource Texture height: %d",rawSource.textureWidth);
+	LOGE("RawSource atlas width: %d",rawSource.width);
+	LOGE("RawSource atlas height: %d",rawSource.height);
 
-	npAtlasMap iter = paletteInstance->FrameContainer.find(1);
-	if(iter != paletteInstance->FrameContainer.end()){
-		paletteInstance->FrameContainer.erase(iter);
-	}
-	*/
-}
-
-/**
- *
- */
-void npInsertDAO::PrintDummyRawSource(){
-	/*
-	npAtlasMap* paletteInstance;
-	paletteInstance = &npAtlasMap::getInstance();
-
-	TextureAtlasIter iter;
-	for(iter = paletteInstance->FrameContainer.begin(); iter != paletteInstance->FrameContainer.end(); ++iter){
-		LOGfloatString("Frame ID :",iter->first);
-	}
-
-	screenplayStore* screenplayStore = &screenplayStore::getInstance();
-	//screenplayStore->screenplayContainer.clear();
-
-	sprite* dummySprite = npFactoryDAO::getSpriteByTAG("DUMMY1_Screenplay");
-
-	if(dummySprite == NULL){
-		LOGE("Not get Sprite Dummy");
-	}else{
-		LOGfloatString("Dummy Sprite ID: ",dummySprite->currentScreenplay->getKernel());
-		LOGfloatString("Dummy Sprite ID: ",dummySprite->currentScreenplay->getNext()->getKernel());
-		LOGfloatString("Dummy Sprite ID: ",dummySprite->currentScreenplay->getNext()->getNext()->getKernel());
-		LOGfloatString("Dummy Sprite ID: ",dummySprite->screenplay->getKernel());
-	}
 	*/
 }
 

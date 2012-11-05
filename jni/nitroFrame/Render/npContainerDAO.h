@@ -19,6 +19,7 @@
 #include "../xmlParser/npDeleterParser.h"
 */
 #include "../npNitroFrameMacro.h"
+#include "../npDebugUtill.h"
 
 class npInsertParser;
 class npDeleterParser;
@@ -33,6 +34,7 @@ class sprite;
 class npContainerDAO {
 public:
 	static void SetupTheAPKPath(char* apkPath);
+	static void SetupBaseInitialize(JNIEnv* env, jobject& AssetManager,char* apkPath);
 	static npContainerDAO& GetInstance();
 	void InsertUVData(const RawDataPacket& rawPacket);	//InsertParser에서 호출하는 Interface
 	void DeleteUVData(const screenplayTag& deleteTag);	//DeleteParser에서 호출하는 Interface
@@ -44,6 +46,8 @@ public:
 	GLuint GenerateTextureByPNGPath(const char* textureName);
 	npTextureGenerator* getTextureGenerator();
 
+	static jobject* getAssetManager();
+
 private:
 	npBindingDAO* TextureBindingModule;
 	npInsertDAO* InsertModule;
@@ -54,6 +58,8 @@ private:
 	npTextureGenerator* TextureGenerator;
 
 	static char* apkPath;
+	static JNIEnv* env;
+	static jobject AssetManager;
 
 	npContainerDAO();
 	~npContainerDAO();

@@ -8,11 +8,48 @@
 #include "npTextureRect.h"
 
 npTextureRect::npTextureRect(){
+	this->vertex[0] = -1.0f;
+	this->vertex[1] =  1.0f;
+	this->vertex[2] = 0;
+
+	//왼쪽아래
+	this->vertex[3] = -1.0f;
+	this->vertex[4] = -1.0f;
+	this->vertex[5] = 0;
+
+	//오른쪽 위
+	this->vertex[6] = 1.0f;
+	this->vertex[7] = 1.0f;
+	this->vertex[8] = 0;
+
+	//오른쪽 아래
+	this->vertex[9] = 1.0f;
+	this->vertex[10] = -1.0f;
+	this->vertex[11] = 0;
 }
 
 npTextureRect::npTextureRect(screenplayTag TAG){
 	this->tag = TAG;
 	this->sprtie = npContainerDAO::GetInstance().getSpriteByTAG(this->tag);
+	//왼쪽 위
+	this->vertex[0] = -1.0f;
+	this->vertex[1] =  1.0f;
+	this->vertex[2] = 0;
+
+	//왼쪽아래
+	this->vertex[3] = -1.0f;
+	this->vertex[4] = -1.0f;
+	this->vertex[5] = 0;
+
+	//오른쪽 위
+	this->vertex[6] = 1.0f;
+	this->vertex[7] = 1.0f;
+	this->vertex[8] = 0;
+
+	//오른쪽 아래
+	this->vertex[9] = 1.0f;
+	this->vertex[10] = -1.0f;
+	this->vertex[11] = 0;
 }
 
 npTextureRect::npTextureRect(const npTextureRect& source){
@@ -36,11 +73,32 @@ void npTextureRect::PreSettingDraw() {
 void npTextureRect::DrawThis() {
 	glPushMatrix();
 	glVertexPointer(3, GL_FLOAT, 0,this->vertex);
+/*
+	LOGE("Vertex[0] : %f",this->vertex[0]);
+	LOGE("Vertex[1] : %f",this->vertex[1]);
+	LOGE("Vertex[2] : %f",this->vertex[2]);
 
-	glTranslatef(positionX, positionY+1.f , 0.f);
+	LOGE("Vertex[3] : %f",this->vertex[3]);
+	LOGE("Vertex[4] : %f",this->vertex[4]);
+	LOGE("Vertex[5] : %f",this->vertex[5]);
+
+	LOGE("Vertex[6] : %f",this->vertex[6]);
+	LOGE("Vertex[7] : %f",this->vertex[7]);
+	LOGE("Vertex[8] : %f",this->vertex[8]);
+
+	LOGE("Vertex[9] : %f",this->vertex[9]);
+	LOGE("Vertex[10] : %f",this->vertex[10]);
+	LOGE("Vertex[11] : %f",this->vertex[11]);
+
+	LOGE("==========================");
+*/
+//	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+	glTranslatef(positionX, positionY , 0.f);
 	glScalef(this->height, this->width, 1.0f);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glPopMatrix();
+
 }
 
 void npTextureRect::SetSize(int width, int Height) {
@@ -59,6 +117,7 @@ bool npTextureRect::SetTextureTAG(screenplayTag TAG) {
 	this->sprtie = npContainerDAO::GetInstance().getSpriteByTAG(TAG);
 
 	if(NP_IS_EMPTY(this->sprtie)){
+		LOGE("not Fine Sprite Tag");
 		return false;
 	}
 	return true;

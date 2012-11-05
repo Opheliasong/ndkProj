@@ -184,6 +184,7 @@ obj/local/armeabi/objs-debug/Game//nitroFrame/Render/Sprite.o: \
  D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h \
  jni//nitroFrame/Render/../Render/../xmlParser/../include/tinystr.h \
  jni//nitroFrame/Render/../Render/../xmlParser/../npDebugUtill.h \
+ jni//nitroFrame/Render/../Render/../xmlParser/../npNitroFrameMacro.h \
  jni//nitroFrame/Render/../Render/../xmlParser/../Render/npContainerDAO.h \
  jni//nitroFrame/Render/../Render/../xmlParser/../Render/npRenderTypedef.h \
  jni//nitroFrame/Render/../Render/DAOFactory.h \
@@ -601,6 +602,8 @@ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h:
 jni//nitroFrame/Render/../Render/../xmlParser/../include/tinystr.h:
 
 jni//nitroFrame/Render/../Render/../xmlParser/../npDebugUtill.h:
+
+jni//nitroFrame/Render/../Render/../xmlParser/../npNitroFrameMacro.h:
 
 jni//nitroFrame/Render/../Render/../xmlParser/../Render/npContainerDAO.h:
 

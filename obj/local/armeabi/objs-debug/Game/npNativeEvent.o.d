@@ -135,7 +135,111 @@ obj/local/armeabi/objs-debug/Game/npNativeEvent.o: jni/npNativeEvent.cpp \
  D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_istreambuf_iterator.h \
  D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_istream.c \
  D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.h \
- D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.c
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.c \
+ jni/./TestUnit/HelloWorld.h \
+ jni/./TestUnit/../nitroFrame/npEngineFrames.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/gl.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glplatform.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/KHR/khrplatform.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glext.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/string \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_hash.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_hash_fun.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_io.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_io.c \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager_jni.h \
+ jni/./TestUnit/../nitroFrame/NitroFrame.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h. \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/assert.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/assert.h \
+ jni/./TestUnit/../nitroFrame/log.h \
+ jni/./TestUnit/../nitroFrame/npDefTypes.h \
+ jni/./TestUnit/../nitroFrame/npDebugUtill.h \
+ jni/./TestUnit/../nitroFrame/npLinkNode.h \
+ jni/./TestUnit/../nitroFrame/npRentalMemory.h \
+ jni/./TestUnit/../nitroFrame/npMath.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/cmath \
+ jni/./TestUnit/../nitroFrame/gluLookAt.h \
+ jni/./TestUnit/../nitroFrame/npEngineFrames.h \
+ jni/./TestUnit/../nitroFrame/npAudioSystem.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/npXMLParer.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../include/tinyxml.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/ctype.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../include/tinystr.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../npDebugUtill.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../npNitroFrameMacro.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/npInsertParser.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../include/tinystr.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/npXMLParer.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/npRenderTypedef.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../npLinkNode.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/map \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_map.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_tree.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_tree.c \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_relops_cont.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/npContainerDAO.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/npRenderTypedef.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/DAOInsert.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/TextureAtlas.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../npDebugUtill.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/ScreenplayStore.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../NitroFrame.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/TextureRawPacket.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/DAOBinder.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/Sprite.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/DAODeleter.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/npDeleterParser.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/npXMLParer.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/../Render/npContainerDAO.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/../Render/npRenderTypedef.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/DAOFactory.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/npTextureGenerator.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../npNitroFrameMacro.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/zipint.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zlib.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zconf.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/zip.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/config.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/png.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/pngconf.h \
+ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/setjmp.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/setjmp.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/machine/setjmp.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/pngconf.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/pngpriv.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/npInsertParser.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/zip.h \
+ jni/./TestUnit/../nitroFrame/xmlParser/npDeleterParser.h \
+ jni/./TestUnit/../nitroFrame/Render/npRenderTypedef.h \
+ jni/./TestUnit/../nitroFrame/Render/npTextureGenerator.h \
+ jni/./TestUnit/../nitroFrame/Render/TextureAtlas.h \
+ jni/./TestUnit/../nitroFrame/Render/ScreenplayStore.h \
+ jni/./TestUnit/../nitroFrame/Render/DAOInsert.h \
+ jni/./TestUnit/../nitroFrame/Render/Sprite.h \
+ jni/./TestUnit/../nitroFrame/Render/DAOFactory.h \
+ jni/./TestUnit/../nitroFrame/Render/DAOBinder.h \
+ jni/./TestUnit/../nitroFrame/Render/DAODeleter.h \
+ jni/./TestUnit/../nitroFrame/Render/TextureRawPacket.h \
+ jni/./TestUnit/../nitroFrame/Render/npContainerDAO.h \
+ jni/./TestUnit/../nitroFrame/Render/npRenderProcess.h \
+ jni/./TestUnit/../nitroFrame/Render/../Drawable/npDrawable.h \
+ jni/./TestUnit/../nitroFrame/Render/../npNitroFrameMacro.h \
+ jni/./TestUnit/../nitroFrame/Render/../Render/npTextureGenerator.h \
+ jni/./TestUnit/../nitroFrame/Drawable/npDrawable.h \
+ jni/./TestUnit/../nitroFrame/Drawable/npTextureRect.h \
+ jni/./TestUnit/../nitroFrame/Drawable/../npNitroFrameMacro.h \
+ jni/./TestUnit/../nitroFrame/Drawable/npDrawable.h \
+ jni/./TestUnit/../nitroFrame/Drawable/../Render/npRenderTypedef.h \
+ jni/./TestUnit/../nitroFrame/Drawable/../Render/Sprite.h \
+ jni/./TestUnit/../nitroFrame/Drawable/../Render/npContainerDAO.h \
+ jni/./TestUnit/../nitroFrame/npNitroFrameMacro.h \
+ jni/./TestUnit/../nitroFrame/Drawable/npTextureRect.h \
+ jni/./TestUnit/../nitroFrame/Render/npRenderProcess.h \
+ jni/npNativeEvent.h jni/nitroFrame/NitroFrame.h \
+ jni/./nitroFrame/npDebugUtill.h
 
 D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/string.h:
 
@@ -410,3 +514,213 @@ D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_istream.c:
 D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.h:
 
 D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.c:
+
+jni/./TestUnit/HelloWorld.h:
+
+jni/./TestUnit/../nitroFrame/npEngineFrames.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/gl.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glplatform.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/KHR/khrplatform.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glext.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/string:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_hash.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_hash_fun.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_io.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_io.c:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager_jni.h:
+
+jni/./TestUnit/../nitroFrame/NitroFrame.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h.:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/assert.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/assert.h:
+
+jni/./TestUnit/../nitroFrame/log.h:
+
+jni/./TestUnit/../nitroFrame/npDefTypes.h:
+
+jni/./TestUnit/../nitroFrame/npDebugUtill.h:
+
+jni/./TestUnit/../nitroFrame/npLinkNode.h:
+
+jni/./TestUnit/../nitroFrame/npRentalMemory.h:
+
+jni/./TestUnit/../nitroFrame/npMath.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/cmath:
+
+jni/./TestUnit/../nitroFrame/gluLookAt.h:
+
+jni/./TestUnit/../nitroFrame/npEngineFrames.h:
+
+jni/./TestUnit/../nitroFrame/npAudioSystem.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/npXMLParer.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../include/tinyxml.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/ctype.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../include/tinystr.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../npDebugUtill.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../npNitroFrameMacro.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/npInsertParser.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../include/tinystr.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/npXMLParer.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/npRenderTypedef.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../npLinkNode.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/map:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_map.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_tree.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_tree.c:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/stl/_relops_cont.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/npContainerDAO.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/npRenderTypedef.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/DAOInsert.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/TextureAtlas.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../npDebugUtill.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/ScreenplayStore.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../NitroFrame.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/TextureRawPacket.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/DAOBinder.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/Sprite.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/DAODeleter.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/npDeleterParser.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/npXMLParer.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/../Render/npContainerDAO.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/../Render/npRenderTypedef.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/DAOFactory.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/npTextureGenerator.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../npNitroFrameMacro.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/zipint.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zlib.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zconf.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/zip.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/config.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/png.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/pngconf.h:
+
+D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/setjmp.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/setjmp.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/machine/setjmp.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/pngconf.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/pngpriv.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../xmlParser/npInsertParser.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/../Render/../include/zip.h:
+
+jni/./TestUnit/../nitroFrame/xmlParser/npDeleterParser.h:
+
+jni/./TestUnit/../nitroFrame/Render/npRenderTypedef.h:
+
+jni/./TestUnit/../nitroFrame/Render/npTextureGenerator.h:
+
+jni/./TestUnit/../nitroFrame/Render/TextureAtlas.h:
+
+jni/./TestUnit/../nitroFrame/Render/ScreenplayStore.h:
+
+jni/./TestUnit/../nitroFrame/Render/DAOInsert.h:
+
+jni/./TestUnit/../nitroFrame/Render/Sprite.h:
+
+jni/./TestUnit/../nitroFrame/Render/DAOFactory.h:
+
+jni/./TestUnit/../nitroFrame/Render/DAOBinder.h:
+
+jni/./TestUnit/../nitroFrame/Render/DAODeleter.h:
+
+jni/./TestUnit/../nitroFrame/Render/TextureRawPacket.h:
+
+jni/./TestUnit/../nitroFrame/Render/npContainerDAO.h:
+
+jni/./TestUnit/../nitroFrame/Render/npRenderProcess.h:
+
+jni/./TestUnit/../nitroFrame/Render/../Drawable/npDrawable.h:
+
+jni/./TestUnit/../nitroFrame/Render/../npNitroFrameMacro.h:
+
+jni/./TestUnit/../nitroFrame/Render/../Render/npTextureGenerator.h:
+
+jni/./TestUnit/../nitroFrame/Drawable/npDrawable.h:
+
+jni/./TestUnit/../nitroFrame/Drawable/npTextureRect.h:
+
+jni/./TestUnit/../nitroFrame/Drawable/../npNitroFrameMacro.h:
+
+jni/./TestUnit/../nitroFrame/Drawable/npDrawable.h:
+
+jni/./TestUnit/../nitroFrame/Drawable/../Render/npRenderTypedef.h:
+
+jni/./TestUnit/../nitroFrame/Drawable/../Render/Sprite.h:
+
+jni/./TestUnit/../nitroFrame/Drawable/../Render/npContainerDAO.h:
+
+jni/./TestUnit/../nitroFrame/npNitroFrameMacro.h:
+
+jni/./TestUnit/../nitroFrame/Drawable/npTextureRect.h:
+
+jni/./TestUnit/../nitroFrame/Render/npRenderProcess.h:
+
+jni/npNativeEvent.h:
+
+jni/nitroFrame/NitroFrame.h:
+
+jni/./nitroFrame/npDebugUtill.h:

@@ -74,8 +74,6 @@ public class npGLSurfaceView extends GLSurfaceView {
 		setRenderMode(RENDERMODE_CONTINUOUSLY);		
 		requestFocus();
 		
-		NativeInitialize();
-
 	}
 	
 	public void NativeInitialize(){
@@ -98,7 +96,7 @@ public class npGLSurfaceView extends GLSurfaceView {
 		ApplicationInfo appInfo = null;
 		PackageManager packMgmr = m_Context.getPackageManager();
 		try {
-			appInfo = packMgmr.getApplicationInfo("nps.project.bean2", 0);
+			appInfo = packMgmr.getApplicationInfo("nps.nitroframe.test", 0);
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Unable to locate assets, aborting...");

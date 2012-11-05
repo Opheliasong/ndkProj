@@ -34,6 +34,7 @@ public class npGameActivity extends Activity {
 		//SurfaceView 생성 및 Content적용
 		this.GLSurfaceView = new npGLSurfaceView(this, this.assetManager);
 		this.setContentView(this.GLSurfaceView);
+		this.GLSurfaceView.NativeInitialize();
 	}
 	
 	//onResume 이벤트 처리

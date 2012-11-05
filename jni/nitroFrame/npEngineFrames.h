@@ -94,7 +94,7 @@ public:
 	virtual ~npEngineFrame(){};
 
 	//기본 Frame 함수들
-	virtual void npGameCreate(JNIEnv* env,int width, int height);
+	virtual void npGameCreate(JNIEnv* env,int width, int height,const char* apkPath);
 
 	virtual void npShowIntro()=0;
 	virtual void npMainMenuState();
@@ -117,6 +117,8 @@ public:
 	JNIEnv* GetEnv() {return m_env;}
 	jobject GetAssetManager() { return m_AssetManager;}
 */
+protected:
+	static npEngineFrame* Instance;
 };
 }
 

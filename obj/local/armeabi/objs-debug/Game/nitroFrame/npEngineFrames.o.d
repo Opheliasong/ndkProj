@@ -161,6 +161,7 @@ obj/local/armeabi/objs-debug/Game//nitroFrame/npEngineFrames.o: \
  D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h \
  jni//nitroFrame/xmlParser/../include/tinystr.h \
  jni//nitroFrame/xmlParser/../npDebugUtill.h \
+ jni//nitroFrame/xmlParser/../npNitroFrameMacro.h \
  jni//nitroFrame/xmlParser/npInsertParser.h \
  jni//nitroFrame/xmlParser/../include/tinystr.h \
  jni//nitroFrame/xmlParser/npXMLParer.h \
@@ -557,6 +558,8 @@ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h:
 jni//nitroFrame/xmlParser/../include/tinystr.h:
 
 jni//nitroFrame/xmlParser/../npDebugUtill.h:
+
+jni//nitroFrame/xmlParser/../npNitroFrameMacro.h:
 
 jni//nitroFrame/xmlParser/npInsertParser.h:
 

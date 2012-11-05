@@ -14,6 +14,7 @@
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
 #include "../npDebugUtill.h"
+#include "../npNitroFrameMacro.h"
 
 /***
  * @author 박성민

@@ -25,13 +25,13 @@ GLuint npTextureGenerator::GenerateTextureByPNGPath(const char* aTextureName) {
 	}
 
 	char pngPath[128];
-	LOGE("Texture Name :");
-	LOGE(aTextureName);
 	sprintf(pngPath,"assets/sprite/%s\0",aTextureName);
+	LOGE("TextureGenerator)Texture Name :%s",pngPath);
 
-	this->apkZipFile = zip_fopen(this->apkArchive,pngPath,0);
+	this->apkZipFile = zip_fopen(this->apkArchive,pngPath ,0);
+
 	if(NP_IS_EMPTY(this->apkZipFile)){
-		LOGE("TextureGenerator)Texture opening has error");
+		LOGE("TextureGenerator)Texture opening has error!!!");
 		return TEXTURE_LOAD_ERROR;
 	}
 
@@ -73,17 +73,18 @@ GLuint npTextureGenerator::GenerateTextureByPNGPath(const char* aTextureName) {
 		zip_fclose(this->apkZipFile);
 	}
 
-	//png error stuff, nt sure libpng man suggest this
+	//init png reading
+	png_set_read_fn(png_ptr, NULL, npTextureGenerator::png_zip_read);
+
+	//png error stuff, not sure libpng man suggest this
 	if(setjmp(png_jmpbuf(png_ptr))){
 		zip_fclose(this->apkZipFile);
-		LOGE("TextureGenerator)Error during setimp");
+		LOGE("TextureGenerator)Error during set imp");
 		png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 		return TEXTURE_LOAD_ERROR;
 	}
 
-	//init png reading
-	//TODO 맴버 함수 포인터 처리.
-	png_set_read_fn(png_ptr, NULL, png_zip_read);
+
 
 	//let libpng know you already read the first 8 bytes
 	png_set_sig_bytes(png_ptr,8);
@@ -109,6 +110,11 @@ GLuint npTextureGenerator::GenerateTextureByPNGPath(const char* aTextureName) {
 
 	//Allocate the image_data as a big block, to be given to openGL
 	png_byte* image_data = new png_byte[rowbytes * tHeight];
+
+	LOGE("rowbytes : %d",rowbytes);
+	LOGE("tHeights: %d", tHeight);
+	LOGE("tWeights: %d", tWidth);
+
 	if(NP_IS_EMPTY(image_data)){
 		//clean up memory and close stuff
 		png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
@@ -129,21 +135,32 @@ GLuint npTextureGenerator::GenerateTextureByPNGPath(const char* aTextureName) {
 	}
 
 	//상하반전
+
 	int count = 0;
 	for(int i= tHeight -1;i>0;--i){
 		row_pointers[tHeight - 1 - count] = image_data + i * rowbytes;
 		count++;
 	}
+	/*
+	for(int i= 0;i < tHeight;i++){
+			row_pointers[tHeight - 1 - i] = image_data + i * rowbytes;
+	}
+	*/
 
 	//read the png info image_data through row_pointers
 	png_read_image(png_ptr, row_pointers);
 
 	//OpenGL Texture Generate
-	//TODO TextureGenerator 내부에 Binding ID값을 관리할 로직이 필요하다.
 	GLuint textureID;
+/*
+	//image_data Printing
+	for(int i=0; i<= (rowbytes * tHeight); i++){
+//		LOGE("img_data: %f",*image_data[i]);
+	}
+*/
+
 	glGenTextures(1,&textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
-
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tWidth, tHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*)image_data);
 	glTexParameteri(GL_TEXTURE_2D,  GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
@@ -157,9 +174,8 @@ GLuint npTextureGenerator::GenerateTextureByPNGPath(const char* aTextureName) {
 	return textureID;
 }
 
-void png_zip_read(png_structp png_ptr, png_bytep data, png_size_t length) {
+void npTextureGenerator::png_zip_read(png_structp png_ptr, png_bytep data, png_size_t length) {
 	zip_fread(npContainerDAO::GetInstance().getTextureGenerator()->apkZipFile, data, length);
-
 }
 
 npTextureGenerator::npTextureGenerator(char* apkPath):apkRootPath(NULL),apkArchive(NULL),apkZipFile(NULL) {
@@ -167,18 +183,164 @@ npTextureGenerator::npTextureGenerator(char* apkPath):apkRootPath(NULL),apkArchi
 }
 
 void npTextureGenerator::Initializing(char* apkPath) {
-	size_t strLength = strlen(apkRootPath);
+	//this->assetManager = assetManager;
+
+	size_t strLength = strlen(apkPath);
 	if(strLength != 0){
 		apkRootPath = new char[strLength];
 		strcpy(this->apkRootPath,apkPath);
 	}else{
 		//TODO Stop And Throw Exception
 	}
+
 	this->apkArchive = zip_open(this->apkRootPath, 0, NULL);
 	//TODO Stop And Loading Error excetpion throw
 	if(this->apkArchive == NULL){
 		LOGE("npTextureGenerator) Error Loading APK");
 	}
+
+    //Just for debug, print APK contents
+    int numFiles = zip_get_num_files(this->apkArchive);
+    for (int i=0; i<numFiles; i++) {
+        const char* name = zip_get_name(this->apkArchive, i, 0);
+        if (name == NULL) {
+        LOGE("Error reading zip file name at index %i : %s", zip_strerror(this->apkArchive));
+        return;
+        }
+    //zip Files print LOG
+    LOGI("File %i : %s\n", i, name);
+ 	}
+}
+
+GLuint npTextureGenerator::GenerateTextureUseAssetManager(const char* textureName) {
+
+}
+
+/***
+ * @fn libPNG 를 이용한 실제 PNG 파싱 작업
+ * @return png파일을 통해 읽어온 내용의 array를 리턴한다
+ * @details NDK Beginners의 내용을 토대로 작성한 함수.
+ */
+uint8_t* npTextureGenerator::loadImage() {
+	png_byte header[8];
+	png_structp PngPtr = NULL;
+	png_infop InfoPtr = NULL;
+	png_byte* ImageBuffer = NULL;
+	png_bytep* RowPtrs = NULL;
+	png_int_32 RowSize;
+	bool Transparency;
+
+	PngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	if(NP_IS_EMPTY(PngPtr)){
+		LOGE("Not create pngPTR!");
+		delete[] RowPtrs; delete[] ImageBuffer;
+		if (PngPtr != NULL) {
+		png_infop* lInfoPtrP = InfoPtr != NULL ? &InfoPtr: NULL;
+		png_destroy_read_struct(&PngPtr, lInfoPtrP, NULL);
+		}
+		return NULL;
+		return NULL;
+	}
+	InfoPtr = png_create_info_struct(PngPtr);
+	if(NP_IS_EMPTY(InfoPtr)){
+		LOGE("Not create Info PTR");
+		delete[] RowPtrs; delete[] ImageBuffer;
+		if (PngPtr != NULL) {
+		png_infop* lInfoPtrP = InfoPtr != NULL ? &InfoPtr: NULL;
+		png_destroy_read_struct(&PngPtr, lInfoPtrP, NULL);
+		}
+		return NULL;
+	}
+
+	png_set_read_fn(PngPtr,NULL,npTextureGenerator::png_zip_read);
+
+	//Start Reading PNG file Header with png_read_info()
+	//the first 8bytes read for file signature with png_set_sig_bytes().
+	//PNG files can be encoded in several formats RGB, RGBA, 256 color with palette, grayscale ...
+	png_set_sig_bytes(PngPtr,8);
+	png_read_info(PngPtr,InfoPtr);
+
+	png_int_32 depth, colorType;
+	png_uint_32 texWidth, texHeight;
+	png_get_IHDR(PngPtr,InfoPtr,&texWidth,&texHeight,&depth,&colorType,NULL,NULL,NULL);
+
+	//Creates a full alpha channal if transparency is encoded as an array of palettes entries or a single transparent color.
+	Transparency = false;
+	if(png_get_valid(PngPtr,InfoPtr,PNG_INFO_tRNS)){
+		png_set_tRNS_to_alpha(PngPtr);
+		Transparency = true;
+		delete[] RowPtrs; delete[] ImageBuffer;
+		if (PngPtr != NULL) {
+		png_infop* lInfoPtrP = InfoPtr != NULL ? &InfoPtr: NULL;
+		png_destroy_read_struct(&PngPtr, lInfoPtrP, NULL);
+		}
+		return NULL;
+	}
+
+	//expends PNG with less than 8bits per channel to 8bits
+	if(depth<8){
+		png_set_packing(PngPtr);
+		//Shrinks PNG with 16bits per color channel down to 8bits.
+	}else if(depth == 16){
+		png_set_strip_16(PngPtr);
+	}
+	//Indicates that image needs conversion to RGBA if need.
+	switch(colorType){
+	case PNG_COLOR_TYPE_PALETTE:
+		png_set_palette_to_rgb(PngPtr);
+		break;
+
+	//RGB
+	case PNG_COLOR_TYPE_RGB:
+		break;
+
+	//RGBA
+	case PNG_COLOR_TYPE_RGBA:
+		break;
+
+	//Grayscale
+	case PNG_COLOR_TYPE_GRAY:
+		png_set_expand_gray_1_2_4_to_8(PngPtr);
+		break;
+	//Gray + Alpha
+	case PNG_COLOR_TYPE_GA:
+		png_set_expand_gray_1_2_4_to_8(PngPtr);
+		break;
+	}
+	png_read_update_info(PngPtr,InfoPtr);
+
+	//Allocate the necessary temporary buffer to hold image data and a second one with the address of each output image row for libPNG.
+	//row order is inverted. because OpenGL uses a different coordinate system.
+	//(first pixel is at bottom-left) then PNG(first pixel at top-left). Then start reading effectively image content with png_read_image()
+
+	RowSize = png_get_rowbytes(PngPtr,InfoPtr);
+	if(RowSize <= 0){
+		LOGE("RowSize under zero!");
+		delete[] RowPtrs; delete[] ImageBuffer;
+		if (PngPtr != NULL) {
+		png_infop* lInfoPtrP = InfoPtr != NULL ? &InfoPtr: NULL;
+		png_destroy_read_struct(&PngPtr, lInfoPtrP, NULL);
+		}
+		return NULL;
+	}
+	ImageBuffer = new png_byte[RowSize * texHeight];
+	if(NP_IS_EMPTY(ImageBuffer)){
+		LOGE("ImageBuffer is empty!");
+		delete[] RowPtrs; delete[] ImageBuffer;
+		if (PngPtr != NULL) {
+		png_infop* lInfoPtrP = InfoPtr != NULL ? &InfoPtr: NULL;
+		png_destroy_read_struct(&PngPtr, lInfoPtrP, NULL);
+		}
+		return NULL;
+	}
+	for(int32_t i = 0; i < texHeight; ++i){
+		RowPtrs[texHeight - (i + 1)] = ImageBuffer + i * RowSize;
+	}
+	png_read_image(PngPtr,RowPtrs);
+
+	png_destroy_read_struct(&PngPtr, &InfoPtr, NULL);
+	delete[] RowPtrs;
+	return ImageBuffer;
 }
 
 /*

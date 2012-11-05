@@ -1,0 +1,3 @@
+<texture filename="ci_black.png" width="512" height="512">
+	<sprite tag="ci" x="0" y="0" width="512" height="512" transformpoint="center">ci_black.png</sprite>
+</texture>
