@@ -23,8 +23,8 @@ public:
 	npTextureRect(const npTextureRect& source);
 	virtual ~npTextureRect();
 
-	void PreSettingDraw();
-	void DrawThis();
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
 
 	NP_DEFINE_PROPERTY(int, width, WidthSize);
 	NP_DEFINE_PROPERTY(int, height, HeightSize);
@@ -33,7 +33,8 @@ public:
 
 	void SetSize(int width, int Height);
 	bool SetTextureTAG(screenplayTag TAG);
-private:
+	sprite* getSprite();
+protected:
 	GLfloat vertex[12];
 	sprite* sprtie;
 	screenplayTag tag;

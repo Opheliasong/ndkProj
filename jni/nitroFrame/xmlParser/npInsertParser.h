@@ -30,7 +30,7 @@ class RawDataPacket;
 class npInsertParser: public npXMLParser {
 public:
 	void DoParsing();
-	npInsertParser(JNIEnv* aEnv, jobject* aAssetManager);
+	npInsertParser(JavaVM* javaVM, jobject* aAssetManager);
 
 public:
 	npInsertParser();

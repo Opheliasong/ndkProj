@@ -8,8 +8,9 @@
 //#include "pbMainFrame.h"
 //#include "pbTouchLayer.h"
 
-
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNIEnv *env, jclass thiz, jint w, jint h,jobject assetManager, jstring apkPath)
 {
 	/*
@@ -23,12 +24,19 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNI
 		str = env->GetStringUTFChars(apkPath, &isCopy);
 		gameFrame->npGameCreate(env,w,h, assetManager, str);
 	}*/
+	JavaVM* javaVm;
+	env->GetJavaVM(&javaVm);
+
 	char* str;
 	jboolean isCopy;
 	str = const_cast<char*>(env->GetStringUTFChars(apkPath, &isCopy));
-	nitroFrame::HelloWorld::GetInstance(str)->npGameCreate(env,w,h,str);
+	LOGE("Create & Initialize Framework");
+	nitroFrame::HelloWorld::GetInstance()->npGameCreate(env,str);
+	npRenderprocess::getInstance().setDeviceResolution(w,h);
+	//npRenderprocess::getInstance().setRenderingResolution(480,800);
+	npRenderprocess::getInstance().setRenderingResolution(800,480);
 
-	npContainerDAO::SetupBaseInitialize(env, assetManager, str);
+	npContainerDAO::SetupBaseInitialize(javaVm, assetManager, str);
 	/*
 	npInsertDAO* dummyInsertDAO = new npInsertDAO;
 	dummyInsertDAO->InsertDummyRawSource();
@@ -72,14 +80,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceChanged(JN
 	*/
 }
 
-
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npUpdateGame(JNIEnv* env, jclass thiz)
-{
-	/*
-	//updateGameLoop();
-	projectBean::pbProjectBeanFrame* gameFrame = projectBean::pbProjectBeanFrame::MainFrame;
-	gameFrame->npGameLoop();
-	*/
+JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npUpdateGame(JNIEnv *env, jclass thiz){
 	nitroFrame::HelloWorld::GetInstance()->npGameLoop();
 }
 
@@ -101,46 +102,6 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npRendering(JNIEnv 
 	nitroFrame::HelloWorld::GetInstance()->npGameDisplay();
 }
 
-
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npOnTouchEvent(JNIEnv* env, jclass thiz, jint x, jint y, jint touchFlag, jint pointerNumber)
-{
-	/*
-	//onTouchEvent(x, y, touchFlag, pointerNumber);
-	projectBean::pbTouchLayer::onTouchPoint(x,y,touchFlag, pointerNumber);
-	*/
-}
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npOnTouchPoint0(JNIEnv *env, jclass thiz, jint x, jint y, jint touchFlag){
-
-}
-
-/*JNIEXPORT void JNICALL Java_nps_project_bean2_npNativeEvent_npSetTextureData(JNIEnv* env, jclass thiz, jintArray pixels, jint width, jint height, jint genIndex)
-{
-	 jint *temp = env->GetIntArrayElements(pixels, 0);
-	 char *data =(char*)temp;
-
-	 setTextureData(data,width,height, genIndex);
-
-	 env->ReleaseIntArrayElements(pixels,(jint*)data,JNI_ABORT);
-}*/
-
-/*JNIEXPORT jint JNICALL Java_nps_project_bean2_npNativeEvent_npTouchScale(JNIEnv *env, jclass thiz, jfloatArray scaleArray)
-{
-	 float* scales = env->GetFloatArrayElements(scaleArray,0);
-	int renderpart = onTouchScale(scales);
-	env->ReleaseFloatArrayElements((jfloatArray)scaleArray,scales,JNI_ABORT);
-
-	return renderpart;
-}*/
-
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npDoubleTap(JNIEnv *env, jclass thiz, jint x, jint y)
-{
-	//projectBean::pbTouchLayer::onDoubleTapEvent(x, y);
-}
-
-/*JNIEXPORT void JNICALL Java_nps_project_bean2_npNativeEvent_npTextureGenSize(JNIEnv *env, jclass thiz, jint size)
-{
-	onTextureGenSize(size);
-}*/
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npAndroidStatePause(JNIEnv *env, jclass thiz, jint state)
 {
 	/*
@@ -158,3 +119,6 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npOnResume(JNIEnv *
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npOnPause(JNIEnv *env, jclass thiz){
 
 }
+#ifdef __cplusplus
+}
+#endif

@@ -50,46 +50,6 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npRendering
 
 /*
  * Class:     nps_nitroframe_lib_npNativeEvent
- * Method:    npOnTouchEvent
- * Signature: (IIII)V
- */
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npOnTouchEvent
-  (JNIEnv* env, jclass thiz, jint x, jint y, jint touchFlag, jint pointerNumber);
-
-/*
- * Class:     nps_nitroframe_lib_npNativeEvent
- * Method:    npOnTouchPoint0
- * Signature: (III)V
- */
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npOnTouchPoint0
-  (JNIEnv *env, jclass thiz, jint x, jint y, jint touchFlag);
-
-/*
- * Class:     nps_nitroframe_lib_npNativeEvent
- * Method:    npOnTouchPoint1
- * Signature: (III)V
- */
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npOnTouchPoint1
-  (JNIEnv *env, jclass thiz, jint, jint, jint);
-
-/*
- * Class:     nps_nitroframe_lib_npNativeEvent
- * Method:    npOnTouchPoint2
- * Signature: (III)V
- */
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npOnTouchPoint2
-  (JNIEnv *env, jclass thiz, jint, jint, jint);
-
-/*
- * Class:     nps_nitroframe_lib_npNativeEvent
- * Method:    npDoubleTap
- * Signature: (II)V
- */
-JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npDoubleTap
-  (JNIEnv *env, jclass thiz, jint x, jint y);
-
-/*
- * Class:     nps_nitroframe_lib_npNativeEvent
  * Method:    npAndroidStatePause
  * Signature: (I)V
  */

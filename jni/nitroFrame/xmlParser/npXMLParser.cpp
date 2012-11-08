@@ -16,13 +16,41 @@ void npXMLParser::SetupXMLPath(xmlPath path){
 	this->xmlTextBuffer = OpenAssetsByPath(path);
 }
 
+void npXMLParser::SetupApkPath(std::string apkPath){
+
+	LOGE("XMLparser)setup APk path : %s",apkPath.c_str());
+
+	this->apkArchive = zip_open(apkPath.c_str(),0,NULL);
+
+	if(this->apkArchive == NULL){
+		LOGE("npXMLParsing) Error loading APk");
+	}
+}
+
 /***
  * @fn Asset을 여는 함수.
  * @param path xml데이터가 위치한 곳의 Path를 받아와서 이를 open 한다
  * @return
  */
 char* npXMLParser::OpenAssetsByPath(xmlPath path) {
-	AAssetManager* manager = AAssetManager_fromJava(this->env,*this->assetManager);
+	/*
+	//JavaVM* pJavaVm;
+	//this->env->GetJavaVM(&pJavaVm);
+
+	JNIEnv* env = NULL;
+
+	if(NP_IS_EMPTY(this->javaVm)){
+		LOGE("Empty JavaVM");
+	}
+
+	if(this->javaVm->GetEnv((void**)env,JNI_VERSION_1_4) != JNI_OK){
+		this->javaVm->AttachCurrentThread(&env,NULL);
+	}
+
+
+	LOGE("ICS Open Assets boy path test");
+
+	AAssetManager* manager = AAssetManager_fromJava(env,*this->assetManager);
 	if(NP_IS_EMPTY(manager)){
 		LOGE("Not Have AssetManager");
 		return NULL;
@@ -41,6 +69,24 @@ char* npXMLParser::OpenAssetsByPath(xmlPath path) {
 	AAsset_read(this->assets,buffer,size);
 	LOGI("Done Asset Reads");
 
+
+	*/
+
+	char pngPath[128];
+	sprintf(pngPath,"assets/%s\0",path.c_str());
+
+	LOGE("png Path: %s",pngPath);
+	zip_file* apkZipFile = zip_fopen(this->apkArchive,pngPath,0);
+	if(NP_IS_EMPTY(apkZipFile)){
+		LOGE("XMLparser) not open zipFile");
+		return NULL;
+	}
+	LOGE("done zip fopen");
+	LOGE("zip Left Bytes: %d",apkZipFile->bytes_left);
+
+	char* buffer= new char[apkZipFile->bytes_left];
+	zip_fread(apkZipFile,buffer,apkZipFile->bytes_left);
+
 	return buffer;
 }
 
@@ -57,14 +103,14 @@ void npXMLParser::CloseAssetsAndBuffer(char* buffer) {
 	this->assets = NULL;
 }
 
-npXMLParser::npXMLParser(JNIEnv* aEnv, jobject* aAssetManager):env(aEnv),assetManager(aAssetManager),assets(NULL),xmlTextBuffer(NULL) {
+npXMLParser::npXMLParser(JavaVM* javaVM, jobject* aAssetManager):javaVm(javaVM),assetManager(aAssetManager),assets(NULL),xmlTextBuffer(NULL) {
 
 }
 
-npXMLParser::npXMLParser():env(NULL),assetManager(NULL),assets(NULL),xmlTextBuffer(NULL){
+npXMLParser::npXMLParser():javaVm(NULL),assetManager(NULL),assets(NULL),xmlTextBuffer(NULL){
 
 }
 
 npXMLParser::~npXMLParser() {
-
+	delete[] xmlTextBuffer;
 }

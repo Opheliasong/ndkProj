@@ -5,7 +5,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 import nps.nitroframe.lib.npNativeEvent;
 
+import android.app.NativeActivity;
+import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView.Renderer;
+import android.util.Log;
 import android.view.MotionEvent;
 
 /*! 
@@ -31,23 +34,21 @@ public class npGLRenderer implements Renderer {
     	long now = System.nanoTime();
     	long interval = now - last;
     	
-		npNativeEvent.npUpdateGame();
+    	npNativeEvent.npUpdateGame();
 		npNativeEvent.npRendering();
-		
+    	
 		if(interval < animationInterval){
     		try {
     			// because we render it before, so we should sleep twice time interval
     			Thread.sleep((animationInterval - interval) * 2 / NANOSECONDSPERMINISECOND);
     		} catch (Exception e){}
 		}
-		
     	last = now;
 	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		// TODO Auto-generated method stub
-		npNativeEvent.npSurfaceChanged(width, height);
-		
+		npNativeEvent.npSurfaceChanged(width, height);		
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -69,5 +70,13 @@ public class npGLRenderer implements Renderer {
 			
 	public void sendNativeTouchEvent(int x, int y,int action, int pointerIndex){
 		npNativeEvent.npOnTouchEvent(x, y, action & MotionEvent.ACTION_MASK, pointerIndex);
+	}
+	
+	public void sendDoubleTap(int x, int y){
+		npNativeEvent.npDoubleTap(x, y);
+	}
+	
+	public void setNativeInitialize(int width, int height, AssetManager asset,String apkPath){
+		npNativeEvent.npSurfaceCreate(width, height, asset, apkPath);
 	}
 }

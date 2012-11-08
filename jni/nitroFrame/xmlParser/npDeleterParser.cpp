@@ -7,8 +7,8 @@
 
 #include "npDeleterParser.h"
 
-npDeleterParser::npDeleterParser(JNIEnv* aEnv, jobject* aAssetManager){
-	env=aEnv;
+npDeleterParser::npDeleterParser(JavaVM* javaVM, jobject* aAssetManager){
+	javaVm=javaVM;
 	assetManager = aAssetManager;
 }
 

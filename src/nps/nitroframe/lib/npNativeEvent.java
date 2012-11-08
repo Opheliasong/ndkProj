@@ -5,7 +5,7 @@ public class npNativeEvent {
 	public static native void npSurfaceChanged(int width, int height);
 	public static native void npUpdateGame();
 	public static native void npDestroy();
-	public static native void npRendering();
+	public static native void npRendering();	
 	
 	// 터치
 	public static native void npOnTouchEvent(int x, int y, int touchFlag, int pointerNumber);

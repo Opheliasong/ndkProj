@@ -26,6 +26,8 @@ npTextureRect::npTextureRect(){
 	this->vertex[9] = 1.0f;
 	this->vertex[10] = -1.0f;
 	this->vertex[11] = 0;
+
+	LOGE("Call CTOR");
 }
 
 npTextureRect::npTextureRect(screenplayTag TAG){
@@ -59,6 +61,7 @@ npTextureRect::npTextureRect(const npTextureRect& source){
 	this->width = source.width;
 	this->positionX = source.positionX;
 	this->positionY = source.positionY;
+
 	//this->vertex
 	memcpy(this->vertex,source.vertex,12*sizeof(GLfloat));
 }
@@ -71,30 +74,10 @@ void npTextureRect::PreSettingDraw() {
 }
 
 void npTextureRect::DrawThis() {
+
 	glPushMatrix();
 	glVertexPointer(3, GL_FLOAT, 0,this->vertex);
-/*
-	LOGE("Vertex[0] : %f",this->vertex[0]);
-	LOGE("Vertex[1] : %f",this->vertex[1]);
-	LOGE("Vertex[2] : %f",this->vertex[2]);
-
-	LOGE("Vertex[3] : %f",this->vertex[3]);
-	LOGE("Vertex[4] : %f",this->vertex[4]);
-	LOGE("Vertex[5] : %f",this->vertex[5]);
-
-	LOGE("Vertex[6] : %f",this->vertex[6]);
-	LOGE("Vertex[7] : %f",this->vertex[7]);
-	LOGE("Vertex[8] : %f",this->vertex[8]);
-
-	LOGE("Vertex[9] : %f",this->vertex[9]);
-	LOGE("Vertex[10] : %f",this->vertex[10]);
-	LOGE("Vertex[11] : %f",this->vertex[11]);
-
-	LOGE("==========================");
-*/
-//	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-	glTranslatef(positionX, positionY , 0.f);
+	glTranslatef(this->positionX, this->positionY , 0.f);
 	glScalef(this->height, this->width, 1.0f);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glPopMatrix();
@@ -121,4 +104,8 @@ bool npTextureRect::SetTextureTAG(screenplayTag TAG) {
 		return false;
 	}
 	return true;
+}
+
+sprite* npTextureRect::getSprite() {
+	return this->sprtie;
 }

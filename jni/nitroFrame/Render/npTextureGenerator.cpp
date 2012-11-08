@@ -135,30 +135,29 @@ GLuint npTextureGenerator::GenerateTextureByPNGPath(const char* aTextureName) {
 	}
 
 	//상하반전
-
 	int count = 0;
-	for(int i= tHeight -1;i>0;--i){
+/*	for(int i= tHeight -1;i>0;--i){
 		row_pointers[tHeight - 1 - count] = image_data + i * rowbytes;
 		count++;
+	}*/
+
+	for (int i = 0; i < tHeight; ++i) {
+		row_pointers[i] = image_data + i * rowbytes;
 	}
+
 	/*
 	for(int i= 0;i < tHeight;i++){
 			row_pointers[tHeight - 1 - i] = image_data + i * rowbytes;
 	}
 	*/
 
+	LOGE("Before png_read_image");
 	//read the png info image_data through row_pointers
 	png_read_image(png_ptr, row_pointers);
 
 	//OpenGL Texture Generate
 	GLuint textureID;
-/*
-	//image_data Printing
-	for(int i=0; i<= (rowbytes * tHeight); i++){
-//		LOGE("img_data: %f",*image_data[i]);
-	}
-*/
-
+	LOGE("before glGenTexture Call");
 	glGenTextures(1,&textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tWidth, tHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*)image_data);
@@ -170,7 +169,6 @@ GLuint npTextureGenerator::GenerateTextureByPNGPath(const char* aTextureName) {
 	delete[] row_pointers;
 	zip_fclose(this->apkZipFile);
 
-	//TODO Texture Generator Binding ID 값을 리턴해야 한다.
 	return textureID;
 }
 

@@ -1,5 +1,8 @@
 package nps.nitroframe.lib;
 
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -66,29 +69,28 @@ public class npGLSurfaceView extends GLSurfaceView {
 		super(context);
 		m_Context = context;
 		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
-		
+			
 		m_assetManager = mgr;
 		//renderer 생성
 		m_renderer = new npGLRenderer();
-		setRenderer(m_renderer);
-		setRenderMode(RENDERMODE_CONTINUOUSLY);		
-		requestFocus();
+		this.setRenderer(m_renderer);
+		this.requestFocus();
+		setFocusableInTouchMode(true);
 		
+		m_arrTouchPointer[0] = new touchPointer(0);
+		m_arrTouchPointer[1] = new touchPointer(1);		
+		m_arrTouchPointer[2] = new touchPointer(2);
+	}
+	
+	public void onSurfaceCreated(GL10 gl, EGLConfig config){
+		NativeInitialize();
 	}
 	
 	public void NativeInitialize(){
-		setFocusableInTouchMode(true);
-		
 		try{
-		Display display = ((WindowManager)m_Context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		m_Width = display.getWidth();
-		m_Height = display.getHeight();
-		
-		/*
-		Log.i("GLview", "width:"+m_Width);
-		Log.i("GLview", "height:"+m_Height);
-		*/
-		
+			Display display = ((WindowManager)m_Context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+			m_Width = display.getWidth();
+			m_Height = display.getHeight();
 		}catch(Exception e){
 			Log.e("GLView", "GLView CTOR Exception: "+e.toString());
 		}
@@ -104,7 +106,8 @@ public class npGLSurfaceView extends GLSurfaceView {
 		
 		apkFilePath = appInfo.sourceDir;
 		
-		npNativeEvent.npSurfaceCreate(m_Width, m_Height, m_assetManager, apkFilePath);
+		//npNativeEvent.npSurfaceCreate(m_Width, m_Height, m_assetManager, apkFilePath);
+		m_renderer.setNativeInitialize(m_Width, m_Height, m_assetManager, apkFilePath);
 		m_OnInitilized = true;
 	}
 	
@@ -112,7 +115,6 @@ public class npGLSurfaceView extends GLSurfaceView {
 		queueEvent(new Runnable() {
 			
 			public void run() {
-				// TODO Auto-generated method stub
 				m_renderer.onRenderingPause();
 			}
 		});
@@ -122,7 +124,6 @@ public class npGLSurfaceView extends GLSurfaceView {
 		queueEvent(new Runnable() {
 			
 			public void run() {
-				// TODO Auto-generated method stub
 				m_renderer.onRenderingResume();
 			}
 		});		
@@ -157,6 +158,7 @@ public class npGLSurfaceView extends GLSurfaceView {
 	    		//더블 터치 로직으로 들어간다.
 	    		if(dualTouchEventProcess(event)){
 	    			return true;
+	    			
 	    		}
 	    		return false;
 	    	}
@@ -177,9 +179,7 @@ public class npGLSurfaceView extends GLSurfaceView {
 		final float y = event.getY(pointerIndex);
 		
 		queueEvent(new Runnable() {
-			
 			public void run() {
-				// TODO Auto-generated method stub
 				m_renderer.sendNativeTouchEvent((int)x, (int)y, action, pointerIndex);
 			}
 		});		
@@ -216,6 +216,11 @@ public class npGLSurfaceView extends GLSurfaceView {
 	    	}
 	    		
 	    	case MotionEvent.ACTION_MOVE:{
+	    		/*
+	    		if(m_arrTouchPointer[0].m_id == 0){
+	    			Log.e("Motion", "id is 0");
+	    		}*/
+	    		
 	    		if(m_arrTouchPointer[0].m_id == 0){
 	    			int i = 0;
 	    			try{

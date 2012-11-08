@@ -162,6 +162,12 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/npEngineFrames.o: \
  jni//nitroFrame/xmlParser/../include/tinystr.h \
  jni//nitroFrame/xmlParser/../npDebugUtill.h \
  jni//nitroFrame/xmlParser/../npNitroFrameMacro.h \
+ jni//nitroFrame/xmlParser/../include/zipint.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zlib.h \
+ D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zconf.h \
+ jni//nitroFrame/xmlParser/../include/zip.h \
+ jni//nitroFrame/xmlParser/../include/config.h \
+ jni//nitroFrame/xmlParser/../include/zip.h \
  jni//nitroFrame/xmlParser/npInsertParser.h \
  jni//nitroFrame/xmlParser/../include/tinystr.h \
  jni//nitroFrame/xmlParser/npXMLParer.h \
@@ -191,10 +197,6 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/npEngineFrames.o: \
  jni//nitroFrame/xmlParser/../Render/npTextureGenerator.h \
  jni//nitroFrame/xmlParser/../Render/../npNitroFrameMacro.h \
  jni//nitroFrame/xmlParser/../Render/../include/zipint.h \
- D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zlib.h \
- D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zconf.h \
- jni//nitroFrame/xmlParser/../Render/../include/zip.h \
- jni//nitroFrame/xmlParser/../Render/../include/config.h \
  jni//nitroFrame/xmlParser/../Render/../include/png.h \
  jni//nitroFrame/xmlParser/../Render/../include/pngconf.h \
  D:/SDK/android-ndk/sources/cxx-stl/stlport/stlport/setjmp.h \
@@ -215,6 +217,8 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/npEngineFrames.o: \
  jni//nitroFrame/Render/TextureRawPacket.h \
  jni//nitroFrame/Render/npContainerDAO.h \
  jni//nitroFrame/Render/npRenderProcess.h \
+ jni//nitroFrame/Render/../gluLookAt.h \
+ jni//nitroFrame/Render/../npDebugUtill.h \
  jni//nitroFrame/Render/../Drawable/npDrawable.h \
  jni//nitroFrame/Render/../npNitroFrameMacro.h \
  jni//nitroFrame/Render/../Render/npTextureGenerator.h \
@@ -225,6 +229,11 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/npEngineFrames.o: \
  jni//nitroFrame/Drawable/../Render/npRenderTypedef.h \
  jni//nitroFrame/Drawable/../Render/Sprite.h \
  jni//nitroFrame/Drawable/../Render/npContainerDAO.h \
+ jni//nitroFrame/TouchLayer/TouchObserver.h \
+ jni//nitroFrame/TouchLayer/TouchLayer.h \
+ jni//nitroFrame/TouchLayer/../Render/npRenderProcess.h \
+ jni//nitroFrame/TouchLayer/../npLinkNode.h \
+ jni//nitroFrame/TouchLayer/TouchObserver.h \
  jni//nitroFrame/npNitroFrameMacro.h
 
 jni//nitroFrame/npEngineFrames.h:
@@ -561,6 +570,18 @@ jni//nitroFrame/xmlParser/../npDebugUtill.h:
 
 jni//nitroFrame/xmlParser/../npNitroFrameMacro.h:
 
+jni//nitroFrame/xmlParser/../include/zipint.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zlib.h:
+
+D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zconf.h:
+
+jni//nitroFrame/xmlParser/../include/zip.h:
+
+jni//nitroFrame/xmlParser/../include/config.h:
+
+jni//nitroFrame/xmlParser/../include/zip.h:
+
 jni//nitroFrame/xmlParser/npInsertParser.h:
 
 jni//nitroFrame/xmlParser/../include/tinystr.h:
@@ -619,14 +640,6 @@ jni//nitroFrame/xmlParser/../Render/../npNitroFrameMacro.h:
 
 jni//nitroFrame/xmlParser/../Render/../include/zipint.h:
 
-D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zlib.h:
-
-D:/SDK/android-ndk/platforms/android-9/arch-arm/usr/include/zconf.h:
-
-jni//nitroFrame/xmlParser/../Render/../include/zip.h:
-
-jni//nitroFrame/xmlParser/../Render/../include/config.h:
-
 jni//nitroFrame/xmlParser/../Render/../include/png.h:
 
 jni//nitroFrame/xmlParser/../Render/../include/pngconf.h:
@@ -671,6 +684,10 @@ jni//nitroFrame/Render/npContainerDAO.h:
 
 jni//nitroFrame/Render/npRenderProcess.h:
 
+jni//nitroFrame/Render/../gluLookAt.h:
+
+jni//nitroFrame/Render/../npDebugUtill.h:
+
 jni//nitroFrame/Render/../Drawable/npDrawable.h:
 
 jni//nitroFrame/Render/../npNitroFrameMacro.h:
@@ -690,5 +707,15 @@ jni//nitroFrame/Drawable/../Render/npRenderTypedef.h:
 jni//nitroFrame/Drawable/../Render/Sprite.h:
 
 jni//nitroFrame/Drawable/../Render/npContainerDAO.h:
+
+jni//nitroFrame/TouchLayer/TouchObserver.h:
+
+jni//nitroFrame/TouchLayer/TouchLayer.h:
+
+jni//nitroFrame/TouchLayer/../Render/npRenderProcess.h:
+
+jni//nitroFrame/TouchLayer/../npLinkNode.h:
+
+jni//nitroFrame/TouchLayer/TouchObserver.h:
 
 jni//nitroFrame/npNitroFrameMacro.h:

@@ -12,9 +12,9 @@ npInsertParser::npInsertParser() {
 
 }
 
-npInsertParser::npInsertParser(JNIEnv* aEnv, jobject* aAssetManager){
-	env=aEnv;
-	assetManager=aAssetManager;
+npInsertParser::npInsertParser(JavaVM* javaVM, jobject* aAssetManager){
+	this->javaVm=javaVM;
+	this->assetManager=aAssetManager;
 }
 
 npInsertParser::~npInsertParser() {
@@ -49,8 +49,9 @@ void npInsertParser::DoParsing(){
 	textureHeadNode->ToElement()->Attribute("height",&textureHeight);
 
 	const char* texturePath = textureHeadNode->ToElement()->Attribute("filename");
+	LOGE("Generate Texture");
 	GLuint textureIndex = npContainerDAO::GetInstance().GenerateTextureByPNGPath(texturePath);
-
+	LOGE("Done Generate Texture");
 	//-----------------UV 파싱----------------------//
 
 	RawDataPacket tempRawPacket;

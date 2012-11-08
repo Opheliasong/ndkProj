@@ -76,8 +76,9 @@ void npInsertDAO::InsertScreenplayPackets(ScreenplayPacket& screenplayPacket) {
 
 	screenMapIter screenplayIter = screenplayStore->screenplayContainer.find(screenplayPacket.tag);
 
+	LOGE("Inserting TAG:%s",screenplayPacket.tag.c_str());
+
 	if(screenplayIter == screenplayStore->screenplayContainer.end()){
-		//TODO Pair의 Second인 List를 추가해야 한다
 		npLinkNode<int>* insertSceond = new npLinkNode<int>;
 		insertSceond->setKernel(screenplayPacket.screenplayID);
 		screenplayStore->screenplayContainer.insert(ScreenplayPair(screenplayPacket.tag, *insertSceond));

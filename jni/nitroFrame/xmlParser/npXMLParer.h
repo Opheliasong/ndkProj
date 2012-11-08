@@ -15,6 +15,8 @@
 #include <android/asset_manager_jni.h>
 #include "../npDebugUtill.h"
 #include "../npNitroFrameMacro.h"
+#include "../include/zipint.h"
+#include "../include/zip.h"
 
 /***
  * @author 박성민
@@ -31,9 +33,10 @@ class npXMLParser{
 public:
 	//void ParseTextureDataByPath(xmlPath path);
 	virtual void SetupXMLPath(xmlPath path);
+	virtual void SetupApkPath(std::string apkPath);
 	virtual void DoParsing()=0;
 
-	npXMLParser(JNIEnv* aEnv, jobject* aAssetManager);
+	npXMLParser(JavaVM* javaVM, jobject* aAssetManager);
 	virtual ~npXMLParser();
 private:
 	virtual char* OpenAssetsByPath(xmlPath path);
@@ -44,9 +47,14 @@ protected:
 
 	char* xmlTextBuffer;
 
-	JNIEnv* env;
+	//JNIEnv* env;
+	JavaVM* javaVm;
 	jobject* assetManager;
 	AAsset* assets;
+
+	//libzip Testing
+	zip* apkArchive;
+	zip_file* apkZipFile;
 };
 
 #endif /* NPXMLPARER_H_ */

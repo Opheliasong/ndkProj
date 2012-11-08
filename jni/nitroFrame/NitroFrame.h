@@ -50,6 +50,9 @@
 #include "Drawable/npDrawable.h"
 #include "Drawable/npTextureRect.h"
 
+//Touch 관련 Interface와 Layer
+#include "TouchLayer/TouchObserver.h"
+#include "TouchLayer/TouchLayer.h"
 
 
 #endif /* NPNITROFRAME_H_ */

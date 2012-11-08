@@ -13,8 +13,7 @@ public class MainActivity extends npGameActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        //setContentView(R.layout.activity_main);
+        //setContentView(R.laycout.activity_main);
     }
     
     static{

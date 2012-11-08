@@ -25,7 +25,7 @@ public class npGameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		//SoundManager 생성
-		this.soundManager = new npSoundManager();
+ 		this.soundManager = new npSoundManager();
 		this.soundManager.Initialize(getBaseContext());
 		
 		//AssetManager 가져오기

@@ -34,7 +34,7 @@ class sprite;
 class npContainerDAO {
 public:
 	static void SetupTheAPKPath(char* apkPath);
-	static void SetupBaseInitialize(JNIEnv* env, jobject& AssetManager,char* apkPath);
+	static void SetupBaseInitialize(JavaVM* javaVM, jobject& AssetManager,char* apkPath);
 	static npContainerDAO& GetInstance();
 	void InsertUVData(const RawDataPacket& rawPacket);	//InsertParser에서 호출하는 Interface
 	void DeleteUVData(const screenplayTag& deleteTag);	//DeleteParser에서 호출하는 Interface
@@ -58,7 +58,8 @@ private:
 	npTextureGenerator* TextureGenerator;
 
 	static char* apkPath;
-	static JNIEnv* env;
+	//static JNIEnv* env;
+	static JavaVM* javaVm;
 	static jobject AssetManager;
 
 	npContainerDAO();

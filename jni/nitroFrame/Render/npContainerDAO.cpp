@@ -8,7 +8,7 @@
 #include "npContainerDAO.h"
 
 char* npContainerDAO::apkPath = NULL;
-JNIEnv* npContainerDAO::env = NULL;
+JavaVM* npContainerDAO::javaVm = NULL;
 jobject npContainerDAO::AssetManager;
 
 /**
@@ -60,8 +60,8 @@ npContainerDAO::npContainerDAO() {
 	FactoryModule = new npFactoryDAO;
 	DeleteModule = new npDeleteDAO;
 	InsertModule = new npInsertDAO;
-	InsertXMLParser = new npInsertParser(env,&AssetManager);
-	DeleteXMLParser = new npDeleterParser(env,&AssetManager);
+	InsertXMLParser = new npInsertParser(javaVm,&AssetManager);
+	DeleteXMLParser = new npDeleterParser(javaVm,&AssetManager);
 	TextureGenerator = new npTextureGenerator(apkPath);
 }
 
@@ -90,7 +90,11 @@ void npContainerDAO::DeleteUVData(const screenplayTag& deleteTag){
  * @brief Scene쪽에서 Data를 Container에게 불러오게 하기 위한 Interface.
  */
 void npContainerDAO::LoadTextureByXMLpath(const char* xmlPath) {
+
+	InsertXMLParser->SetupApkPath(apkPath);
+
 	LOGE("Load Texture By XML Path: %s",xmlPath);
+
 	InsertXMLParser->SetupXMLPath(xmlPath);
 	LOGE("Done Setup XML path");
 	InsertXMLParser->DoParsing();
@@ -116,8 +120,8 @@ void npContainerDAO::SetupTheAPKPath(char* aApkPath) {
  * @param aAssetManager
  * @param aApkPath
  */
-void npContainerDAO::SetupBaseInitialize(JNIEnv* aEnv, jobject& aAssetManager,char* aApkPath){
-	env = aEnv;
+void npContainerDAO::SetupBaseInitialize(JavaVM* javaVM, jobject& aAssetManager,char* aApkPath){
+	javaVm = javaVM;
 	AssetManager = aAssetManager;
 	apkPath = aApkPath;
 }

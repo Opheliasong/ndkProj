@@ -58,7 +58,7 @@
 
 #define NP_DEFINE_PROPERTY_READONLY(varType, varName, funcName)\
 protected: varType varName;\
-public: virtual varType get##funcName(void){return this->varName};
+public: virtual varType get##funcName(void){return this->varName;};
 
 /***
  * @fn

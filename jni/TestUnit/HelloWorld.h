@@ -8,9 +8,13 @@
 #ifndef HELLOWORLD_H_
 #define HELLOWORLD_H_
 
+/*
 #include "../nitroFrame/npEngineFrames.h"
 #include "../nitroFrame/Drawable/npTextureRect.h"
 #include "../nitroFrame/Render/npRenderProcess.h"
+*/
+#include "../nitroFrame/NitroFrame.h"
+#include "testTextureRect.h"
 
 namespace nitroFrame{
 class HelloWorld :public npEngineFrame{
@@ -18,7 +22,7 @@ public:
 	HelloWorld(const char* apkPath);
 	~HelloWorld();
 
-	void npGameCreate(JNIEnv* env,int width, int height,const char* apkPath);
+	void npGameCreate(JNIEnv* env,const char* apkPath);
 
 	void npShowIntro();
 	void npMainMenuState();
@@ -37,7 +41,7 @@ protected:
 	HelloWorld();
 	static HelloWorld* Instance;
 
-	npTextureRect* testRect;
+	testTextureRect* testRect;
 	npTextureRect* testRectCi;
 
 	int deviceWidth;

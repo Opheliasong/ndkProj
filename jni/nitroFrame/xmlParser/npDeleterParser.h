@@ -23,7 +23,7 @@ class npContainerDAO;
  */
 class npDeleterParser: public npXMLParser {
 public:
-	npDeleterParser(JNIEnv* aEnv, jobject* aAssetManager);
+	npDeleterParser(JavaVM* javaVM, jobject* aAssetManager);
 	virtual ~npDeleterParser();
 	npDeleterParser();
 
