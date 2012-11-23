@@ -1,6 +1,6 @@
 #include "pbDrawUnit.h"
 
-void pbDrawUnit::registLinkNode(pbDrawUnit* pUnit){
+/*void pbDrawUnit::registLinkNode(pbDrawUnit* pUnit){
 	pbDrawUnit_List::addTail(pUnit, m_pDrawableUnitListHeader);
 }
 
@@ -83,4 +83,67 @@ void pbDrawUnit::DeleteChildUnit(GLuint ID) {
 
 		}
 	}
+}*/
+
+
+GLfloat pbBasicDrawUnit::vertex[12] = {0,};
+
+pbBasicDrawUnit::pbBasicDrawUnit(){
+	SetVertexByCenter(this->vertex, 1, 1);
+	sprtie = NULL;
+	m_Width = 0;
+	m_Height = 0;
+	LOGE("pbBasicDrawUnit :: Call Constructor");
+}
+
+pbBasicDrawUnit::pbBasicDrawUnit(screenplayTag TAG){
+	SetVertexByCenter(this->vertex, 1, 1);
+
+	this->tag = TAG;
+	this->sprtie = npContainerDAO::GetInstance().getSpriteByTAG(this->tag);
+	m_Width = 0;
+	m_Height = 0;
+
+}
+
+pbBasicDrawUnit::pbBasicDrawUnit(const pbBasicDrawUnit& source){
+	this->tag = source.tag;
+	this->sprtie = source.sprtie;
+	this->m_Height = source.m_Height;
+	this->m_Width = source.m_Width;
+}
+
+pbBasicDrawUnit::~pbBasicDrawUnit(){
+}
+
+void pbBasicDrawUnit::PreSettingDraw() {
+	glPushMatrix();
+	npContainerDAO::GetInstance().BindingFrameBySprite(*this->sprtie);
+}
+
+void pbBasicDrawUnit::DrawThis() {
+	glScalef(this->m_Width, this->m_Height, 1.0f);
+	glVertexPointer(3, GL_FLOAT, 0,this->vertex);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glPopMatrix();
+
+}
+
+void pbBasicDrawUnit::SetSize(float width, float Height) {
+	this->m_Width = width;
+	this->m_Height = Height;
+}
+
+bool pbBasicDrawUnit::SetTextureTAG(screenplayTag TAG) {
+	this->sprtie = npContainerDAO::GetInstance().getSpriteByTAG(TAG);
+
+	if(NP_IS_EMPTY(this->sprtie)){
+		LOGE("not Fine Sprite Tag");
+		return false;
+	}
+	return true;
+}
+
+sprite* pbBasicDrawUnit::getSprite() {
+	return this->sprtie;
 }

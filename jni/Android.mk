@@ -59,12 +59,12 @@ npNativeEvent.cpp\
 /nitroFrame/Drawable/npTextureRect.cpp\
 /nitroFrame/TouchLayer/TouchObserver.cpp\
 /nitroFrame/TouchLayer/TouchLayer.cpp\
+/ProjectBean/pbDrawUnit.cpp\
 /ProjectBean/pbMainFrame.cpp\
 /ProjectBean/pbGlobalVariable.cpp\
 /ProjectBean/pbSceneWrapper.cpp\
 /ProjectBean/pbBackground.cpp\
-#/ProjectBean/pbDrawUnit.cpp\
-/ProjectBean/pbBoss.cpp\
+#/ProjectBean/pbBoss.cpp\
 /ProjectBean/pbCharacter.cpp\
 /ProjectBean/pbEffect.cpp\
 /ProjectBean/pbGuideLine.cpp\

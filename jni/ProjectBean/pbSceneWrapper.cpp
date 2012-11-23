@@ -35,11 +35,11 @@ pbSceneMover::~pbSceneMover() {
 	LOGE("pbSceneMover Destructor : m_pStateHeader is NULL");
 }
 
-void pbSceneMover::AddStateElement(SCENESTATE::ACTION iAction, SCENESTATE::GAME iOutGameState, SCENESTATE::LOAD iOutLoadState) {
+void pbSceneMover::AddStateElement(SCENESTATE::ACTION iAction, SCENESTATE::GAME iNextGameState, sceneTag NextSceneTag) {
 	pbSceneStateElement* newState = new pbSceneStateElement();
 	newState->m_iAction = iAction;
-	newState->m_iOutGameState = iOutGameState;
-	newState->m_iOutLoadState = iOutLoadState;
+	newState->m_iNextGameState = iNextGameState;
+	newState->m_Tag = NextSceneTag;
 
 	SceneStateElementList* pTargetNode =  SceneStateElementList::makeLinkNode(newState);
 	SceneStateElementList::addTail(pTargetNode, m_pStateHeader);
@@ -82,39 +82,40 @@ pbSceneStateElement* pbSceneMover::FindOutStateByAction(SCENESTATE::ACTION iActi
 }
 
 ////-----------------------------------------------------pbSceneNavigator ------------------------------------------------------------------------------///////
-pbSceneNavigator* pbSceneNavigator::SingleObject = NULL;
+pbSceneNavigator& pbSceneNavigator::GetInstance() {
+	static pbSceneNavigator Singleton;
+
+	return Singleton;
+}
 
 pbSceneNavigator::pbSceneNavigator() {
-	m_pSceneMoverHeader = NULL;
-	m_iCurrentGameState =SCENESTATE::GAME_NONE;
-	m_iCurrentLoadState = SCENESTATE::LOAD_NONE;
-	m_iClearGameState = SCENESTATE::GAME_NONE;
+	m_pSceneMoverHeader = new SceneMoverList;
+	m_pSceneMoverHeader->setHeader();
+	m_iCurrentGameState = SCENESTATE::GAME_NONE;
+	m_iNextGameState = SCENESTATE::GAME_NONE;
+	m_bReadyToNextScene = false;
+//	m_iCurrentLoadState = SCENESTATE::LOAD_NONE;
+//	m_iClearGameState = SCENESTATE::GAME_NONE;
+
+	LOGI("pbSceneNavigator::Constructor() Complete");
 }
 pbSceneNavigator::~pbSceneNavigator() {
+	ClearSceneState();
+	SceneMoverList::destroyList(m_pSceneMoverHeader);
+	m_pSceneMoverHeader = NULL;
 
-}
-void pbSceneNavigator::Create() {
-	if( SingleObject == NULL) {
-		SingleObject = new pbSceneNavigator();
-		SingleObject->m_pSceneMoverHeader = new SceneMoverList;
-		SingleObject->m_pSceneMoverHeader->setHeader();
-
-		LOGI("pbSceneNavigator::Create() Complete");
-		return;
-	}
-
-	LOGE("pbSceneNavigator::Create() Failed");
+	LOGI("pbSceneNavigator::Destructor() Complete");
 }
 
 void pbSceneNavigator::LoadSceneState() {
 	m_iCurrentGameState = SCENESTATE::GAME_CREATE;
-	m_iCurrentLoadState = SCENESTATE::LOAD_NONE;
-	m_iClearGameState = SCENESTATE::GAME_NONE;
+// m_iCurrentLoadState = SCENESTATE::LOAD_NONE;
+//	m_iClearGameState = SCENESTATE::GAME_NONE;
 
-	pbSceneMover* newMover = new pbSceneMover(SCENESTATE::GAME_CREATE);
+/*	pbSceneMover* newMover = new pbSceneMover(SCENESTATE::GAME_CREATE);
 	//newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, SCENESTATE::LOAD_INTRO);
 	newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, SCENESTATE::LOAD_PLAY);
-	AddSceneMover(newMover);
+	AddSceneMover(newMover);*/
 //	newMover = new pbSceneMover(SCENESTATE::GAME_INTRO);
 //	newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, SCENESTATE::LOAD_PLAY);
 //	newMover->AddStateElement(SCENESTATE::ACTION_BACKWARD, SCENESTATE::GAME_DESTROY, SCENESTATE::LOAD_NONE);
@@ -133,21 +134,7 @@ void pbSceneNavigator::AddSceneMover(pbSceneMover* pMover) {
 }
 
 //액션에 해당하는 씬이 없으면 false 반환
-bool pbSceneNavigator::MoveScene(SCENESTATE::ACTION Action) {
-
-	//Debug Log
-	if( Action == SCENESTATE::ACTION_FOWARD)
-		LOGE("ACTION_FOWARD");
-	else if(Action ==SCENESTATE::ACTION_BACKWARD)
-		LOGE("ACTION_BACKWARD");
-	else if(Action ==SCENESTATE::ACTION_SELECT_1)
-		LOGE("ACTION_SELECT_1");
-	else if(Action ==SCENESTATE::ACTION_SELECT_2)
-		LOGE("ACTION_SELECT_2");
-	else if(Action ==SCENESTATE::ACTION_SELECT_3)
-		LOGE("ACTION_SELECT_3");
-	else if(Action ==SCENESTATE::ACTION_NONE)
-		LOGE("ACTION_NONE");
+void pbSceneNavigator::SearchAndReadyToMoveScene(SCENESTATE::ACTION Action) {
 
 	if(m_pSceneMoverHeader != NULL) {
 		SceneMoverList* iterator;
@@ -161,50 +148,36 @@ bool pbSceneNavigator::MoveScene(SCENESTATE::ACTION Action) {
 			if( pkernel->GetState() == m_iCurrentGameState) {
 				pbSceneStateElement* pElement = pkernel->FindOutStateByAction(Action);
 				if(  pElement != NULL) {
-					m_iClearGameState = m_iCurrentGameState;
-					m_iCurrentGameState = pElement->m_iOutGameState;
-					m_iCurrentLoadState = pElement->m_iOutLoadState;
-
-					//------------------------------------����׿�------------------------------//
-					if( m_iClearGameState == SCENESTATE::GAME_CREATE)
-						LOGE("GAME_CREATE -> ");
-					else if(m_iClearGameState ==SCENESTATE::GAME_DESTROY)
-						LOGE("GAME_DESTROY -> ");
-					else if(m_iClearGameState ==SCENESTATE::GAME_INTRO)
-						LOGE("GAME_INTRO -> ");
-					else if(m_iClearGameState ==SCENESTATE::GAME_MAINMENU)
-						LOGE("GAME_MAINMENU -> ");
-					else if(m_iClearGameState ==SCENESTATE::GAME_PAUSE)
-						LOGE("GAME_PAUSE -> ");
-					else if(m_iClearGameState ==SCENESTATE::GAME_PLAY)
-						LOGE("GAME_PLAY -> ");
-					else if(m_iClearGameState ==SCENESTATE::GAME_NONE)
-						LOGE("GAME_NONE -> ");
-
-					if( m_iCurrentGameState == SCENESTATE::GAME_CREATE)
-						LOGE("GAME_CREATE");
-					else if(m_iCurrentGameState ==SCENESTATE::GAME_DESTROY)
-						LOGE("GAME_DESTROY");
-					else if(m_iCurrentGameState ==SCENESTATE::GAME_INTRO)
-						LOGE("GAME_INTRO");
-					else if(m_iCurrentGameState ==SCENESTATE::GAME_MAINMENU)
-						LOGE("GAME_MAINMENU");
-					else if(m_iCurrentGameState ==SCENESTATE::GAME_PAUSE)
-						LOGE("GAME_PAUSE");
-					else if(m_iCurrentGameState ==SCENESTATE::GAME_PLAY)
-						LOGE("GAME_PLAY");
-					else if(m_iCurrentGameState ==SCENESTATE::GAME_NONE)
-						LOGE("GAME_NONE");
-					//-----------------------------------------------------------------------------//
-
-					return true;
+					m_iNextGameState = pElement->m_iNextGameState;
+					m_bReadyToNextScene = true;
+					m_NextSceneTag = pElement->m_Tag;
+					LOGE("[DEBUG]pbSceneNavigator::SearchAndReadyToMoveScene() success" );
+					return;
 				}//end if NULL check
 			}// end if State Check
 		}//end while
 
 	}// end if ListHeader Check
 
-	return false;
+	return;
+}
+
+void pbSceneNavigator::MoveScene() {
+	//현재 씬 클리어
+	if( pbSceneManager::getInstance().GetCurrentScene() != NULL ) {
+		pbSceneManager::getInstance().GetCurrentScene()->ClearScene();
+	}
+
+	//다음씬 교체후 초기화
+	pbSceneManager::getInstance().SelectScene(m_NextSceneTag);
+	pbSceneManager::getInstance().GetCurrentScene()->InitializeScene();
+
+
+	//네비게이터 변수 초기화
+	m_iCurrentGameState = m_iNextGameState;
+	m_bReadyToNextScene = false;
+
+	LOGE("[DEBUG]pbSceneNavigator::MoveScene()" );
 }
 
 void pbSceneNavigator::ClearSceneState() {
@@ -214,31 +187,18 @@ void pbSceneNavigator::ClearSceneState() {
 	}
 }
 
-void pbSceneNavigator::Release() {
-	if( SingleObject != NULL) {
-		if( SingleObject->m_pSceneMoverHeader != NULL) {
-			SingleObject->ClearSceneState();
-			SceneMoverList::destroyList(SingleObject->m_pSceneMoverHeader);
-			SingleObject->m_pSceneMoverHeader = NULL;
-		}
-
-		SingleObject = NULL;
-
-		LOGI("pbSceneNavigator::Release() Complete");
-
-		return ;
-	}
-	LOGE("pbSceneNavigator::Release() Failed");
-}
-
 ////-----------------------------------------------------------------------------------------------------------------------------------------------------------///////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------pbPlaySceneWrapper------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbPlaySceneWrapper::pbPlaySceneWrapper() {
-	SetTag("PLAYSCENE");
+	//SetTag("PLAYSCENE");	//이 씬의 기본 태그를 지정
 }
+pbPlaySceneWrapper::pbPlaySceneWrapper(const char* SceneTag) {
+	SetTag(SceneTag);	//이 씬의 기본 태그를 지정
+}
+
 pbPlaySceneWrapper::~pbPlaySceneWrapper() {
 
 }
@@ -253,13 +213,14 @@ void pbPlaySceneWrapper::InitializeScene() {
 */
 	//background
 	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 480, 400, 240, 0.1f, "ci");
-	pbSceneManager::getInstance().RegistRenderToScene(GetTag(), pCreateBG);
+	RegistToRenderList(pCreateBG);
+//	pbSceneManager::getInstance().RegistRenderToScene(GetTag(), pCreateBG);
 
 	pCreateBG = pbBackgroundProcessor::GetInstance().AddMoveBackGround(400, 240, 0, 220, 0.5f, "ci");
-	pbSceneManager::getInstance().RegistRenderToScene(GetTag(), pCreateBG);
+	RegistToRenderList(pCreateBG);
 
 	pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 100, 400, 50, 1.0f, "ci");
-	pbSceneManager::getInstance().RegistRenderToScene(GetTag(), pCreateBG);
+	RegistToRenderList(pCreateBG);
 
 
 	LOGI("pbPlaySceneWrapper InitializeScene Complete");
@@ -300,6 +261,62 @@ void pbPlaySceneWrapper::ClearScene() {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////-----------------------------------------------------pbIntroSceneWrapper------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+pbIntroSceneWrapper::pbIntroSceneWrapper() {
+	//SetTag("PLAYSCENE");	//이 씬의 기본 태그를 지정
+}
+pbIntroSceneWrapper::pbIntroSceneWrapper(const char* SceneTag) {
+	SetTag(SceneTag);	//이 씬의 기본 태그를 지정
+}
+
+pbIntroSceneWrapper::~pbIntroSceneWrapper() {
+
+}
+
+void pbIntroSceneWrapper::InitializeScene() {
+	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddStaticBackGround(800, 480, 400, 240, "run");
+	RegistToRenderList(pCreateBG);
+
+	LOGI("pbIntroSceneWrapper InitializeScene Complete");
+}
+
+void pbIntroSceneWrapper::UpdateScene(float fTime) {
+	if(!pbGlobalInGameVariable::bGamePause)
+	{
+		pbGlobalInGameVariable::fWorldMoveX = pbGlobalInGameVariable::fWorldMoveDir*pbGlobalInGameVariable::fWorldMoveSpeed*fTime;
+		pbGlobalInGameVariable::fWorldX += pbGlobalInGameVariable::fWorldMoveX;
+
+		float mesc = 1000.f * fTime;
+		pbBackgroundProcessor::GetInstance().Update(fTime);
+/*		nitroFrame::npTimer::updateTime(mesc);
+		pbNoteProcessor::GetInstance()->Update(fTime);
+		pbUIProcessor::GetInstance()->Update(fTime);
+		pbEffectProcess::GetInstance()->Update(fTime);
+		pbGuideLineGenerator::GetInstance()->Update(fTime);
+		pbCharacter::GetInstance()->Update(fTime);
+		pbBoss::GetInstance()->Update(fTime);*/
+	}
+}
+
+void pbIntroSceneWrapper::ClearScene() {
+	pbBackgroundProcessor::GetInstance().ClearDataStore();
+/*	pbNoteProcessor::GetInstance()->ClearDataStore();
+	pbComboManager::GetInstance()->ClearDataStore();
+	pbEffectProcess::GetInstance()->ClearDataStore();
+	pbGuideLineGenerator::GetInstance()->ClearDataStore();
+	pbCharacter::GetInstance()->ClearDataStore();
+	pbBoss::GetInstance()->ClearDataStore();
+	pbUIProcessor::GetInstance()->ClearDataStore();
+	pbGlobalInGameVariable::ResetGlobalVariable();
+	pbRenderProcess::ClearDataStore();
+
+	pbTouchLayer::ClearDataStore();*/
+	LOGI("pbIntroSceneWrapper ClearScene Complete");
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------pbSceneManager------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbSceneManager::pbSceneManager() {
@@ -326,13 +343,20 @@ pbSceneManager& pbSceneManager::getInstance(){
 }
 
 void pbSceneManager::AddScene(sceneTag Tag, pbSceneWrapper* pScene) {
-	m_SceneStore.insert(Tag, pScene);
-	//TODO :: 임시 코드. 테스트를 위해 바로 셀렉트 한다
-	m_pCurrentScene = pScene;
+	m_SceneStore.insert(std::pair<sceneTag, pbSceneWrapper*>(Tag, pScene));
 }
 
 void pbSceneManager::SelectScene(sceneTag SceneTag) {
-	//TODO :: 씬을 고른다
+	pbSceneMap::iterator Iter = m_SceneStore.find(SceneTag);
+	if( Iter != m_SceneStore.end() ) {
+		m_pCurrentScene = Iter->second;
+		LOGE("[DEBUG]pbSceneManager::SelectScene success" );
+	}
+	else {
+		m_pCurrentScene = NULL;
+		LOGE("[DEBUG]pbSceneManager::SelectScene FAIL" );
+	}
+
 }
 
 void pbSceneManager::Draw() {

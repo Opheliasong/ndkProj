@@ -7,7 +7,7 @@
 #include "../nitroFrame/npLinkNode.h"
 #include "../nitroFrame/npMath.h"
 #include "pbTypes.h"
-//#include "pbDrawUnit.h"
+#include "pbDrawUnit.h"
 #include "../nitroFrame/npObserver.h"
 
 #include "pbGlobalVariable.h"

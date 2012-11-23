@@ -5,12 +5,12 @@
  *      Author: goldbin
  */
 
-#ifndef PBDRAWABLE_H_
-#define PBDRAWABLE_H_
+#ifndef PBDRAWUNIT_H_
+#define PBDRAWUNIT_H_
 
 #include "stdafx.h"
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------ IDraw ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class pbIDraw {
@@ -53,7 +53,28 @@ private:
 	GLuint m_ID;
 	typedef npLinkNode<pbDrawUnit*> pbDrawUnit_List;
 	pbDrawUnit_List* m_pDrawableUnitListHeader;
+};*/
+
+class pbBasicDrawUnit: public npDrawable {
+public:
+	pbBasicDrawUnit();
+	pbBasicDrawUnit(screenplayTag TAG);
+	pbBasicDrawUnit(const pbBasicDrawUnit& source);
+	virtual ~pbBasicDrawUnit();
+
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
+
+	NP_DEFINE_PROPERTY(float, m_Width, Width);
+	NP_DEFINE_PROPERTY(float, m_Height, Height);
+
+	void SetSize(float width, float Height);
+	bool SetTextureTAG(screenplayTag TAG);
+	sprite* getSprite();
+protected:
+	static GLfloat vertex[12];
+	sprite* sprtie;
+	screenplayTag tag;
 };
 
-
-#endif /* PBDRAWABLE_H_ */
+#endif /* PBDRAWUNIT_H_ */

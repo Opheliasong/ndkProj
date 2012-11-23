@@ -3,12 +3,13 @@
 
 #include "stdafx.h"
 
+typedef std::string sceneTag;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-------------------------------------------------------씬에 대한 상태 기계------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------pbStateElement ------------------------------------------------------------------------------///////
 //pbStateElement
-class pbSceneStateElement {
+/*class pbSceneStateElement {
 public:
 	pbSceneStateElement(){m_iAction = SCENESTATE::ACTION_NONE; m_iOutGameState = SCENESTATE::GAME_NONE; m_iOutLoadState = SCENESTATE::LOAD_NONE; }
 	~pbSceneStateElement(){}
@@ -17,6 +18,16 @@ public:
 	SCENESTATE::ACTION m_iAction;
 	SCENESTATE::GAME m_iOutGameState;
 	SCENESTATE::LOAD m_iOutLoadState;
+};*/
+class pbSceneStateElement {
+public:
+	pbSceneStateElement(){m_iAction = SCENESTATE::ACTION_NONE; m_iNextGameState =  SCENESTATE::GAME_NONE; }
+	~pbSceneStateElement(){}
+
+public:
+	SCENESTATE::ACTION m_iAction;
+	SCENESTATE::GAME m_iNextGameState;
+	sceneTag m_Tag;
 };
 
 typedef npLinkNode<pbSceneStateElement*> SceneStateElementList;
@@ -28,7 +39,7 @@ public:
 	pbSceneMover(SCENESTATE::GAME iState);
 	~pbSceneMover();
 
-	void AddStateElement(SCENESTATE::ACTION iAction, SCENESTATE::GAME iOutGameState, SCENESTATE::LOAD iOutLoadState);
+	void AddStateElement(SCENESTATE::ACTION iAction, SCENESTATE::GAME iNextGameState, sceneTag NextSceneTag);
 	void DeleteStateElement(SCENESTATE::ACTION iAction);
 
 	pbSceneStateElement* FindOutStateByAction(SCENESTATE::ACTION iAction);
@@ -41,38 +52,35 @@ private:
 
 ////-----------------------------------------------------pbSceneNavigator ------------------------------------------------------------------------------///////
 class pbSceneNavigator {
-private:
+public:
 	pbSceneNavigator();
 	~pbSceneNavigator();
-public:
-	static void Create();
 
 	void LoadSceneState();
 
 	void AddSceneMover(pbSceneMover* pMover);
 
-	bool MoveScene(SCENESTATE::ACTION Action);
+	void SearchAndReadyToMoveScene(SCENESTATE::ACTION Action);
 
 	void ClearSceneState();
 
 	inline  SCENESTATE::GAME GetCurrentGameState() { return m_iCurrentGameState;}
-	inline  SCENESTATE::GAME GetClearGameState() { return m_iClearGameState;}
-	inline SCENESTATE::LOAD GetCurrentLoadState() { return m_iCurrentLoadState;}
 
-	inline void ResetCurrentLoadState() { m_iCurrentLoadState= SCENESTATE::LOAD_NONE;}
-	inline void ResetOldGameState() { m_iClearGameState= SCENESTATE::GAME_NONE;}
+	inline bool IsReadyToNextScene() { return m_bReadyToNextScene; }
 
-	static void Release();
+	void MoveScene();
 
-	static pbSceneNavigator* GetInstance() { return SingleObject;}
+	inline void SetCurrentState(SCENESTATE::GAME iCurrentGameState ) { m_iCurrentGameState  = iCurrentGameState;}
+
+	static pbSceneNavigator& GetInstance();
 private:
-	static pbSceneNavigator* SingleObject;
-
 	typedef npLinkNode<pbSceneMover*> SceneMoverList;
 	SceneMoverList* m_pSceneMoverHeader;
 	SCENESTATE::GAME m_iCurrentGameState;
-	SCENESTATE::GAME m_iClearGameState;
-	SCENESTATE::LOAD m_iCurrentLoadState;
+	SCENESTATE::GAME m_iNextGameState;
+
+	bool m_bReadyToNextScene;
+	sceneTag m_NextSceneTag;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +88,6 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef npLinkNode<npDrawable*> RenderList;
-typedef std::string sceneTag;
 
 class pbSceneWrapper {
 public:
@@ -96,7 +103,6 @@ public:
 			iterator = iterator->getNext();
 
 			npRenderprocess::getInstance().DoDraw((*pkernel));
-			LOGE("pbSceneWrapper::DRAWSCENE2");
 		}
 	}
 
@@ -119,8 +125,9 @@ private:
 ////----------------------------------------------------- pbPlaySceneWrapper------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class pbPlaySceneWrapper : public pbSceneWrapper{
-public:
 	pbPlaySceneWrapper();
+public:
+	pbPlaySceneWrapper(const char* SceneTag);
 	~pbPlaySceneWrapper();
 
 	virtual void InitializeScene();
@@ -128,6 +135,22 @@ public:
 	virtual void ClearScene();
 private:
 
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////----------------------------------------------------pbIntroSceneWrapper------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class pbIntroSceneWrapper : public pbSceneWrapper {
+	pbIntroSceneWrapper();
+public:
+	pbIntroSceneWrapper(const char* SceneTag);
+	~pbIntroSceneWrapper();
+
+	virtual void InitializeScene();
+	virtual void UpdateScene(float fTime);
+	virtual void ClearScene();
+private:
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,7 +163,10 @@ public:
 	static pbSceneManager& getInstance();
 
 	void AddScene(sceneTag Tag, pbSceneWrapper* pScene);
+
 	void SelectScene(sceneTag SceneTag);
+
+	inline pbSceneWrapper* GetCurrentScene() {return m_pCurrentScene;}
 
 	void Draw();
 	void Update(float fTime);
@@ -191,7 +217,6 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class pbIntroSceneWrapper {
-	//������� ���� ���ɼ�
 	class TouchBox : public npObserver {
 	public:
 		TouchBox();

@@ -60,18 +60,38 @@ void pbMainFrame::npShowIntro() {
 		glLoadIdentity();
 		//glViewport(0, 0, 800, 480);
 		glViewport(0,0,npRenderprocess::getInstance().getDeviceWidth(),npRenderprocess::getInstance().getDeviceHeight());
+		npRenderprocess::getInstance().setLookat(-400.0f, -240.0f,  0.0f,
+																	-400.0f , -240.0f,  -1.0f,
+																	0.0f,1.0f,0.0f);
 
 		//FIXLOG[10-10] : 초기화는 공용 오브젝트만 초기화, 다른 초기화는 게임스테이트에 따라 다르게 초기화 한다
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
 
-		//씬 관련 초기화
-		pbSceneNavigator::Create();
-		pbSceneNavigator::GetInstance()->LoadSceneState();
+		//-------------------------------------------------씬 관련 초기화-------------------------------------------------------------//
+		//---------씬 래퍼 세팅-----------------//
+		pbPlaySceneWrapper* pPlayScene = new pbPlaySceneWrapper("PLAYS_CENE");
+		pbSceneManager::getInstance().AddScene(pPlayScene->GetTag(), pPlayScene);
 
-		pbPlaySceneWrapper* pPlayScene = new pbPlaySceneWrapper();
-		pbSceneManager::getInstance().AddScene("Play", pPlayScene);
-		pPlayScene->InitializeScene();
+		pbIntroSceneWrapper* pIntroScene = new pbIntroSceneWrapper("INTRO_SCENE");
+		pbSceneManager::getInstance().AddScene(pIntroScene->GetTag(), pIntroScene);
+
+		//---------네비게이터 세팅-----------------//
+		//pbSceneNavigator::GetInstance().LoadSceneState();
+		pbSceneNavigator::GetInstance().SetCurrentState(SCENESTATE::GAME_CREATE);
+
+		//---------인트로 네비게이트 무버
+		pbSceneMover* newMover = new pbSceneMover(SCENESTATE::GAME_CREATE);
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
+		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
+
+		//---------플레이 네비게이트 무버
+		newMover = new pbSceneMover(SCENESTATE::GAME_INTRO);
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
+		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
+
+		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+		//-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-//
 
 		//
 	/*
@@ -166,6 +186,10 @@ void pbMainFrame::npGameDestroy() {
 }
 
 void pbMainFrame::npGameUpdate() {
+	if( pbSceneNavigator::GetInstance().IsReadyToNextScene()) {
+		pbSceneNavigator::GetInstance().MoveScene();
+	}
+
 	pbSceneManager::getInstance().Update(m_timeDelta);
 }
 

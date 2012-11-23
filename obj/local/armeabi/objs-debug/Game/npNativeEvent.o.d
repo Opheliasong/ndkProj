@@ -243,6 +243,7 @@ obj/local/armeabi/objs-debug/Game/npNativeEvent.o: jni/npNativeEvent.cpp \
  jni/./ProjectBean/../nitroFrame/TouchLayer/TouchObserver.h \
  jni/./ProjectBean/../nitroFrame/npLinkNode.h \
  jni/./ProjectBean/../nitroFrame/npMath.h jni/./ProjectBean/pbTypes.h \
+ jni/./ProjectBean/pbDrawUnit.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
  jni/./ProjectBean/pbGlobalVariable.h jni/./ProjectBean/pbSceneWrapper.h \
  jni/./ProjectBean/../nitroFrame/npTimer.h \
@@ -742,6 +743,8 @@ jni/./ProjectBean/../nitroFrame/npLinkNode.h:
 jni/./ProjectBean/../nitroFrame/npMath.h:
 
 jni/./ProjectBean/pbTypes.h:
+
+jni/./ProjectBean/pbDrawUnit.h:
 
 jni/./ProjectBean/../nitroFrame/npObserver.h:
 
