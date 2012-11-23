@@ -103,7 +103,7 @@ public:
 		}
 	}
 
-	static void findRemove(T removeKernel, npLinkNode<T>* head){
+	static void findRemove(T& removeKernel, npLinkNode<T>* head){
 		npLinkNode<T>* iterator;
 		for(iterator = head->next; iterator != head; iterator = iterator->next){
 			if(iterator->m_kernel == removeKernel ){
@@ -124,7 +124,7 @@ public:
 		}
 	}
 
-	static void findDelete(T* remover, npLinkNode<T>* head)
+	static void findDelete(T& remover, npLinkNode<T>* head)
 	{
 		npLinkNode<T>* iterator;
 		for(iterator =  head->next; iterator != head; iterator = iterator->next){
@@ -157,6 +157,20 @@ public:
 
 		//list의 Head를 삭제한다.
 		delete destroyListHead;
+	}
+
+	static void clearList(npLinkNode<T>* destroyListHead){
+		if(destroyListHead == 0){
+			return;
+		}
+		npLinkNode* iterator;
+
+		for(iterator = destroyListHead->next; iterator != destroyListHead; ){
+			npLinkNode<T>* nextTarget = iterator->prev;
+			destroyNode(iterator);
+			iterator = nextTarget;
+		}
+
 	}
 
 	T& getKernel(){
@@ -227,6 +241,13 @@ private:
 	}
 };
 
-
+#define LinkNodeDeleteAllKernel(KernelType, listHeader)\
+	npLinkNode<KernelType>* iterator = listHeader;\
+		iterator = listHeader->getNext();\
+		while (iterator != listHeader) {\
+			KernelType pkernel = iterator->getKernel();\
+			iterator = iterator->getNext();\
+			delete pkernel;\
+		}
 
 #endif /* PBLINKNODE_H_ */

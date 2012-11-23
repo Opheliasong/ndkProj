@@ -8,6 +8,7 @@
 #include "npDefTypes.h"
 
 //=======================================================================///
+/*
 void AREA::Init(float PosX, float PosY, int Width, int Height)
 {
 	m_vPos[0] = PosX;
@@ -16,4 +17,5 @@ void AREA::Init(float PosX, float PosY, int Width, int Height)
 	m_HalfWH[1] = Height/2;
 	m_StandY = Height/2;
 }
+*/
 

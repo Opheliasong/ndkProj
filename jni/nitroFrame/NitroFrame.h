@@ -20,6 +20,7 @@
 #include "log.h"
 #include "npDefTypes.h"
 #include "npDebugUtill.h"
+#include "npMath.h"
 #include "npLinkNode.h"
 #include "npRentalMemory.h"
 #include "npMath.h"

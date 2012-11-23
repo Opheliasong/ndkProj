@@ -25,9 +25,9 @@ public class npSoundManager {
 	static private Context m_Context;
 	
 	public npSoundManager(){
-		if(m_Instance != null){
+/*		if(m_Instance != null){
 			m_Instance = new npSoundManager(); 	
-		}
+		}*/
 	}
 	
 	static public npSoundManager GetInstance(){

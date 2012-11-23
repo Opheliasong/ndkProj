@@ -10,11 +10,6 @@ char* My_itoa(int val, int base)
     return &buf[i+1];
 }
 
-float Vec3Dot(const float* v1, const float* v2)
-{
-        return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
-}
-
 void LOGfloatString(const char* string, float val){
 	char logString[256];
 	sprintf(logString,"%s : %f\n",string,val);
@@ -79,19 +74,8 @@ void SetUVByLeftTop(GLfloat* pTexUV, GLfloat TexSourceW,  GLfloat TexSourceH, GL
 	pTexUV[7] = (Y + height) / TexSourceH;
 }
 
-/*// UV ÁÂÇ¥°è : 	v
-//                     ¡è¡æ u
-void SetUVByLeftBottom(GLfloat* pTexUV, GLfloat TexSourceW,  GLfloat TexSourceH, GLfloat X, GLfloat Y, GLfloat width, GLfloat height)
-{
-	pTexUV[0] = X/ TexSourceW;
-	pTexUV[1] = 1.0f - ( (Y - height) / TexSourceH);
 
-	pTexUV[2] = X/ TexSourceW;
-	pTexUV[3] = 1.0f - (Y / TexSourceH);
 
-	pTexUV[4] = (X + width) / TexSourceW;
-	pTexUV[5] =  1.0f - ( (Y - height) / TexSourceH);
+//=======================================================================///
 
-	pTexUV[6] = (X + width) / TexSourceW;
-	pTexUV[7] =  1.0f - (Y / TexSourceH);
-}*/
+

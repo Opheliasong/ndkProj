@@ -7,22 +7,22 @@
 
 #ifndef NPTIMER_H_
 #define NPTIMER_H_
-#include "DebugUtill.h"
+#include "npDebugUtill.h"
 #include "npSubject.h"
 
 namespace nitroFrame{
 
 class npTimer : public npSubject{
 public:
-	/*	Å¸ÀÌ¸Ó¿¡°Ô Observer¸¦ µ¿·ÏÇÒ¶§ ÇÑ¹ø¸¸ Call BackÀ» ¿ä±¸ÇÒ °æ¿ì Once¸¦
-	 * 	Å¸ÀÌ¸Ó¿¡°Ô OBserver¸¦ µî·ÏÇÒ¶§ ÁöÁ¤µÈ ½Ã°£ÀÌ µÇ¸é °è¼ÓÇØ¼­ Call BackÀ» ¿ä±¸ÇÒ °æ¿ì REPEATLOOP¸¦ ¼³Á¤ÇÏ¸é µÈ´Ù.
+	/*	Å¸ï¿½Ì¸Ó¿ï¿½ï¿½ï¿½ Observerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ ï¿½Ñ¹ï¿½ Call Backï¿½ï¿½ ï¿½ä±¸ï¿½ï¿½ ï¿½ï¿½ï¿½ Onceï¿½ï¿½
+	 * 	Å¸ï¿½Ì¸Ó¿ï¿½ï¿½ï¿½ OBserverï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ Call Backï¿½ï¿½ ï¿½ä±¸ï¿½ï¿½ ï¿½ï¿½ï¿½ REPEATLOOPï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½È´ï¿½.
 	 */
 enum TIMERSTATUS {ONCE, REPEATLOOP,CHANGEDLOOP};
 protected:
 
-	/*Timer ³»ºÎ¿¡¼­ »ç¿ëµÇ´Â °´Ã¼.
-	 * ³»ºÎ Collection¿¡ ÀúÀåÇÏ±â À§ÇÑ ¿ëµµ ¹× ½Ã°£ Data¸¦ º¸°üÇÏ°í, UpdateµÇ´Â ½Ã°¢°ú µî·ÏµÈ ½Ã°¢ÀÇ Â÷ÀÌ¸¦ ÅëÇØ
-	 * µî·ÏµÈ °´Ã¼¿¡°Ô notify ÇØÁà¾ß ÇÒ ½Ã°¢À» Ã£¾Æ³»´Â ¿ëµµ·Î »ç¿ëÇÑ´Ù.
+	/*Timer ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½ï¿½Ã¼.
+	 * ï¿½ï¿½ï¿½ï¿½ Collectionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ëµµ ï¿½ï¿½ ï¿½Ã°ï¿½ Dataï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½, Updateï¿½Ç´ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½Ïµï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+	 * ï¿½ï¿½Ïµï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ notify ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ Ã£ï¿½Æ³ï¿½ï¿½ï¿½ ï¿½ëµµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	 */
 	class npTimerIPC{
 	public:
@@ -34,9 +34,9 @@ protected:
 		npTimerIPC* prev;
 		npTimerIPC* next;
 		npObserver* observer;
-		float m_AlertTime;			//Notify µÉ ½Ã°£À» ¸»ÇÑ´Ù.
-		float m_RegistedTime;		//µî·ÏµÈ ½Ã°¢À» ¸»ÇÑ´Ù.
-		float m_IntervalByRegistTime;	//µî·ÏµÈÈÄ Èê·¯°£ ½Ã°£À» ¸»ÇÑ´Ù.
+		float m_AlertTime;			//Notify ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
+		float m_RegistedTime;		//ï¿½ï¿½Ïµï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
+		float m_IntervalByRegistTime;	//ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ê·¯ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
 		NODETYPE CurrentType;
 		TIMERSTATUS m_TimerStatus;
 
@@ -53,14 +53,14 @@ protected:
 		static void findRemove(npTimerIPC* pRemover, npTimerIPC* pHeader);
 	};
 
-	//Timer ClassÀÇ ½ÇÁ¦ Data ¹× ÇÔ¼ö±º
+	//Timer Classï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Data ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½
 	npTimerIPC* DataCellStore;
 
 	float m_fCurrentTime;
 	float m_fTotalTime;
 
 	void checkAndNotifyByAlertTime(npTimerIPC* pIPC);
-	//[FIXLOG:8-31] Ãß°¡ : ÀÏ½ÃÁ¤ÁöµÈ IPC Ã³¸®
+	//[FIXLOG:8-31] ï¿½ß°ï¿½ : ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ IPC Ã³ï¿½ï¿½
 	bool CheckPausedTimerIPC(npTimerIPC* pIPC, float fTime);
 public:
 
@@ -68,24 +68,24 @@ public:
 	~npTimer();
 
 private:
-	//±âº» µî·ÏÇü
+	//ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½
 	void registerObserver(npObserver* apObserver);
 	void removeObserver(npObserver* apObserver);
 	void notifyAllObservers();
 	static npTimer* SingleObject;
 
 public:
-	//Observer °´Ã¼¸¦ ½Ã°£°ú Å¸ÀÔ°ú ÇÔ²² µî·ÏÇÑ´Ù,
+	//Observer ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ Å¸ï¿½Ô°ï¿½ ï¿½Ô²ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½,
 	/*
-	 * registerObserverÀÇ uiAlertSecÀÇ ´ÜÀ§´Â ms.
-	 * ex)fAlertSec = 1000 = 1ÃÊ
-	 *    fAlertSec = 100 = 0.1ÃÊ
+	 * registerObserverï¿½ï¿½ uiAlertSecï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ms.
+	 * ex)fAlertSec = 1000 = 1ï¿½ï¿½
+	 *    fAlertSec = 100 = 0.1ï¿½ï¿½
 	 */
 	static void registerObserver(npObserver* apObserver, TIMERSTATUS setTimer,float uiAlertSec);
 
 	//static npObserver* removeObserver(npObserver* apObserver);
 
-	//°´Ã¼¸¦ ³Ö¾îµÎ°í ÀÌ °´Ã¼¸¦ °¡Áö°í Remove ´ë»óÀ» Ã£°í Áö¿î´Ù.
+	//ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ö¾ï¿½Î°ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Remove ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
 	static void findRemove(npObserver* apObserver);
 
 	static void updateTime(float fTime);

@@ -22,16 +22,18 @@ void npMatrixScale(float* Out, float x, float y, float z){
 	Out[4*2 + 2] = z;
 }
 
-float npLerp(float start,float end, float time){
-	return start * (1-time) + end*time;
+float Vec3Dot(const float* v1, const float* v2){
+        return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 }
 
 //러프 함수
 //=======================================================================///
-inline float Lerp(float Start, float End, float Percent)
-{
-	return Start*(1.0f- Percent) + End*Percent;
+float npLerp(float start,float end, float time){
+	return start * (1-time) + end*time;
 }
+
+
+
 
 
 float CalcDistanceToABS(float* pV2start, float* pV2end)
@@ -69,4 +71,30 @@ bool CompDistanceByTwoPoints(float Tolerance, float regionX,float regionY,float 
 	}
 	//LOGE("CompDistance LOOP");
 	return false;
+}
+
+
+
+BEZIER_2POINT GetPointFromBezier4(BEZIER_2POINT* p1,BEZIER_2POINT* p2,BEZIER_2POINT* p3,BEZIER_2POINT* p4,float mu)
+{
+    float mum1,mum13,mu3;
+    BEZIER_2POINT p;
+    mum1 = 1 - mu;
+    mum13 = mum1 * mum1 * mum1;
+    mu3 = mu * mu * mu;
+    p.x = mum13*p1->x + 3*mu*mum1*mum1*p2->x + 3*mu*mu*mum1*p3->x + mu3*p4->x;
+    p.y = mum13*p1->y + 3*mu*mum1*mum1*p2->y + 3*mu*mu*mum1*p3->y + mu3*p4->y;
+    return(p);
+}
+
+BEZIER_2POINT GetPointFromBezier3(BEZIER_2POINT* p1,BEZIER_2POINT* p2,BEZIER_2POINT* p3, float mu)
+{
+	double mum1,mum12,mu2;
+	BEZIER_2POINT p;
+	mu2 = mu * mu;
+	mum1 = 1 - mu;
+	mum12 = mum1 * mum1;
+	p.x = p1->x * mum12 + 2 * p2->x * mum1 * mu + p3->x * mu2;
+	p.y = p1->y * mum12 + 2 * p2->y * mum1 * mu + p3->y * mu2;
+	 return(p);
 }

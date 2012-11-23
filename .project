@@ -48,14 +48,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>NdkModules</name>
+			<name>stlport</name>
 			<type>2</type>
-			<location>D:/Workplace/NdkModules</location>
-		</link>
-		<link>
-			<name>gnu-libstdc++</name>
-			<type>2</type>
-			<location>D:/SDK/android-ndk/sources/cxx-stl/gnu-libstdc++</location>
+			<location>D:/SDKs/android-ndk/sources/cxx-stl/stlport</location>
 		</link>
 	</linkedResources>
 </projectDescription>

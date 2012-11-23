@@ -22,7 +22,7 @@ typedef struct _Rect{
 	int Bottom;
 }npRect;
 
-class AREA {
+/*class AREA {
 public:
 	npV2Vector m_vPos;
 	npSize_WH m_HalfWH;
@@ -36,11 +36,13 @@ public:
 inline bool CompPosInArea(float x, float y, AREA* pArea )
 {
 	if( x > pArea->m_vPos[0] - pArea->m_HalfWH[0] && x < pArea->m_vPos[0] + pArea->m_HalfWH[0]){
-		if( y < -(pArea->m_vPos[1] - pArea->m_HalfWH[1] /*+ pArea->m_StandY*/) && y > -(pArea->m_vPos[1] + pArea->m_HalfWH[1]/*+ pArea->m_StandY*/) )
+		if( y < -(pArea->m_vPos[1] - pArea->m_HalfWH[1] + pArea->m_StandY) && y > -(pArea->m_vPos[1] + pArea->m_HalfWH[1]+ pArea->m_StandY) )
 			return true;
 	}
 
 	return false;
-}
+}*/
+
+
 
 #endif

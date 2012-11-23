@@ -1,7 +1,7 @@
 #include <string.h>
 #include <jni.h>
 #include <iostream>
-#include "./TestUnit/HelloWorld.h"
+#include "./ProjectBean/pbMainFrame.h"
 #include "npNativeEvent.h"
 //#include "nitroFrame/NitroFrame.h"
 #include "./nitroFrame/npDebugUtill.h"
@@ -31,7 +31,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNI
 	jboolean isCopy;
 	str = const_cast<char*>(env->GetStringUTFChars(apkPath, &isCopy));
 	LOGE("Create & Initialize Framework");
-	nitroFrame::HelloWorld::GetInstance()->npGameCreate(env,str);
+	nitroFrame::pbMainFrame::GetInstance()->npGameCreate(env,str);
 	npRenderprocess::getInstance().setDeviceResolution(w,h);
 	//npRenderprocess::getInstance().setRenderingResolution(480,800);
 	npRenderprocess::getInstance().setRenderingResolution(800,480);
@@ -81,7 +81,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceChanged(JN
 }
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npUpdateGame(JNIEnv *env, jclass thiz){
-	nitroFrame::HelloWorld::GetInstance()->npGameLoop();
+	nitroFrame::pbMainFrame::GetInstance()->npGameLoop();
 }
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npDestroy(JNIEnv* env, jclass thiz)
@@ -91,7 +91,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npDestroy(JNIEnv* e
 	gameFrame->npGameDestroy();
 	delete projectBean::pbProjectBeanFrame::MainFrame;
 	*/
-	nitroFrame::HelloWorld::GetInstance()->npGameDestroy();
+	nitroFrame::pbMainFrame::GetInstance()->npGameDestroy();
 }
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npRendering(JNIEnv *env, jclass thiz){
@@ -99,7 +99,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npRendering(JNIEnv 
 	projectBean::pbProjectBeanFrame* gameFrame = projectBean::pbProjectBeanFrame::MainFrame;
 	gameFrame->npGameDisplay();
 	*/
-	nitroFrame::HelloWorld::GetInstance()->npGameDisplay();
+	nitroFrame::pbMainFrame::GetInstance()->npGameDisplay();
 }
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npAndroidStatePause(JNIEnv *env, jclass thiz, jint state)

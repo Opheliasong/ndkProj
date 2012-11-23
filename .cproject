@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="0.639554656">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.639554656" moduleId="org.eclipse.cdt.core.settings" name="Default">
@@ -20,30 +22,47 @@
 					<folderInfo id="0.639554656." name="/" resourcePath="">
 						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.356198828" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.GNU_ELF;org.eclipse.cdt.core.Cygwin_PE" id="org.eclipse.cdt.build.core.prefbase.toolchain.356198828.303413164" name=""/>
-							<builder arguments="NDK_DEBUG=1" command="${ndk}/ndk-build.cmd" id="cdt.managedbuild.target.gnu.builder.base.1003591662" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
+							<builder arguments="NDK_DEBUG=1" command="${ndk}/ndk-build.cmd" id="cdt.managedbuild.target.gnu.builder.base.1003591662" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
+								</outputEntries>
+							</builder>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1742364651" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1165602876" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1325555165" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/sources/cxx-stl/gnu-libstdc++/include"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/platforms/android-14/arch-arm/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;D:\SDKs\android-ndk\sources\cxx-stl\stlport\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\SDKs\android-ndk\sources\cxx-stl\gnu-libstdc++\libs\armeabi-v7a\include\bits&quot;"/>
+								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.615272912" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.842373035" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1056855928" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${ndk}\sources\cxx-stl\stlport\src&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ndk}\sources\cxx-stl\gnu-libstdc++\include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ndk}\sources\cxx-stl\gnu-libstdc++\libs\armeabi-v7a\include\bits&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ndk}\platforms\android-9\arch-arm\usr\include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ndk}\platforms\android-14\arch-arm\usr\include&quot;"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/sources/cxx-stl/stlport/src"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/sources/cxx-stl/gnu-libstdc++/include"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/sources/cxx-stl/gnu-libstdc++/libs/armeabi-v7a/include/bits"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/platforms/android-14/arch-arm/usr/include"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.645278552" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.209926195" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.2082385767" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/sources/cxx-stl/stlport/src"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/sources/cxx-stl/gnu-libstdc++/include"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/sources/cxx-stl/gnu-libstdc++/libs/armeabi-v7a/include/bits"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include"/>
+									<listOptionValue builtIn="false" value="D:/SDKs/android-ndk/platforms/android-14/arch-arm/usr/include"/>
+								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.832182981" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="NdkModules|gnu-libstdc++" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="NdkModules"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="gnu-libstdc++"/>
+						<entry excluding="gnu-libstdc++|stlport|NdkModules" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="stlport"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

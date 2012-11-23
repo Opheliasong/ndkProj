@@ -7,6 +7,8 @@
 
 #include "npTextureRect.h"
 
+GLfloat npTextureRect::vertex[12] = {0,};
+
 npTextureRect::npTextureRect(){
 	this->vertex[0] = -1.0f;
 	this->vertex[1] =  1.0f;

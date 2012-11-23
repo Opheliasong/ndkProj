@@ -3,8 +3,8 @@ LOCAL_PATH:=$(call my-dir)
 # first lib, which will be built statically
 #
 #include $(CLEAR_VARS)
-#LOCAL_MODULE    := tinyXml                  # static library 이름
-#LOCAL_SRC_FILES := tinyxml.cpp tinyxmlparser.cpp xmltest.cpp tinyxmlerror.cpp tinystr.cpp # static library 에 빌드될 소스 파일
+#LOCAL_MODULE    := tinyXml                  # static library �대쫫
+#LOCAL_SRC_FILES := tinyxml.cpp tinyxmlparser.cpp xmltest.cpp tinyxmlerror.cpp tinystr.cpp # static library ��鍮뚮뱶���뚯뒪 �뚯씪
 #include $(BUILD_STATIC_LIBRARY)
 
 #include $(CLEAR_VARS)
@@ -35,8 +35,6 @@ LOCAL_DEFAULT_CPP_EXTENSION := cpp
 LOCAL_CFLAGS:= -DANDROID_NDK -DCONFIG_EMBEDDED -DUSE_IND_THREAD
 LOCAL_SRC_FILES:=\
 npNativeEvent.cpp\
-/TestUnit/HelloWorld.cpp\
-/TestUnit/testTextureRect.cpp\
 /nitroFrame/log.cpp\
 /nitroFrame/npDebugUtill.cpp\
 /nitroFrame/gluLookAt.cpp\
@@ -61,6 +59,18 @@ npNativeEvent.cpp\
 /nitroFrame/Drawable/npTextureRect.cpp\
 /nitroFrame/TouchLayer/TouchObserver.cpp\
 /nitroFrame/TouchLayer/TouchLayer.cpp\
+/ProjectBean/pbMainFrame.cpp\
+/ProjectBean/pbGlobalVariable.cpp\
+/ProjectBean/pbSceneWrapper.cpp\
+/ProjectBean/pbBackground.cpp\
+#/ProjectBean/pbDrawUnit.cpp\
+/ProjectBean/pbBoss.cpp\
+/ProjectBean/pbCharacter.cpp\
+/ProjectBean/pbEffect.cpp\
+/ProjectBean/pbGuideLine.cpp\
+/ProjectBean/pbNote.cpp\
+/ProjectBean/pbNoteProcessor.cpp\
+/ProjectBean/pbUI.cpp\
 
 LOCAL_LDLIBS:= -L$(SYSROOT)usr/lib -llog -lEGL -lGLESv1_CM -landroid
 LOCAL_LDLIBS+=-L$(SYSROOT)/usr/lib -ldl

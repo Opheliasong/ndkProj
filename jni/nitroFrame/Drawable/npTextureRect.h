@@ -35,7 +35,7 @@ public:
 	bool SetTextureTAG(screenplayTag TAG);
 	sprite* getSprite();
 protected:
-	GLfloat vertex[12];
+	static GLfloat vertex[12];
 	sprite* sprtie;
 	screenplayTag tag;
 };

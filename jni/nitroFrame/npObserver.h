@@ -23,9 +23,6 @@ class npObserver{
 public:
 	npObserver(){};
 	virtual ~npObserver(){};
-	virtual void notify()=0;
-	virtual void notify(int x, int y, TOUCHSTATUS::TOUCHSTATUS Touchstatus)=0;
-	virtual void notify(TOUCHSTATUS::TOUCHSTATUS Touchstatus)=0;
 	virtual void wakeUpNotify()=0;
 	virtual float resetWakeTime()=0;
 
