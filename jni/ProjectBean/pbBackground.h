@@ -126,7 +126,24 @@ public:
 
 private:
 };
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//------------------------------------------------------------pbTouchableBackground   -------------------------------------------------------------------------------//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+class pbTouchableBackground : public pbBasicBackground, public iTouchObserver{
+public:
+	pbTouchableBackground();
+	virtual ~pbTouchableBackground();
+
+	virtual void Initialize(float Width, float Height, screenplayTag Tag);
+	virtual void Update(float fTime);
+
+	virtual void notify();
+
+	inline bool IsTouched() {return m_bTouched;}
+private:
+	bool m_bTouched;
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //------------------------------------------------------------pbBackgroundProcessor-------------------------------------------------------------------------------//
@@ -143,7 +160,7 @@ public:
 	pbBackground* AddScrollBackGround(float Width, float Height, float X, float Y, float SpeedRatio, screenplayTag Tag);
 	pbBackground* AddMoveBackGround(float Width, float Height, float X, float Y, float SpeedRatio, screenplayTag Tag);
 	pbBackground* AddStaticBackGround(float Width, float Height, float X, float Y, screenplayTag Tag);
-
+	pbTouchableBackground* AddTouchableBackGround(float Width, float Height, float X, float Y, screenplayTag Tag);
 	void Update(float fTime);
 
 	void ClearDataStore();

@@ -9,9 +9,12 @@
 #define PBTYPES_H_
 
 namespace projectBean{
-	namespace TOUCHSTATUS{
+/*	namespace TOUCHSTATUS{
 		typedef enum {TOUCHNONE=0,TAPDOWN=1,TAPUP=2,TAPMOVE=3,TOUCHMODEEND=4}TYPE;
-	}
+	}*/
+namespace TOUCHFLAGS{
+	typedef enum {TAPDOWN=0,TAPUP=1,TAPMOVE=2,}TYPE;
+}
 	namespace NOTETYPE{
 		typedef enum {
 			NONETYPE = 0,
@@ -31,12 +34,12 @@ namespace projectBean{
 		}TYPE;
 	}
 	namespace NOTEGROWSTATE{
-		//³ëÆ®ÀÇ ¼ºÀå »óÅÂ
-		//³ëÆ®ÀÇ ¼ºÀå »óÅÂ´Â 4°³ÀÇ »óÅÂ¸¦ °¡Áö¸ç ÀÌ »óÅÂ¿¡ µû¶ó ÆÇ´ÜÀ» ÇÏ°Ô µÈ´Ù.
-		/*NOTEBABY : ¾ÆÁ÷ °Çµå¸®¸é ¾ÈµÇ´Â ³ëÆ®. = Fail
-		 * NOTEGROWUP : ¼ºÀåÁßÀÎ ³ëÆ® = FAST
-		 * NOTEADULT : ¼ºÀåÀÌ ¿Ï·áµÈ ¾î¸¥ÀÌ µÈ ³ëÆ® = GREAT
-		 * NOTEOLDER: ¼ºÀåÀÌ ³¡³ª ³ëÈ­µÇ´Â ³ëÆ® = SLOW
+		//ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		//ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½ 4ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ï¿½ï¿½ ï¿½Ï°ï¿½ ï¿½È´ï¿½.
+		/*NOTEBABY : ï¿½ï¿½ï¿½ï¿½ ï¿½Çµå¸®ï¿½ï¿½ ï¿½ÈµÇ´ï¿½ ï¿½ï¿½Æ®. = Fail
+		 * NOTEGROWUP : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ® = FAST
+		 * NOTEADULT : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½ ï¿½î¸¥ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Æ® = GREAT
+		 * NOTEOLDER: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­ï¿½Ç´ï¿½ ï¿½ï¿½Æ® = SLOW
 		 */
 		typedef enum {
 			NOTEBABY = 1000, NOTEGROWUP, NOTEADULT, NOTEOLDER

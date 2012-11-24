@@ -22,13 +22,13 @@ void TouchLayer::onTouchPoint(int x, int y, int touchFlag, int touchPoint) {
 	this->pointX = ((x / npRenderprocess::getInstance().getWidthRatio()));
 	this->pointY = ((y / npRenderprocess::getInstance().getHeightRatio()));
 
+	//[FIXLOG:11-24]: 1사분면 좌표로 변경
+	this->pointY = ( npRenderprocess::getInstance().getRenderHeight() - this->pointY );
+
 	/*
 	this->pointX = this->pointX-(npRenderprocess::getInstance().getRenderWidth()/2);
-	this->pointY = (this->pointY-(npRenderprocess::getInstance().getRenderHeight()/2));
-	*/
-	this->pointX = this->pointX-(npRenderprocess::getInstance().getRenderWidth()/2);
 	this->pointY = -(this->pointY-(npRenderprocess::getInstance().getRenderHeight()/2));
-
+	*/
 	/*
 	LOGE("touch X: %d",this->pointX);
 	LOGE("touch Y: %d",this->pointY);

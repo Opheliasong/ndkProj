@@ -175,10 +175,64 @@ void pbScrollBackground::Update(float fTime) {
 
 
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//------------------------------------------------------------pbTouchableBackground   -------------------------------------------------------------------------------//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+pbTouchableBackground::pbTouchableBackground() {
+	m_bTouched = false;
+}
+pbTouchableBackground::~pbTouchableBackground() {
+	delete m_BackgroundTextureRect;
+}
 
+void pbTouchableBackground::Initialize(float Width, float Height, screenplayTag Tag){
+	m_BackgroundTextureRect = new pbBasicDrawUnit(Tag);
+	m_BackgroundTextureRect->SetSize(Width, Height);
+
+	m_fBGAreaWidth = Width * 2 + WIDTH;
+	m_fVertexWidth = Width;
+
+}
+
+void pbTouchableBackground::Update(float fTime) {
+/*	m_fBackgroundFlowPercent += (1/ ( (m_fBGAreaWidth/pbGlobalInGameVariable::fWorldMoveSpeed)/m_fScrollRatio ) )*fTime;
+
+	if( m_fBackgroundFlowPercent > 1.0f)
+		m_fBackgroundFlowPercent = 0.0f;
+
+	m_vPos[0] = npLerp( m_fBGAreaWidth - m_fVertexWidth,  -m_fVertexWidth,m_fBackgroundFlowPercent);*/
+
+}
+
+void pbTouchableBackground::notify() {
+	if(TouchLayer::GetInstance().touchFlag == TOUCHFLAGS::TAPDOWN) {
+	//	LOGE("[DEBUG]pbTouchableBackground:: TAPDOWN");
+
+		int x = TouchLayer::GetInstance().pointX;
+		int y = TouchLayer::GetInstance().pointY;
+//		LOGfloatString("X", x);
+//		LOGfloatString("Y", y);
+
+		int HalfWidth = m_BackgroundTextureRect->getWidth()/2;
+		int HalfHeight =m_BackgroundTextureRect->getHeight()/2;
+
+		int left = m_vPos[0] - HalfWidth;
+		int right = m_vPos[0] + HalfWidth;
+		int top = m_vPos[1] + HalfHeight;
+		int bottom = m_vPos[1] - HalfHeight;
+
+		if (x >= left && x <= right) {
+			if (y >= bottom && y <= top) {
+				m_bTouched = true;
+				LOGE("[DEBUG]pbTouchableBackground:: Touched");
+			}
+		}
+	}
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//------------------------------------------------------------��׶��� ���μ���-------------------------------------------------------------------------------//
+//------------------------------------------------------------pbBackgroundProcessor-------------------------------------------------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 pbBackgroundProcessor::pbBackgroundProcessor() {
@@ -228,6 +282,17 @@ pbBackground* pbBackgroundProcessor::AddStaticBackGround(float Width, float Heig
 	pCreateBG->SetPos(X, Y);
 
 	registControled(pCreateBG);
+
+	return pCreateBG;
+}
+
+pbTouchableBackground* pbBackgroundProcessor::AddTouchableBackGround(float Width, float Height, float X, float Y, screenplayTag Tag) {
+	pbTouchableBackground* pCreateBG = new pbTouchableBackground();
+	pCreateBG->Initialize(Width, Height, Tag);
+	pCreateBG->SetPos(X, Y);
+
+	registControled(pCreateBG);
+	TouchLayer::GetInstance().RegistedObserver(pCreateBG);
 
 	return pCreateBG;
 }

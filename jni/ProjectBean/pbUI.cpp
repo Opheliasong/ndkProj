@@ -3,7 +3,7 @@
 #include "tinyxml.h"
 
 
-////----------------------------------------------------- ÀÎÅÍÆäÀÌ½º  UI------------------------------------------------------------------------------///////
+////----------------------------------------------------- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½  UI------------------------------------------------------------------------------///////
 void pbInterfaceUI::registLinkNode(pbInterfaceUI* pUI){
 	pbUIList* pTargetNode =  pbUIList::makeLinkNode(pUI);
 	pbUIList::addTail(pTargetNode, m_pUIListHeader);
@@ -91,13 +91,13 @@ void pbInterfaceUI::SetV2Pos(float X, float Y) {
 	}
 }
 
-////----------------------------------------------------- ÅÍÄ¡ ºÒ°¡  UI------------------------------------------------------------------------------///////
+////----------------------------------------------------- ï¿½ï¿½Ä¡ ï¿½Ò°ï¿½  UI------------------------------------------------------------------------------///////
 pbUI_Untouchable::pbUI_Untouchable(){
 }
 pbUI_Untouchable::~pbUI_Untouchable() {
 };
 
-////----------------------------------------------------- ÅÍÄ¡ °¡´É  UI------------------------------------------------------------------------------///////
+////----------------------------------------------------- ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½  UI------------------------------------------------------------------------------///////
 pbUI_Touchable::pbUI_Touchable() {
 	m_pTouchArea = new pbTouchArea;
 }
@@ -139,7 +139,7 @@ void pbTouchBaseUI::notify(int x, int y, TOUCHSTATUS::TYPE Touchstatus) {
 	switch (Touchstatus) {
 //	case TOUCHSTATUS::TAPMOVE:
 	case TOUCHSTATUS::TAPDOWN: {
-		//x,y¿¡ °üÇØ¼­ ¿µ¿ªÆÇ´ÜÀ» ÇÑ´Ù.
+		//x,yï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 		if (GetTouchArea()->InRect(x,y)) {
 			LOGE("pbTouchBaseUI TAPDOWN");
 			if( m_fpTouchAction != NULL )
@@ -151,7 +151,7 @@ void pbTouchBaseUI::notify(int x, int y, TOUCHSTATUS::TYPE Touchstatus) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ¿øÅÍÄ¡ UI------------------------------------------------------------------------------///////
+////------------------------------------------------------ ï¿½ï¿½ï¿½ï¿½Ä¡ UI------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbOneTouchUI::pbOneTouchUI(){
 	m_bTouched = false;
@@ -174,7 +174,7 @@ void pbOneTouchUI::notify(int x, int y, TOUCHSTATUS::TYPE Touchstatus) {
 
 //		case TOUCHSTATUS::TAPMOVE:
 		case TOUCHSTATUS::TAPDOWN: {
-			//x,y¿¡ °üÇØ¼­ ¿µ¿ªÆÇ´ÜÀ» ÇÑ´Ù.
+			//x,yï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 			if (GetTouchArea()->InRect(x, y) ) {
 				m_bTouched = true;
 				return ;
@@ -185,7 +185,7 @@ void pbOneTouchUI::notify(int x, int y, TOUCHSTATUS::TYPE Touchstatus) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////----------------------------------------------------- °ÔÀÌÁö UI------------------------------------------------------------------------------///////
+////----------------------------------------------------- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 pbGaugeUI::pbGaugeUI() {
@@ -201,7 +201,7 @@ void pbGaugeUI::Update(float fTime) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////----------------------------------------------------- ÁÖ¹®·Â UI------------------------------------------------------------------------------///////
+////----------------------------------------------------- ï¿½Ö¹ï¿½ï¿½ï¿½ UI------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*pbAbilityPower_Indicator::pbAbilityPower_Indicator()
 {
@@ -268,22 +268,22 @@ void pbAbilityPower_Indicator::Draw()
 	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1],  0);
 	///------------Power Text--------------------
-		//Å×ÀÌºí¿¡¼­ ¾ÆÀÌµð·Î Ã£´Â´Ù
+		//ï¿½ï¿½ï¿½Ìº?ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ Ã£ï¿½Â´ï¿½
 		pbDataStorage::BindVertexAndTexture(m_TextVertexIndex, m_TextUVIndex);
 
-		//ÅØ½ºÃ³ ¹ÙÀÎµù
+		//ï¿½Ø½ï¿½Ã³ ï¿½ï¿½ï¿½Îµï¿½
 		glPushMatrix();
 		glTranslatef( -m_fGaugeHalfWidth + m_fTextHalfWidth,  m_fTextHalfHeight,  0);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glPopMatrix();
 
-	///------------°ÔÀÌÁö--------------------
+	///------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½--------------------
 		pbDataStorage::BindVertex(m_BodyVertexIndex);
 		pbDataStorage::BindTexture(m_BodyUVIndex);
 
-		glTexCoordPointer(2,GL_FLOAT, 0,  m_GaugeUV);	//ÅØ½ºÃ³ÁÂÇ¥(UV) ¹è¿­ ³Ñ°ÜÁÖ±â
+		glTexCoordPointer(2,GL_FLOAT, 0,  m_GaugeUV);	//ï¿½Ø½ï¿½Ã³ï¿½ï¿½Ç¥(UV) ï¿½è¿­ ï¿½Ñ°ï¿½ï¿½Ö±ï¿½
 
-		///------------ÁÙ¾îµå´Â °ÔÀÌÁö--------------------
+		///------------ï¿½Ù¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½--------------------
 			glPushMatrix();
 			glColor4f(1.0f, 1.0f, 1.0f, 0.4f);
 
@@ -297,7 +297,7 @@ void pbAbilityPower_Indicator::Draw()
 
 			glPopMatrix();
 			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		///------------½ÇÁ¦ °ÔÀÌÁö--------------------
+		///------------ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½--------------------
 		m_GaugeUV[4] = m_GaugeUV[0] + m_GaugeUV_WidthPercent*m_fGaugePercent;
 		m_GaugeUV[6] = m_GaugeUV[2] + m_GaugeUV_WidthPercent*m_fGaugePercent;
 
@@ -368,7 +368,7 @@ void pbAbilityPower_Indicator::Update(float fTime)
 }*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////----------------------------------------------------- ½ºÄÚ¾î Ãâ·Â------------------------------------------------------------------------------///////
+////----------------------------------------------------- ï¿½ï¿½ï¿½Ú¾ï¿½ ï¿½ï¿½ï¿½------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*pbScore_Indicator::pbScore_Indicator()
 {
@@ -419,7 +419,7 @@ void pbScore_Indicator::Draw()
 	///------------Power Text--------------------
 	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1], 0.0f);
-		//ÅØ½ºÃ³ ¹ÙÀÎµù
+		//ï¿½Ø½ï¿½Ã³ ï¿½ï¿½ï¿½Îµï¿½
 		glPushMatrix();
 		pbDataStorage::BindVertexAndTexture(m_TextVertexIndex, m_TextUVIndex);
 		glTranslatef( -m_fTextHalfWidth - 10,  0.0f,  0);
@@ -427,11 +427,11 @@ void pbScore_Indicator::Draw()
 		glPopMatrix();
 
 		///--------------------------------------
-		//Å×ÀÌºí¿¡¼­ ¾ÆÀÌµð·Î Ã£´Â´Ù
+		//ï¿½ï¿½ï¿½Ìº?ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ Ã£ï¿½Â´ï¿½
 		for(int i = 0; i < MAX_DIGITS; i++)		{
 			glPushMatrix();
 			pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_NumberUVIndex[m_DigitsNumber[i]]);
-			//ÅØ½ºÃ³ ¹ÙÀÎµù
+			//ï¿½Ø½ï¿½Ã³ ï¿½ï¿½ï¿½Îµï¿½
 			glTranslatef(8 + ((float)i)*m_PlacementWidth, 0,  0);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 			glPopMatrix();
@@ -446,7 +446,7 @@ void pbScore_Indicator::Update(float fTime)
 		m_NumberData += pbGlobalInGameVariable::PlusScore;
 		 pbGlobalInGameVariable::PlusScore = 0;
 
-		int DigitsNumber = m_NumberData;		//Á¡¼öÄ­ÀÇ ¹èÄ¡°¡  Score : [0] [1] [2] ... ÀÇ ¼øÀÌ¹Ç·Î ¿Ã¹Ù¸¥ Ç¥ÇöÀ» À§ÇØ ¿ª¼øÀ¸·Î ³Ö´Â´Ù
+		int DigitsNumber = m_NumberData;		//ï¿½ï¿½ï¿½ï¿½Ä­ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½  Score : [0] [1] [2] ... ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¹Ç·ï¿½ ï¿½Ã¹Ù¸ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Â´ï¿½
 		for( int i = MAX_DIGITS - 1; i > 0; --i)
 		{
 			m_DigitsNumber[i] = DigitsNumber%10;
@@ -464,7 +464,7 @@ void pbScore_Indicator::Update(float fTime)
 }*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////----------------------------------------------------- ·ÎµùÆÛ¼¾Æ® Ãâ·Â------------------------------------------------------------------------------///////
+////----------------------------------------------------- ï¿½Îµï¿½ï¿½Û¼ï¿½Æ® ï¿½ï¿½ï¿½------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*pbLoadingPercent_UI::pbLoadingPercent_UI()
 {
@@ -515,7 +515,7 @@ void pbLoadingPercent_UI::Draw()
 	///------------Text--------------------
 	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1], 0.0f);
-		//ÅØ½ºÃ³ ¹ÙÀÎµù
+		//ï¿½Ø½ï¿½Ã³ ï¿½ï¿½ï¿½Îµï¿½
 		glPushMatrix();
 		pbDataStorage::BindVertexAndTexture(m_TextVertexIndex, m_TextUVIndex);
 		glTranslatef( -m_fTextHalfWidth - 10,  0.0f,  0);
@@ -563,7 +563,7 @@ void pbLoadingPercent_UI::SetLoadingPercentage(float fPercentage){
 }*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////-----------------------------------------------------ÇÁ·Î¼¼¼­ ------------------------------------------------------------------------------///////
+////-----------------------------------------------------ï¿½ï¿½ï¿½Î¼ï¿½ï¿½ï¿½ ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbUIProcessor* pbUIProcessor::SingleObject = NULL;
 pbUIProcessor::pbUIProcessor():m_UICounts(0),m_ControledUIStore(NULL)/*,m_UIStore(NULL)*/{
@@ -576,10 +576,9 @@ pbUIProcessor::~pbUIProcessor(){
 
 void pbUIProcessor::Create()
 {
-	//---------------------------ÇÁ·Î¼¼¼­ ÃÊ±âÈ­-----------------------------------//
+	//---------------------------ï¿½ï¿½ï¿½Î¼ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­-----------------------------------//
 	if(SingleObject == NULL){
 		SingleObject = new pbUIProcessor;
-		//³ëÆ® ÇÁ·Î¼¼¼­ÀÇ Store¸¦ ListÀÇ Head·Î ÁöÁ¤ÇÑ´Ù.
 		SingleObject->m_ControledUIStore = new pbLinkNode<pbInterfaceUI>;
 		SingleObject->m_ControledUIStore->setHeader();
 
@@ -591,7 +590,7 @@ void pbUIProcessor::Create()
 }
 
 bool pbUIProcessor::LoadData(const char* filename) {
-	//------------XML ÆÄ½Ì--------//
+	//------------XML ï¿½Ä½ï¿½--------//
 		char* buffer = pbProjectBeanFrame::npGetAssetBuffer(filename);
 		if( buffer == NULL) return false;
 
@@ -602,7 +601,7 @@ bool pbUIProcessor::LoadData(const char* filename) {
 			LOGE("XmlParser error");
 		}
 
-			//-----------------ÅØ½ºÃÄµ¥ÀÌÅÍ Çì´õ ÆÄ½Ì----------------------//
+			//-----------------ï¿½Ø½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ä½ï¿½----------------------//
 			TiXmlNode* DataHeadNode = xmlDoc.FirstChild("UI_Placement")->FirstChild("UIDataHeader");
 
 			TiXmlNode* UIData = DataHeadNode->FirstChild("UIData");
@@ -660,7 +659,7 @@ pbInterfaceUI* pbUIProcessor::AddTopSideInfoUI(float X, float Y, pbInterfaceUI* 
 //	newUI->AddChildUnit(Score);
 //	newUI->AddChildUnit(Gauge);
 
-	//TODO::  UV¸¸ ¹Þ°í ³ª¸ÓÁöµéÀº ºñÀ²·Î ³¢¿ö ¸ÂÃá´Ù. (¸ðµç ÀÚ½ÄµéÀÇ À§Ä¡¿Í Å©±â´Â °íÁ¤µÈ°Í)
+	//TODO::  UVï¿½ï¿½ ï¿½Þ°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½. (ï¿½ï¿½ï¿½ ï¿½Ú½Äµï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Å©ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½È°ï¿½)
 
 	return newUI;
 }
@@ -821,7 +820,7 @@ pbUI* pbUIProcessor::AddScoreUI(float X, float Y, GLuint NumberVertexIndex, GLui
 	((pbScore_Indicator*)newUI) ->SetVertexIndex(NumberVertexIndex, TextVertexIndex);
 	((pbScore_Indicator*)newUI) ->SetUVIndex(NumberUVIndex, TextUVIndex);
 
-	//newUI ->SetID(ID);   // ID¼¼ÆÃÀº °í·Á¸¦ ÇØºÁ¾ß ÇÔ
+	//newUI ->SetID(ID);   // IDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Øºï¿½ï¿½ï¿½ ï¿½ï¿½
 	newUI ->SetPos( X, Y);
 	registControled(newUI );
 	pbRenderProcess::RegistRenderUI(newUI );
@@ -835,7 +834,7 @@ pbUI* pbUIProcessor::AddAbillityPointUI(float X, float Y, GLuint GaugeVertexInde
 	((pbAbilityPower_Indicator*)newUI) ->SetVertexIndex(GaugeVertexIndex, TextVertexIndex);
 	((pbAbilityPower_Indicator*)newUI) ->SetUVIndex(GaugeUVIndex, TextUVIndex);
 
-	//newUI ->SetID(ID);   // ID¼¼ÆÃÀº °í·Á¸¦ ÇØºÁ¾ß ÇÔ
+	//newUI ->SetID(ID);   // IDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Øºï¿½ï¿½ï¿½ ï¿½ï¿½
 	newUI ->SetPos( X, Y);
 	registControled(newUI );
 	pbRenderProcess::RegistRenderUI(newUI );
@@ -849,7 +848,7 @@ pbUI* pbUIProcessor::AddLoadingPercentUI(float X, float Y, GLuint TextVertexInde
 	((pbLoadingPercent_UI*)newUI) ->SetVertexIndex(TextVertexIndex, NumberVertexIndex);
 	((pbLoadingPercent_UI*)newUI) ->SetUVIndex(TextUVIndex, NumberUVIndex);
 
-	//newUI ->SetID(ID);   // ID¼¼ÆÃÀº °í·Á¸¦ ÇØºÁ¾ß ÇÔ
+	//newUI ->SetID(ID);   // IDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Øºï¿½ï¿½ï¿½ ï¿½ï¿½
 	newUI ->SetPos( X, Y);
 	registControled(newUI );
 	pbRenderProcess::RegistRenderUI(newUI );

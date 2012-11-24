@@ -151,7 +151,7 @@ void pbSceneNavigator::SearchAndReadyToMoveScene(SCENESTATE::ACTION Action) {
 					m_iNextGameState = pElement->m_iNextGameState;
 					m_bReadyToNextScene = true;
 					m_NextSceneTag = pElement->m_Tag;
-					LOGE("[DEBUG]pbSceneNavigator::SearchAndReadyToMoveScene() success" );
+					LOGE("[DEBUG]pbSceneNavigator::SearchAndReadyToMoveScene() success");
 					return;
 				}//end if NULL check
 			}// end if State Check
@@ -172,12 +172,15 @@ void pbSceneNavigator::MoveScene() {
 	pbSceneManager::getInstance().SelectScene(m_NextSceneTag);
 	pbSceneManager::getInstance().GetCurrentScene()->InitializeScene();
 
-
 	//네비게이터 변수 초기화
 	m_iCurrentGameState = m_iNextGameState;
 	m_bReadyToNextScene = false;
 
-	LOGE("[DEBUG]pbSceneNavigator::MoveScene()" );
+	std::string DebugString("[DEBUG]pbSceneNavigator::MoveScene : ");
+	DebugString.append(m_NextSceneTag);
+	LOGE(DebugString.c_str() );
+
+	//LOGE("[DEBUG]pbSceneNavigator::MoveScene() Complete" );
 }
 
 void pbSceneNavigator::ClearSceneState() {
@@ -204,8 +207,8 @@ pbPlaySceneWrapper::~pbPlaySceneWrapper() {
 }
 
 void pbPlaySceneWrapper::InitializeScene() {
-/*	pbUIProcessor::GetInstance()->LoadData("UI_Placement.xml");
-	pbComboManager::GetInstance()->LoadData();
+	pbUIProcessor::GetInstance()->LoadData("UI_Placement.xml");
+/*	pbComboManager::GetInstance()->LoadData();
 	pbCharacter::GetInstance()->LoadData();
 	pbGuideLineGenerator::GetInstance()->LoadGuideLine("GuideLine.xml");
 	pbBoss::GetInstance()->LoadData();
@@ -264,9 +267,11 @@ void pbPlaySceneWrapper::ClearScene() {
 ////-----------------------------------------------------pbIntroSceneWrapper------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbIntroSceneWrapper::pbIntroSceneWrapper() {
+	m_IntroBG = NULL;
 	//SetTag("PLAYSCENE");	//이 씬의 기본 태그를 지정
 }
 pbIntroSceneWrapper::pbIntroSceneWrapper(const char* SceneTag) {
+	m_IntroBG = NULL;
 	SetTag(SceneTag);	//이 씬의 기본 태그를 지정
 }
 
@@ -275,8 +280,8 @@ pbIntroSceneWrapper::~pbIntroSceneWrapper() {
 }
 
 void pbIntroSceneWrapper::InitializeScene() {
-	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddStaticBackGround(800, 480, 400, 240, "run");
-	RegistToRenderList(pCreateBG);
+	m_IntroBG = pbBackgroundProcessor::GetInstance().AddTouchableBackGround(800, 480, 400, 240, "run");
+	RegistToRenderList(m_IntroBG);
 
 	LOGI("pbIntroSceneWrapper InitializeScene Complete");
 }
@@ -289,29 +294,16 @@ void pbIntroSceneWrapper::UpdateScene(float fTime) {
 
 		float mesc = 1000.f * fTime;
 		pbBackgroundProcessor::GetInstance().Update(fTime);
-/*		nitroFrame::npTimer::updateTime(mesc);
-		pbNoteProcessor::GetInstance()->Update(fTime);
-		pbUIProcessor::GetInstance()->Update(fTime);
-		pbEffectProcess::GetInstance()->Update(fTime);
-		pbGuideLineGenerator::GetInstance()->Update(fTime);
-		pbCharacter::GetInstance()->Update(fTime);
-		pbBoss::GetInstance()->Update(fTime);*/
+
+		if( m_IntroBG->IsTouched() ) {
+			pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+		}
 	}
 }
 
 void pbIntroSceneWrapper::ClearScene() {
 	pbBackgroundProcessor::GetInstance().ClearDataStore();
-/*	pbNoteProcessor::GetInstance()->ClearDataStore();
-	pbComboManager::GetInstance()->ClearDataStore();
-	pbEffectProcess::GetInstance()->ClearDataStore();
-	pbGuideLineGenerator::GetInstance()->ClearDataStore();
-	pbCharacter::GetInstance()->ClearDataStore();
-	pbBoss::GetInstance()->ClearDataStore();
-	pbUIProcessor::GetInstance()->ClearDataStore();
-	pbGlobalInGameVariable::ResetGlobalVariable();
-	pbRenderProcess::ClearDataStore();
 
-	pbTouchLayer::ClearDataStore();*/
 	LOGI("pbIntroSceneWrapper ClearScene Complete");
 }
 
@@ -331,10 +323,6 @@ pbSceneManager::~pbSceneManager() {
 		m_SceneStore.erase(Iter);
 		delete pSecond;
 	}
-
-	//TODO :: 임시 코드. 테스트를 위해 바로 셀렉트 한다
-	delete m_pCurrentScene;
-
 }
 
 pbSceneManager& pbSceneManager::getInstance(){

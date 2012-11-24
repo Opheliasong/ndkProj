@@ -64,6 +64,16 @@ void pbMainFrame::npShowIntro() {
 																	-400.0f , -240.0f,  -1.0f,
 																	0.0f,1.0f,0.0f);
 
+		pbUIProcessor::Create();
+/*
+		pbEffectProcess::Create();
+		pbGuideLineGenerator::Create();
+		pbComboManager::Create();
+		pbCharacter::Create();
+		pbBoss::Create();
+
+		pbNoteProcessor::Create();*/
+
 		//FIXLOG[10-10] : 초기화는 공용 오브젝트만 초기화, 다른 초기화는 게임스테이트에 따라 다르게 초기화 한다
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
@@ -102,21 +112,7 @@ void pbMainFrame::npShowIntro() {
 
 		//버텍스, UV 생성
 		pbDataStorage::Create(apkPath);
-
-		pbUIProcessor::Create();
-
-		//SceneWrapper는 안정되고 난 후에 리팩토링 한다
-		pbLoadingSceneWrapper::Create();
-		pbIntroSceneWrapper::Create();
-		pbPlaySceneWrapper::Create();
-
-		pbEffectProcess::Create();
-		pbGuideLineGenerator::Create();
-		pbComboManager::Create();
-		pbCharacter::Create();
-		pbBoss::Create();
-
-		pbNoteProcessor::Create();*/
+*/
 
 		m_bFirstLoad = true;
 		LOGI("pbMainFrame::npShowIntro() Complete");
@@ -157,6 +153,8 @@ void pbMainFrame::npGameLoop() {
 }
 
 void pbMainFrame::npGameDestroy() {
+	pbUIProcessor::Release();
+
 /*	pbSceneNavigator::Release();
 	pbLoadingSceneWrapper::Release();
 	pbIntroSceneWrapper::Release();
@@ -168,7 +166,6 @@ void pbMainFrame::npGameDestroy() {
 	pbCharacter::Release();
 	pbGuideLineGenerator::Release();
 
-	pbUIProcessor::Release();
 	pbEffectProcess::Release();
 	pbComboManager::Release();
 	pbBackgroundProcessor::Release();
