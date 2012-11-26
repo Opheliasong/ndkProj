@@ -8,6 +8,8 @@
 #ifndef PBTYPES_H_
 #define PBTYPES_H_
 
+typedef std::string sceneTag;
+
 namespace projectBean{
 /*	namespace TOUCHSTATUS{
 		typedef enum {TOUCHNONE=0,TAPDOWN=1,TAPUP=2,TAPMOVE=3,TOUCHMODEEND=4}TYPE;

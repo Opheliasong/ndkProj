@@ -252,6 +252,7 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/../nitroFrame/npSubject.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
  jni/./ProjectBean/pbBackground.h jni/./ProjectBean/pbUI.h \
+ jni/./ProjectBean/pbCharacter.h jni/./ProjectBean/pbBoss.h \
  jni/npNativeEvent.h jni/nitroFrame/NitroFrame.h \
  jni/./nitroFrame/npDebugUtill.h
 
@@ -766,6 +767,10 @@ jni/./ProjectBean/../nitroFrame/npObserver.h:
 jni/./ProjectBean/pbBackground.h:
 
 jni/./ProjectBean/pbUI.h:
+
+jni/./ProjectBean/pbCharacter.h:
+
+jni/./ProjectBean/pbBoss.h:
 
 jni/npNativeEvent.h:
 

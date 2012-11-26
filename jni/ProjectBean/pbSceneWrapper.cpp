@@ -193,6 +193,53 @@ void pbSceneNavigator::ClearSceneState() {
 ////-----------------------------------------------------------------------------------------------------------------------------------------------------------///////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////-----------------------------------------------------pbSceneWrapper  Base Class------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+pbSceneWrapper::pbSceneWrapper() {
+	m_RenderListHeader =new RenderList; m_RenderListHeader->setHeader();
+}
+pbSceneWrapper::~pbSceneWrapper() {
+	RenderList::destroyList(m_RenderListHeader);
+}
+
+void pbSceneWrapper::DrawScene() {
+	RenderList* iterator;
+	RenderList* head = m_RenderListHeader;
+	iterator = head->getNext();
+	while (iterator != head) {
+		npDrawable* pkernel = iterator->getKernel();
+		iterator = iterator->getNext();
+
+		npRenderprocess::getInstance().DoDraw((*pkernel));
+
+	}
+//	LOGE("DEBUG pbSceneWrapper : DrawScene complete");
+}
+
+void pbSceneWrapper::RegistToRenderList(npDrawable* pDrawable) {
+	if(pDrawable != NULL ) {
+		RenderList::addTail(pDrawable, 	m_RenderListHeader);
+		LOGI("pbSceneWrapper::RegistRenderList");
+	}
+	else
+		LOGE("pbSceneWrapper::RegistRenderList Drawble is NULL");
+}
+
+void pbSceneWrapper::RemoveToRenderList(npDrawable* pDrawable) {
+	if(pDrawable != NULL ) {
+		RenderList::findDelete(pDrawable, 	m_RenderListHeader);
+		LOGI("pbSceneWrapper::RemoveToRenderList");
+	}
+	else
+		LOGE("pbSceneWrapper::RemoveToRenderList Drawble is NULL");
+}
+
+void pbSceneWrapper::ClearToRenderList() {
+	RenderList::clearList(m_RenderListHeader);
+	LOGI("pbSceneWrapper::ClearToRenderList");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------pbPlaySceneWrapper------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbPlaySceneWrapper::pbPlaySceneWrapper() {
@@ -211,6 +258,17 @@ pbPlaySceneWrapper::~pbPlaySceneWrapper() {
 }
 
 void pbPlaySceneWrapper::InitializeScene() {
+	//background
+	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 480, 400, 240, 0.1f, "ci");
+	RegistToRenderList(pCreateBG);
+
+	pCreateBG = pbBackgroundProcessor::GetInstance().AddMoveBackGround(400, 240, 0, 220, 0.5f, "ci");
+	RegistToRenderList(pCreateBG);
+
+	pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 100, 400, 50, 1.0f, "ci");
+	RegistToRenderList(pCreateBG);
+
+
 	//----------------UI------------------------------//
 	//pbUIProcessor::GetInstance()->LoadData("UI_Placement.xml");
 	pbUI* createUI = pbUIProcessor::GetInstance()->AddBackPanelUI(400, 450, "ci", 800, 50);
@@ -225,22 +283,16 @@ void pbPlaySceneWrapper::InitializeScene() {
 	createUI = pbUIProcessor::GetInstance()->AddScoreUI(195, 450, "ci", 119, 25, "run", 20, 35);
 	this->RegistToRenderList(createUI);
 
-
 /*	pbComboManager::GetInstance()->LoadData();
-	pbCharacter::GetInstance()->LoadData();
 	pbGuideLineGenerator::GetInstance()->LoadGuideLine("GuideLine.xml");
-	pbBoss::GetInstance()->LoadData();
 	pbNoteProcessor::GetInstance()->LoadData("NoteData.xml");
 */
-	//background
-	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 480, 400, 240, 0.1f, "ci");
-	RegistToRenderList(pCreateBG);
+	// 캐릭터
+	pbCharacter::GetInstance()->LoadData(GetTag());
+	RegistToRenderList(pbCharacter::GetInstance());
 
-	pCreateBG = pbBackgroundProcessor::GetInstance().AddMoveBackGround(400, 240, 0, 220, 0.5f, "ci");
-	RegistToRenderList(pCreateBG);
-
-	pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 100, 400, 50, 1.0f, "ci");
-	RegistToRenderList(pCreateBG);
+	pbBoss::GetInstance()->LoadData();
+	RegistToRenderList(pbBoss::GetInstance());
 
 
 	LOGI("pbPlaySceneWrapper InitializeScene Complete");
@@ -255,12 +307,13 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 		//float mesc = 1000.f * fTime;
 		pbBackgroundProcessor::GetInstance().Update(fTime);
 		pbUIProcessor::GetInstance()->Update(fTime);
+		pbCharacter::GetInstance()->Update(fTime);
+		pbBoss::GetInstance()->Update(fTime);
 /*		nitroFrame::npTimer::updateTime(mesc);
 		pbNoteProcessor::GetInstance()->Update(fTime);
 		pbEffectProcess::GetInstance()->Update(fTime);
 		pbGuideLineGenerator::GetInstance()->Update(fTime);
-		pbCharacter::GetInstance()->Update(fTime);
-		pbBoss::GetInstance()->Update(fTime);*/
+		*/
 
 		if( BackWardUI != NULL ) {
 			if( BackWardUI->IsTouched() ) {
@@ -276,6 +329,9 @@ void pbPlaySceneWrapper::ClearScene() {
 	TouchLayer::GetInstance().ClearRegistedList();
 	pbBackgroundProcessor::GetInstance().ClearDataStore();
 	pbUIProcessor::GetInstance()->ClearDataStore();
+	pbCharacter::GetInstance()->ClearDataStore();
+	pbBoss::GetInstance()->ClearDataStore();
+
 	BackWardUI = NULL;
 
 /*	pbNoteProcessor::GetInstance()->ClearDataStore();
@@ -283,7 +339,6 @@ void pbPlaySceneWrapper::ClearScene() {
 	pbEffectProcess::GetInstance()->ClearDataStore();
 	pbGuideLineGenerator::GetInstance()->ClearDataStore();
 	pbCharacter::GetInstance()->ClearDataStore();
-	pbBoss::GetInstance()->ClearDataStore();
 	pbUIProcessor::GetInstance()->ClearDataStore();
 	pbGlobalInGameVariable::ResetGlobalVariable();
 	pbRenderProcess::ClearDataStore();
@@ -407,6 +462,17 @@ void pbSceneManager::RegistRenderToScene(sceneTag Tag, npDrawable* pDrawable) {
 	}
 }
 
+void pbSceneManager::RemoveRenderToCurrentScene(npDrawable* pDrawable) {
+	if( m_pCurrentScene != NULL)
+		m_pCurrentScene->RemoveToRenderList(pDrawable);
+}
+
+void pbSceneManager::RemoveRenderToScene(sceneTag Tag, npDrawable* pDrawable) {
+	pbSceneMap::iterator Iter = m_SceneStore.find(Tag);
+	if( Iter != m_SceneStore.end() ) {
+		Iter->second->RemoveToRenderList(pDrawable);
+	}
+}
 
 /*pbLoadingSceneWrapper* pbLoadingSceneWrapper::SingleObject = NULL;
 

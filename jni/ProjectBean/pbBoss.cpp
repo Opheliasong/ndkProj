@@ -1,11 +1,7 @@
 
 #include "pbBoss.h"
-#include "pbGlobalVariable.h"
-#include "pbDataStorage.h"
-#include "pbRenderProcess.h"
-#include "pbNoteProcessor.h"
 
-//-----------------------------------------------------¿ÀºêÁ§Æ® ¹«¹ö-----------------------------------------------------------------------------//
+//-----------------------------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½-----------------------------------------------------------------------------//
 float* pbLineMover::GetV2PosByTime(float fAccumulateTime) {
 	m_vPos[0] = m_vStartPos[0] + m_vDir[0] * fAccumulateTime;
 	m_vPos[1] = m_vStartPos[1] + m_vDir[1] * fAccumulateTime;
@@ -21,39 +17,40 @@ float* pbZigZagMover::GetV2PosByTime(float fAccumulateTime) {
 }
 
 
-//-----------------------------------------------------¸¶¸®¿À³×Æ®-----------------------------------------------------------------------------//
+//-----------------------------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®-----------------------------------------------------------------------------//
 
 pbMarionette::pbMarionette() {
 	m_vPos[0] = 0;
 	m_vPos[1] = 0;
 	m_pCurrentMover = NULL;
-	m_pMoverHead = new pbLinkNode<pbObjectMover>;
+	m_pMoverHead = new pbObjectMoverList;
 	m_pMoverHead->setHeader();
 	m_CurrentState = -1;
 	m_fAccumulateTime = 0.0f;
 	m_bUpdatePause = false;
 }
 pbMarionette::~pbMarionette() {
-	pbLinkNode<pbObjectMover>::destroyListAndDeleteKernel(m_pMoverHead);
+	ClearDataStore();
+	delete m_pMoverHead;
 }
 
 void pbMarionette::AddLineMoveState(int ID, float dirX, float dirY){
 	pbObjectMover* createMover = new pbLineMover(ID, dirX, dirY);
 
-	pbLinkNode<pbObjectMover>* pTargetNode =  pbLinkNode<pbObjectMover>::makeLinkNode(createMover);
-	pbLinkNode<pbObjectMover>::addTail(pTargetNode, m_pMoverHead);
+	pbObjectMoverList* pTargetNode =  pbObjectMoverList::makeLinkNode(createMover);
+	pbObjectMoverList::addTail(pTargetNode, m_pMoverHead);
 }
 
 void pbMarionette::AddZigZagMoveState(int ID, float dirX, float dirY, float fAmplitude, float fCycle){
 	pbObjectMover* createMover = new pbZigZagMover(ID, dirX, dirY, fAmplitude, fCycle);
 
-	pbLinkNode<pbObjectMover>* pTargetNode =  pbLinkNode<pbObjectMover>::makeLinkNode(createMover);
-	pbLinkNode<pbObjectMover>::addTail(pTargetNode, m_pMoverHead);
+	pbObjectMoverList* pTargetNode =  pbObjectMoverList::makeLinkNode(createMover);
+	pbObjectMoverList::addTail(pTargetNode, m_pMoverHead);
 }
 
 void pbMarionette::SelectMoveState(int ID) {
-	pbLinkNode<pbObjectMover>* iterator;
-	pbLinkNode<pbObjectMover>* head = m_pMoverHead;
+	pbObjectMoverList* iterator;
+	pbObjectMoverList* head = m_pMoverHead;
 	iterator = head->getNext();
 	while (iterator != head) {
 		pbObjectMover* pkernel = iterator->getKernel();
@@ -69,22 +66,22 @@ void pbMarionette::SelectMoveState(int ID) {
 
 	}
 
-	//ID°¡ ¾øÀ¸¸é NULL
+	//IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ NULL
 	m_pCurrentMover = NULL;
 	m_CurrentState = ID;
 	m_fAccumulateTime = 0.0f;
 }
 
 void pbMarionette::DeleteMoveState(int ID) {
-	pbLinkNode<pbObjectMover>* iterator;
-	pbLinkNode<pbObjectMover>* head = m_pMoverHead;
+	pbObjectMoverList* iterator;
+	pbObjectMoverList* head = m_pMoverHead;
 	iterator = head->getNext();
 	while (iterator != head) {
 		pbObjectMover* pkernel = iterator->getKernel();
 		iterator = iterator->getNext();
 
 		if( pkernel->GetID() == ID ) {
-			pbLinkNode<pbObjectMover>::destroyNode(iterator);
+			pbObjectMoverList::destroyNode(iterator);
 			delete pkernel;
 			return;
 		}
@@ -93,7 +90,8 @@ void pbMarionette::DeleteMoveState(int ID) {
 }
 
 void pbMarionette::ClearDataStore() {
-	pbLinkNode<pbObjectMover>::ClearListAndDeleteKernel(m_pMoverHead);
+	LinkNodeDeleteAllKernel(pbObjectMover*, m_pMoverHead);
+	pbObjectMoverList::clearList(m_pMoverHead);
 }
 
 void pbMarionette::MoveUpdate(float fTime) {
@@ -103,6 +101,8 @@ void pbMarionette::MoveUpdate(float fTime) {
 			float* pMoverV2Pos =  m_pCurrentMover->GetV2PosByTime(m_fAccumulateTime);
 			m_vPos[0] = pMoverV2Pos[0];
 			m_vPos[1] = pMoverV2Pos[1];
+
+//			LOGE("DEBUG pbMarionette::MoveUpdate ");
 		}
 		else
 			LOGE("pbMarionette::Translate() CurrentState is NULL");
@@ -117,15 +117,12 @@ void pbMarionette::Translate() {
 pbBoss* pbBoss::SingleObject = NULL;
 
 pbBoss::pbBoss() {
-	m_UVIndex = 0;
-	m_WH[0] = 800;
-	m_WH[1] = 400;
 	m_bBattlePhase = false;
 	m_bBossAlive = true;
 
 	m_fHP = 100.f;
 	m_pMarionette = NULL;
-
+	m_pBodyDrawUnit = NULL;
 }
 
 pbBoss::~pbBoss() {
@@ -137,6 +134,7 @@ void pbBoss::Create() {
 		SingleObject = new pbBoss();
 
 		SingleObject->m_pMarionette = new pbMarionette();
+		SingleObject->m_pBodyDrawUnit = new pbBasicDrawUnit();
 	}
 }
 
@@ -146,12 +144,8 @@ void pbBoss::LoadData() {
 	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -30);
 	m_pMarionette->AddZigZagMoveState(WALKOUT, 0, -200, 10, 80);
 
-
-	m_WH[0] = 400;
-	m_WH[1] = 400;
-	SetVertexByCenter(m_Vertex, m_WH[0], m_WH[1]);
-
-	m_UVIndex = 75; //
+	m_pBodyDrawUnit->SetTextureTAG("run");
+	m_pBodyDrawUnit->SetSize(400, 400);
 
 	m_pMarionette->SetPosX(1400);
 	m_pMarionette->SetPosY(240);
@@ -159,8 +153,6 @@ void pbBoss::LoadData() {
 	m_pMarionette->SelectMoveState(APPROACHING);
 	LOGE("CHANGE TO APPROACHING");
 
-
-	pbRenderProcess::RegistRenderBoss(this);
 }
 
 void pbBoss::Update(float fTime) {
@@ -171,10 +163,10 @@ void pbBoss::Update(float fTime) {
 
 			m_pMarionette->SetPosX(800);
 			m_pMarionette->SelectMoveState(WEAVING_UP);
-			LOGE("CHANGE TO WEAVING_UP");
+//			LOGE("CHANGE TO WEAVING_UP");
 
 			m_bBattlePhase = true;
-			pbNoteProcessor::GetNoteDropper()->SetGenerateNote(true);
+			//pbNoteProcessor::GetNoteDropper()->SetGenerateNote(true);
 		}
 
 	}
@@ -182,14 +174,14 @@ void pbBoss::Update(float fTime) {
 		if(m_pMarionette->GetV2Pos()[1] > 280) {
 
 			m_pMarionette->SelectMoveState(WEAVING_DOWN);
-			LOGE("CHANGE TO WEAVING_DOWN");
+//			LOGE("CHANGE TO WEAVING_DOWN");
 		}
 	}
 	else if( m_BossState == WEAVING_DOWN) {
 		if(m_pMarionette->GetV2Pos()[1] < 200) {
 			m_pMarionette->SelectMoveState(WEAVING_UP);
 
-			LOGE("CHANGE TO WEAVING_UP");
+//			LOGE("CHANGE TO WEAVING_UP");
 		}
 	}
 	else if( m_BossState == WALKOUT) {
@@ -198,6 +190,8 @@ void pbBoss::Update(float fTime) {
 
 			m_pMarionette->SetMovePause(true);
 			m_bBossAlive = false;
+
+			pbSceneManager::getInstance().RemoveRenderToCurrentScene(this);
 			LOGE("CHANGE TO DIE");
 		}
 	}
@@ -207,26 +201,16 @@ void pbBoss::Update(float fTime) {
 
 }
 
-void pbBoss::Draw() {
-	if( m_bBossAlive ) {
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnable(GL_TEXTURE_2D);	//2D
+void pbBoss::PreSettingDraw() {
+	m_pMarionette->Translate();
 
-			glPushMatrix();
+	m_pBodyDrawUnit->PreSettingDraw();
+}
 
-			pbDataStorage::BindTexture(m_UVIndex);
-			pbDataStorage::BindUV(m_UVIndex);
-
-			m_pMarionette->Translate();
-
-			glVertexPointer(3, GL_FLOAT, 0, m_Vertex);
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-			glPopMatrix();
-
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisable(GL_TEXTURE_2D);	//2D
-	}
+void pbBoss::DrawThis() {
+	glColor4f(1.0f , 0.0f, 0.0f, 1.0f);
+	m_pBodyDrawUnit->DrawThis();
+	glColor4f(1.0f , 1.0f, 1.0f, 1.0f);
 }
 
 void pbBoss::DecreaseHP(float fDamage){
@@ -237,7 +221,7 @@ void pbBoss::DecreaseHP(float fDamage){
 			GetInstance()->m_pMarionette->SelectMoveState(WALKOUT);
 			LOGE("CHANGE TO WALKOUT");
 
-			pbNoteProcessor::GetNoteDropper()->SetGenerateNote(false);
+//			pbNoteProcessor::GetNoteDropper()->SetGenerateNote(false);
 		}
 
 		LOGE("DAMAGE :");
@@ -247,9 +231,8 @@ void pbBoss::DecreaseHP(float fDamage){
 
 void pbBoss::ClearDataStore() {
 	m_bBattlePhase = false;
-
 	m_pMarionette->ClearDataStore();
-	pbRenderProcess::RemoveRenderBoss();
+	pbSceneManager::getInstance().RemoveRenderToCurrentScene(this);
 
 	LOGI("pbBoss::ClearDataStore");
 }
@@ -258,6 +241,9 @@ void pbBoss::Release() {
 	if( SingleObject != NULL ) {
 		delete SingleObject->m_pMarionette;
 		SingleObject->m_pMarionette = NULL;
+
+		delete SingleObject->m_pBodyDrawUnit;
+		SingleObject->m_pBodyDrawUnit = NULL;
 
 		delete SingleObject;
 		SingleObject = NULL;

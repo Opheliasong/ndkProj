@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 
-typedef std::string sceneTag;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-------------------------------------------------------씬에 대한 상태 기계------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,38 +90,17 @@ typedef npLinkNode<npDrawable*> RenderList;
 
 class pbSceneWrapper {
 public:
-	pbSceneWrapper() { m_RenderListHeader =new RenderList; m_RenderListHeader->setHeader(); }
-	virtual ~pbSceneWrapper() { RenderList::destroyList(m_RenderListHeader); }
+	pbSceneWrapper();
+	virtual ~pbSceneWrapper();
 
-	void DrawScene() {
-		RenderList* iterator;
-		RenderList* head = m_RenderListHeader;
-		iterator = head->getNext();
-		while (iterator != head) {
-			npDrawable* pkernel = iterator->getKernel();
-			iterator = iterator->getNext();
+	void DrawScene();
 
-			npRenderprocess::getInstance().DoDraw((*pkernel));
+	inline void SetTag(sceneTag Tag) { m_Tag = Tag;}
+	inline sceneTag& GetTag() { return m_Tag;}
 
-		}
-	//	LOGE("DEBUG pbSceneWrapper : DrawScene complete");
-	}
-
-	void SetTag(sceneTag Tag) { m_Tag = Tag;}
-	sceneTag& GetTag() { return m_Tag;}
-	void RegistToRenderList(npDrawable* pDrawable) {
-		if(pDrawable != NULL ) {
-			RenderList::addTail(pDrawable, 	m_RenderListHeader);
-			LOGI("pbSceneWrapper::RegistRenderList");
-		}
-		else
-			LOGE("pbSceneWrapper::RegistRenderList Drawble is NULL");
-	}
-
-	void ClearToRenderList() {
-			RenderList::clearList(m_RenderListHeader);
-			LOGI("pbSceneWrapper::ClearToRenderList");
-		}
+	void RegistToRenderList(npDrawable* pDrawable);
+	void RemoveToRenderList(npDrawable* pDrawable);
+	void ClearToRenderList();
 
 	virtual void InitializeScene() = 0;
 	virtual void UpdateScene(float fTime) = 0;
@@ -187,6 +165,9 @@ public:
 
 	void RegistRenderToCurrentScene(npDrawable* pDrawable);
 	void RegistRenderToScene(sceneTag Tag, npDrawable* pDrawable);
+
+	void RemoveRenderToCurrentScene(npDrawable* pDrawable);
+	void RemoveRenderToScene(sceneTag Tag, npDrawable* pDrawable);
 private:
 	typedef std::map<sceneTag, pbSceneWrapper*> pbSceneMap;
 

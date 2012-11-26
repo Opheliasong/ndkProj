@@ -1,10 +1,4 @@
 #include "pbCharacter.h"
-#include "pbDataStorage.h"
-#include "pbGlobalVariable.h"
-#include "pbRenderProcess.h"
-#include "npAudioSystem.h"
-#include "gluLookAt.h"
-
 
 using namespace projectBean;
 
@@ -13,22 +7,11 @@ pbCharacter* pbCharacter::SingleObject = NULL;
 
 pbCharacter::pbCharacter(): m_fLifeRotate(0.0f){
 	m_Color.Init(1.0f, 1.0f, 1.0f, 1.0f);
-//	m_fLerp = 0.0f;
-	m_BodyVertexIndex = 0;
-	m_BodyUVIndex = 0;
 
 	m_vBodyPos[0] = 0.0f;
 	m_vBodyPos[1] = 0.0f;
 
-	m_fBodyWidth = 0.0f;
-	m_fBodyHeight = 0.0f;
-
-	m_LifeVertexIndex = 0;
-	m_LifeUVIndex = 0;
-
 	m_fLifePosX = 0.0f;
-
-//	m_ppfFollowLineVertexPointer = NULL;
 
 	m_iFeverEffectMode = FEVER_NONE;
 	m_fFeverEffectDistance = 0.0f;
@@ -38,31 +21,45 @@ pbCharacter::pbCharacter(): m_fLifeRotate(0.0f){
 	m_fFeverTargetTime = 0.0f;
 	m_fEffectScale = 3.0f;
 
-	m_BodyVertexIndex = 0; //�ٵ��� ���ؽ����� index
-	m_BodyUVIndex = 0; //�ٵ��� UV ���� index
-
 	m_EffectVertexIndex = 0;
 	m_EffectUVIndex = 0; //����Ʈ
+
+	m_RegistSceneTag.reserve(10);
+
+	m_pBodyDrawUnit = NULL;
+	m_pSatelliteDrawUnit = NULL;
+
+	COLOR_RGBA m_Color;
+
+	npV2Vector m_vBodyPos;
+
+	float m_fLifeRotate;
+	float m_fLifePosX;
+
+	enum { FEVER_NONE = 0, FEVER_EXPAND, FEVER_RETURN , FEVER_DISTANCE_READY = 10, FEVER_DISTANCE_EXPLOSION = 100};
+	int m_iFeverEffectMode;
+	float m_fFeverEffectDistance;
+	float m_fFeverTime;
+	float m_fFeverDestDistance;
+	bool m_bFeverReady;
+
+	GLuint m_EffectVertexIndex;
+	GLuint m_EffectUVIndex;
+
+	float m_fFeverTargetTime;
+	float m_fEffectScale;
 }
 pbCharacter::~pbCharacter(){
 
-}
-
-void pbCharacter::SetVertexIndex(GLuint BodyIndex, GLuint LifeIndex, GLuint EffectIndex){
-	m_BodyVertexIndex = BodyIndex;
-	m_LifeVertexIndex = LifeIndex;
-	m_EffectVertexIndex = EffectIndex;
-}
-void pbCharacter::SetUVIndex(GLuint BodyIndex, GLuint LifeIndex, GLuint EffectIndex){
-	m_BodyUVIndex = BodyIndex;
-	m_LifeUVIndex = LifeIndex;
-	m_EffectUVIndex = EffectIndex;
 }
 
 void pbCharacter::Create(){
 	//---------------------���ʷ����� ��� ���-----------------------//
 	if( SingleObject == NULL){
 		SingleObject = new pbCharacter();
+
+		SingleObject->m_pBodyDrawUnit = new pbBasicDrawUnit();
+		SingleObject->m_pSatelliteDrawUnit = new pbBasicDrawUnit();
 
 		LOGI("CHARACTER Create Complete");
 
@@ -72,95 +69,52 @@ void pbCharacter::Create(){
 	LOGE("CHARACTER Create Failed");
 }
 
-void pbCharacter::LoadData() {
-	pbRenderProcess::RegistRenderCharacter(this);
-	pbTouchLayer::registerObserver(this);
+void pbCharacter::LoadData(sceneTag RegistSceneTag) {
+	TouchLayer::GetInstance().RegistedObserver(this);
 
-	SetVertexIndex(5 ,6, 1);
-	SetUVIndex(21, 22, 19);
+	m_RegistSceneTag.clear();
+	m_RegistSceneTag.append(RegistSceneTag);
 
-	m_fBodyWidth = pbDataStorage::GetVertexWidth(m_BodyVertexIndex);
-	m_fBodyHeight = pbDataStorage::GetVertexHeight(m_BodyVertexIndex);
+	m_pBodyDrawUnit->SetTextureTAG("run");
+	m_pBodyDrawUnit->SetSize(104, 110);
+	m_pSatelliteDrawUnit->SetTextureTAG("ci");
+	m_pSatelliteDrawUnit->SetSize(28, 28);
 
-	m_TouchArea.setTouchArea(m_fBodyWidth*1.2f, m_fBodyHeight*1.2f );
-
-	m_fLifePosX = m_fBodyWidth*0.43f;
+	m_fLifePosX = 104*0.43f;
 
 	SetPos(72.0f, 240.0f);
+
+	LOGI("pbCharacter::LoadData complete");
 }
 
-void pbCharacter::Draw(){
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnable(GL_TEXTURE_2D);	//2D
-
-		glColor4f(1.0f, 1.0f,1.0f, m_Color.A);
-
-		glPushMatrix();
-
-		pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_BodyUVIndex);
+void pbCharacter::PreSettingDraw() {
+	glColor4f(1.0f, 1.0f,1.0f, m_Color.A);
+	glPushMatrix();
 		glTranslatef(m_vBodyPos[0] , m_vBodyPos[1], 0.f);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+void pbCharacter::DrawThis() {
+		m_pBodyDrawUnit->PreSettingDraw();
+		m_pBodyDrawUnit->DrawThis();
 
-		pbDataStorage::BindVertexAndTexture(m_LifeVertexIndex, m_LifeUVIndex);
+		m_pSatelliteDrawUnit->PreSettingDraw();
+		glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
 		for(int i = 0; i < pbGlobalInGameVariable::NumLife ; i++)
 		{
-			glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
-			//�ؽ�ó ���ε�
 			glPushMatrix();
 			glRotatef((float(i)*120.0f) + m_fLifeRotate*360.0f, 0.0f, 0.0f, 1.0f);
 			glTranslatef(m_fLifePosX + m_fFeverEffectDistance, 0.0f, 0.f);
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			glPopMatrix();
+			m_pSatelliteDrawUnit->DrawThis();
 		}
-
-	/*	if( m_bFeverReady) {
-			pbDataStorage::BindVertexAndTexture(m_EffectVertexIndex, m_EffectUVIndex);
-			glPushMatrix();
-			glRotatef(m_fLifeRotate*360.0f, 0.0f, 0.0f, 1.0f);
-			glTranslatef( 0.0f, 0.0f, 0.f);
-			glScalef(m_fEffectScale, m_fEffectScale, 1.0f);
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			glPopMatrix();
-		}*/
-
 		glPopMatrix();
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisable(GL_TEXTURE_2D);	//2D
+	glPopMatrix();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void pbCharacter::Update(float fTime){
 	static float fPartOfLine, fWholeOfLine = 0.0f;
 
 	m_fLifeRotate += (pbGlobalInGameVariable::fWorldMoveSpeed/400)*fTime;
-
-//	fPartOfLine = m_fBodyPosX -  m_ppfFollowLineVertexPointer[0][0];
-//	fWholeOfLine = m_ppfFollowLineVertexPointer[1][0] - m_ppfFollowLineVertexPointer[0][0];
-
-//	m_fLerp = fPartOfLine/fWholeOfLine;
-
-//	if( m_fLerp < 0.0f)
-//		m_fLerp = 0.0f;
-
-//	m_fBodyPosY = Lerp(m_ppfFollowLineVertexPointer[1][1], m_ppfFollowLineVertexPointer[0][1], 1.0f - m_fLerp);
-
-	m_TouchArea.movePositon(m_vBodyPos[0], m_vBodyPos[1]);
-
-	//--------------------ī�޶� ����ũ-------------------------------//
-/*	if( pbGlobalInGameVariable::bCameraShake ) {
-		pbGlobalInGameVariable::fCameraShakeTime += fTime;
-
-		float WaveFrequency = 20.0f;// * (1/(pbGlobalInGameVariable::fCameraShakeTime*pbGlobalInGameVariable::fCameraShakeTime));
-		float WaveLength =  1/( (pbGlobalInGameVariable::fCameraShakeTime*pbGlobalInGameVariable::fCameraShakeTime) * 30 );
-		CameraShake(&pbGlobalInGameVariable::fCameraShakeX, &pbGlobalInGameVariable::fCameraShakeY, WaveFrequency , WaveLength, pbGlobalInGameVariable::fCameraShakeTime);
-
-		if( pbGlobalInGameVariable::fCameraShakeTime >= 2.0f) {
-			pbGlobalInGameVariable::bCameraShake = false;
-			pbGlobalInGameVariable::fCameraShakeTime = 0.0f;
-		}
-
-	}*/
 
 	///---------------�ǹ� ����Ʈ------------//
 	if( m_bFeverReady) {
@@ -169,13 +123,13 @@ void pbCharacter::Update(float fTime){
 		if( m_fFeverTargetTime > 1.0f ) {
 			m_fFeverTargetTime = 1.0f;
 		}
-		m_fEffectScale = Lerp(3.0f, 1.6f, m_fFeverTargetTime );
+		m_fEffectScale = npLerp(3.0f, 1.6f, m_fFeverTargetTime );
 		//---�ǹ� ��� ����Ʈ---/
 		if(m_iFeverEffectMode == FEVER_EXPAND) {
 			m_fFeverTime += (1/0.2f)*fTime;
 			m_Color.G = 1.0f - m_fFeverTime*0.5f;
 			m_Color.B = m_Color.G;
-			m_fFeverEffectDistance = Lerp(-10, FEVER_DISTANCE_READY, m_fFeverTime);
+			m_fFeverEffectDistance = npLerp(-10, FEVER_DISTANCE_READY, m_fFeverTime);
 
 			if( m_fFeverTime > 1.0f ) {
 				m_fFeverTime = 0.0f;
@@ -187,7 +141,7 @@ void pbCharacter::Update(float fTime){
 			m_fFeverTime += (1/0.2f)*fTime;
 			m_Color.G = 0.5f + m_fFeverTime*0.5f;
 			m_Color.B = m_Color.G;
-			m_fFeverEffectDistance = Lerp(FEVER_DISTANCE_READY, -10, m_fFeverTime);
+			m_fFeverEffectDistance = npLerp(FEVER_DISTANCE_READY, -10, m_fFeverTime);
 
 			if( m_fFeverTime > 1.0f ) {
 				m_fFeverTime = 0.0f;
@@ -201,7 +155,7 @@ void pbCharacter::Update(float fTime){
 		// �ǹ� �۵� ����Ʈ
 		if(m_iFeverEffectMode == FEVER_EXPAND) {
 			m_fFeverTime += (1/0.7)*fTime;
-			m_fFeverEffectDistance = Lerp(0, FEVER_DISTANCE_EXPLOSION, m_fFeverTime);
+			m_fFeverEffectDistance = npLerp(0, FEVER_DISTANCE_EXPLOSION, m_fFeverTime);
 
 			if( m_fFeverTime > 1.0f ) {
 				m_fFeverTime = 0.0f;
@@ -211,7 +165,7 @@ void pbCharacter::Update(float fTime){
 		}
 		else if(m_iFeverEffectMode == FEVER_RETURN) {
 			m_fFeverTime += (1/0.7)*fTime;
-			m_fFeverEffectDistance = Lerp(FEVER_DISTANCE_EXPLOSION, 0, m_fFeverTime);
+			m_fFeverEffectDistance = npLerp(FEVER_DISTANCE_EXPLOSION, 0, m_fFeverTime);
 
 			if( m_fFeverTime > 1.0f ) {
 				m_fFeverTime = 0.0f;
@@ -237,9 +191,9 @@ void pbCharacter::FeverEffectOn() {
 	m_fFeverEffectDistance = 0.0f;
 	m_fFeverDestDistance = FEVER_DISTANCE_EXPLOSION;
 
-	if( pbBoss::GetInstance()->IsBattlePhase() )
+/*	if( pbBoss::GetInstance()->IsBattlePhase() )
 		pbEffectProcess::GetInstance()->AddHomingMissileEffect(m_vBodyPos[0], m_vBodyPos[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], 1 , 2.0f ,
-				pbComboManager::GetInstance()->GetFever()*10.0f, &(pbBoss::DecreaseHP));
+				pbComboManager::GetInstance()->GetFever()*10.0f, &(pbBoss::DecreaseHP));*/
 }
 
 void pbCharacter::FeverEffectReady() {
@@ -252,7 +206,6 @@ void pbCharacter::FeverEffectReady() {
 	m_fFeverTargetTime = 0.0f;
 	m_fEffectScale = 3.0f;
 
-//	pbEffectProcess::GetInstance()->AddFeverAvailableEffect(400, 320, 23, 73, 0.7f );
 	LOGE("FEVER READY");
 }
 
@@ -268,14 +221,17 @@ void pbCharacter::FeverEffectCancle() {
 }
 
 void pbCharacter::ClearDataStore() {
-		pbRenderProcess::RemoveRenderCharacter();
-		pbTouchLayer::removeObserver(this);
-		LOGI("pbCharacter::ClearDataStore");
+	TouchLayer::GetInstance().RemovedObserver(this);
+
+	LOGI("pbCharacter::ClearDataStore");
 }
 
 void pbCharacter::Release(){
 	if( SingleObject != NULL) {
 		SingleObject->ClearDataStore();
+
+		delete SingleObject->m_pBodyDrawUnit;
+		delete SingleObject->m_pSatelliteDrawUnit;
 
 		delete SingleObject;
 		SingleObject = NULL;
@@ -286,25 +242,37 @@ void pbCharacter::Release(){
 }
 
 void pbCharacter::notify(){
-	switch (TouchLayer::GetInstance().touchFlag) {
-		case projectBean::TOUCHSTATUS::TAPDOWN: {
+	if(TouchLayer::GetInstance().touchFlag == TOUCHFLAGS::TAPDOWN) {
+	//		LOGE("[DEBUG]pbCharacter:: TAPDOWN");
+			int x = TouchLayer::GetInstance().pointX;
+			int y = TouchLayer::GetInstance().pointY;
+	//		LOGfloatString("X", x);
+	//		LOGfloatString("Y", y);
 
-			if (	CompareTouchPointInArea(TouchLayer::GetInstance().pointX, TouchLayer::GetInstance().pointY)	) {
-				if( pbComboManager::GetInstance()->FeverOn() ) {
-					FeverEffectCancle();	//
-					FeverEffectOn();
+			int HalfWidth = m_pBodyDrawUnit->getWidth()/2;
+			int HalfHeight =m_pBodyDrawUnit->getHeight()/2;
+
+			int left = m_vBodyPos[0] - HalfWidth;
+			int right = m_vBodyPos[0] + HalfWidth;
+			int top = m_vBodyPos[1] + HalfHeight;
+			int bottom = m_vBodyPos[1] - HalfHeight;
+
+			if (x >= left && x <= right) {
+				if (y >= bottom && y <= top) {
+/*					if( pbComboManager::GetInstance()->FeverOn() ) {
+						FeverEffectCancle();	//
+						FeverEffectOn();
+					}*/
+					LOGE("[DEBUG]pbCharacter:: Touched");
 				}
-			}//end if
-			break;
-		}//end case
-
-	}//end switch
+			}
+		}
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------�޺� �Ŵ���------------------------------------------------------------------//
 //--------------------------------------------------------------------------------------------------------------------------------------//
-pbComboManager* pbComboManager::SingleObject = NULL;
+/*pbComboManager* pbComboManager::SingleObject = NULL;
 
 pbComboManager::pbComboManager(){
 	SingleObject = NULL;
@@ -335,11 +303,11 @@ void pbComboManager::Create() {
 void pbComboManager::LoadData() {
 	DataReset();
 
-/*	//SetVertexIndex(18);
+	//SetVertexIndex(18);
 	GetBaseDrawUnit()->SetSizeWH(213,43);
 	GetBaseDrawUnit()->SetUVIndex(45);
 	GetBaseDrawUnit()->SetV2Pos(445, 400);
-	pbRenderProcess::RegistRenderUI(this);*/
+	pbRenderProcess::RegistRenderUI(this);
 
 }
 
@@ -374,18 +342,18 @@ void pbComboManager::SetVertexIndex(GLuint BodyIndex)
 
 void pbComboManager::SetUVIndex(GLuint StartNumberUVIndex)
 {
-/*	for(int i = 0; i < NUMBERING; i++)
+	for(int i = 0; i < NUMBERING; i++)
 	{
 		m_NumberUVIndex[i] = (StartNumberUVIndex + 2) + i;
 		m_FeverNumberUVIndex[i] = (StartNumberUVIndex + 2 + 10) +i;
 	}
 
 //	m_BodyUVIndex = StartNumberUVIndex;
-	m_FeverBodyUVIndex = StartNumberUVIndex + 1;*/
+	m_FeverBodyUVIndex = StartNumberUVIndex + 1;
 }
 
 void pbComboManager::Draw() {
-/*	glPushMatrix();
+	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1], 0.0f);
 	//�޺� �ؽ�Ʈ
 		glPushMatrix();
@@ -414,7 +382,7 @@ void pbComboManager::Draw() {
 
 			count--;
 		}
-	glPopMatrix();*/
+	glPopMatrix();
 }
 
 void pbComboManager::Update(float fTime) {
@@ -519,5 +487,5 @@ void pbComboManager::Release() {
 		LOGI("pbComboManager Release");
 	}
 
-}
+}*/
 

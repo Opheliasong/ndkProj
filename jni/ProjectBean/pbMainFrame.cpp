@@ -64,13 +64,18 @@ void pbMainFrame::npShowIntro() {
 																	-400.0f , -240.0f,  -1.0f,
 																	0.0f,1.0f,0.0f);
 		//XMLParsingBufferCreater::GetInstance().SetArchive(apkPath);
+
+		pbGlobalInGameVariable::ResetGlobalVariable();
+
 		pbUIProcessor::Create();
+		pbCharacter::Create();
+		pbBoss::Create();
 /*
 		pbEffectProcess::Create();
 		pbGuideLineGenerator::Create();
 		pbComboManager::Create();
-		pbCharacter::Create();
-		pbBoss::Create();
+
+
 
 		pbNoteProcessor::Create();*/
 
@@ -152,22 +157,16 @@ void pbMainFrame::npGameLoop() {
 
 void pbMainFrame::npGameDestroy() {
 	pbUIProcessor::Release();
+	pbCharacter::Release();
+	pbBoss::Release();
 
 /*	pbNoteProcessor::Release();
-	pbBoss::Release();
-	pbCharacter::Release();
+
 	pbGuideLineGenerator::Release();
 
 	pbEffectProcess::Release();
 	pbComboManager::Release();
-	pbBackgroundProcessor::Release();
-
-	pbUserData::Release();
-	nitroFrame::npTimer::release();
-	pbDataStorage::release();
-	pbTouchLayer::Release();
-	pbRenderProcess::Release();
-	npAudioSystem::Release();*/
+*/
 
 	delete Instance;
 

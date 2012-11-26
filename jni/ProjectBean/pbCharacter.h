@@ -5,17 +5,18 @@
 
 using namespace projectBean;
 
-class pbCharacter : public iTouchObserver{
+class pbCharacter : public npDrawable, public iTouchObserver{
 private:
 	pbCharacter();
 	~pbCharacter();
 
-	void SetVertexIndex(GLuint BodyIndex, GLuint LifeIndex, GLuint EffectIndex);
-	void SetUVIndex(GLuint BodyIndex, GLuint LifeIndex, GLuint EffectIndex);
 public:
 	static void Create();
-	void LoadData();
-	void Draw();
+
+	void LoadData(sceneTag RegistSceneTag);
+
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
 
 	void Update(float fTime);
 
@@ -43,21 +44,14 @@ public:
 private:
 	static pbCharacter* SingleObject;
 
+	sceneTag m_RegistSceneTag;
+
+	pbBasicDrawUnit* m_pBodyDrawUnit;
+	pbBasicDrawUnit* m_pSatelliteDrawUnit;
+
 	COLOR_RGBA m_Color;
 
-	GLuint m_BodyVertexIndex; //�ٵ��� ���ؽ����� index
-	GLuint m_BodyUVIndex; //�ٵ��� UV ���� index
-
 	npV2Vector m_vBodyPos;
-
-	float m_fBodyWidth;
-	float m_fBodyHeight ;
-
-	GLuint m_LifeVertexIndex; // �������� ���ؽ����� index
-	GLuint m_LifeUVIndex; //�������� UV ���� index
-
-//	GLfloat** m_ppfFollowLineVertexPointer;
-//	float m_fLerp;
 
 	float m_fLifeRotate;
 	float m_fLifePosX;
@@ -69,9 +63,8 @@ private:
 	float m_fFeverDestDistance;
 	bool m_bFeverReady;
 
-
 	GLuint m_EffectVertexIndex;
-	GLuint m_EffectUVIndex; //����Ʈ
+	GLuint m_EffectUVIndex;
 
 	float m_fFeverTargetTime;
 	float m_fEffectScale;
@@ -80,8 +73,8 @@ private:
 
 
 //------------------------------------------�޺� �Ŵ���------------------------------------------------------//
-
-class pbComboManager : public pbUI_Untouchable {
+/*
+class pbComboManager : public pbBasicUI {
 public:
 	pbComboManager();
 	~pbComboManager();
@@ -131,7 +124,7 @@ private:
 	GLuint m_NumberVertexIndex;
 
 
-};
+};*/
 
 
 

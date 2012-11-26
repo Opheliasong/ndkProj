@@ -43,9 +43,6 @@ public:
 private:
 };
 
-
-
-
 class pbZigZagMover : public pbObjectMover {
 private:
 	pbZigZagMover() { m_fCycle = 0.0f;	m_fAmplitudeX = 0.0f;	m_fAmplitudeY = 0.0f;}
@@ -108,7 +105,8 @@ public:
 private:
 	npV2Vector m_vPos;
 
-	npLinkNode<pbObjectMover>* m_pMoverHead;
+	typedef  npLinkNode<pbObjectMover*> pbObjectMoverList;
+	pbObjectMoverList*  m_pMoverHead;
 	pbObjectMover* m_pCurrentMover;
 
 	int m_CurrentState;
@@ -119,7 +117,7 @@ private:
 
 //----------------------------------------------pbBoss------------------------------------------------------------------------------------//
 
-class pbBoss {
+class pbBoss : public npDrawable{
 private:
 	pbBoss();
 	~pbBoss();
@@ -130,7 +128,8 @@ public:
 
 	void Update(float fTime);
 
-	void Draw();
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
 
 	static void DecreaseHP(float fDamage);
 
@@ -149,14 +148,10 @@ private:
 	pbMarionette* m_pMarionette;
 	float m_fHP;
 
+	pbBasicDrawUnit* m_pBodyDrawUnit;
+
 	bool m_bBattlePhase;
 	bool m_bBossAlive;
-
-	GLfloat m_Vertex[12];
-	GLuint m_UVIndex;
-	npSizef_WH m_WH;
-
-
 
 };
 

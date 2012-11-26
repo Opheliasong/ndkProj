@@ -16,11 +16,10 @@
 #include "../nitroFrame/npTimer.h"
 #include "pbBackground.h"
 #include "pbUI.h"
+#include "pbCharacter.h"
+#include "pbBoss.h"
 //#include "pbGuideLine.h"
-//#include "pbBoss.h"
-//
 //#include "pbEffect.h"
-//#include "pbCharacter.h"
 //#include "pbNote.h"
 //#include "pbNoteProcessor.h"
 

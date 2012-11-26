@@ -65,12 +65,12 @@ npNativeEvent.cpp\
 /ProjectBean/pbSceneWrapper.cpp\
 /ProjectBean/pbBackground.cpp\
 /ProjectBean/pbUI.cpp\
-#/ProjectBean/pbBoss.cpp\
 /ProjectBean/pbCharacter.cpp\
-/ProjectBean/pbEffect.cpp\
-/ProjectBean/pbGuideLine.cpp\
+/ProjectBean/pbBoss.cpp\
+#/ProjectBean/pbEffect.cpp\
 /ProjectBean/pbNote.cpp\
 /ProjectBean/pbNoteProcessor.cpp\
+/ProjectBean/pbGuideLine.cpp\
 
 
 LOCAL_LDLIBS:= -L$(SYSROOT)usr/lib -llog -lEGL -lGLESv1_CM -landroid

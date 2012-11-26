@@ -603,9 +603,7 @@ void pbUIProcessor::Update(float time){
 }
 
 void pbUIProcessor::ClearDataStore() {
-	LOGE("pbUIProcessor::ClearDataStore() DEBUG 1");
 	LinkNodeDeleteAllKernel(pbUI*, m_ControledUIStore)
-	LOGE("pbUIProcessor::ClearDataStore() DEBUG 2");
 	UIList::clearList(m_ControledUIStore);
 
 	LOGfloatString("ClearUI :", m_UICounts);

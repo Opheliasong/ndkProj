@@ -10,7 +10,7 @@ void pbGlobalInGameVariable::ResetGlobalVariable() {
 	fWorldMoveSpeed = WORLD_MOVESPEED;
 	bGamePause = false;
 	//ColorKey[3] = { 0, 50, 50};
-	NumLife = MAX_LIFE;
+	NumLife = 3;
 	PlusScore = 0;
 
 	LOGI("pbGlobalInGameVariable::ResetGlobalVariable");
@@ -21,7 +21,7 @@ GLfloat pbGlobalInGameVariable::fWorldX = 0.0f;
 GLfloat pbGlobalInGameVariable::fWorldMoveSpeed = WORLD_MOVESPEED;
 bool pbGlobalInGameVariable::bGamePause = false;
 //float pbGlobalInGameVariable::fColorKey[3] = { 0, 50, 50};
-GLuint pbGlobalInGameVariable::NumLife = MAX_LIFE;
+GLuint pbGlobalInGameVariable::NumLife = 0;
 int pbGlobalInGameVariable::PlusScore = 0;
 /*bool pbGlobalInGameVariable::bCameraShake = false;
 float pbGlobalInGameVariable::fCameraShakeTime = 0.0f;
