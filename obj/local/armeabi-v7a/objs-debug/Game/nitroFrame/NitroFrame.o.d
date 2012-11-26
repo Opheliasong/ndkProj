@@ -172,7 +172,7 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/NitroFrame.o: \
  jni//nitroFrame/Render/DAOBinder.h jni//nitroFrame/Render/Sprite.h \
  jni//nitroFrame/Render/DAODeleter.h \
  jni//nitroFrame/Render/../xmlParser/npDeleterParser.h \
- jni//nitroFrame/Render/../xmlParser/npXMLParer.h \
+ jni//nitroFrame/Render/../xmlParser/npXMLParser.h \
  jni//nitroFrame/Render/../xmlParser/../include/tinyxml.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/ctype.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h \
@@ -201,7 +201,7 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/NitroFrame.o: \
  jni//nitroFrame/Render/../xmlParser/npInsertParser.h \
  jni//nitroFrame/Render/../xmlParser/../include/tinystr.h \
  jni//nitroFrame/Render/../include/zip.h jni//nitroFrame/npAudioSystem.h \
- jni//nitroFrame/xmlParser/npXMLParer.h \
+ jni//nitroFrame/xmlParser/npXMLParser.h \
  jni//nitroFrame/xmlParser/npInsertParser.h \
  jni//nitroFrame/xmlParser/npDeleterParser.h \
  jni//nitroFrame/Render/npRenderTypedef.h \
@@ -585,7 +585,7 @@ jni//nitroFrame/Render/DAODeleter.h:
 
 jni//nitroFrame/Render/../xmlParser/npDeleterParser.h:
 
-jni//nitroFrame/Render/../xmlParser/npXMLParer.h:
+jni//nitroFrame/Render/../xmlParser/npXMLParser.h:
 
 jni//nitroFrame/Render/../xmlParser/../include/tinyxml.h:
 
@@ -645,7 +645,7 @@ jni//nitroFrame/Render/../include/zip.h:
 
 jni//nitroFrame/npAudioSystem.h:
 
-jni//nitroFrame/xmlParser/npXMLParer.h:
+jni//nitroFrame/xmlParser/npXMLParser.h:
 
 jni//nitroFrame/xmlParser/npInsertParser.h:
 

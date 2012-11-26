@@ -63,7 +63,7 @@ void pbMainFrame::npShowIntro() {
 		npRenderprocess::getInstance().setLookat(-400.0f, -240.0f,  0.0f,
 																	-400.0f , -240.0f,  -1.0f,
 																	0.0f,1.0f,0.0f);
-
+		//XMLParsingBufferCreater::GetInstance().SetArchive(apkPath);
 		pbUIProcessor::Create();
 /*
 		pbEffectProcess::Create();
@@ -80,7 +80,7 @@ void pbMainFrame::npShowIntro() {
 
 		//-------------------------------------------------씬 관련 초기화-------------------------------------------------------------//
 		//---------씬 래퍼 세팅-----------------//
-		pbPlaySceneWrapper* pPlayScene = new pbPlaySceneWrapper("PLAYS_CENE");
+		pbPlaySceneWrapper* pPlayScene = new pbPlaySceneWrapper("PLAY_SCENE");
 		pbSceneManager::getInstance().AddScene(pPlayScene->GetTag(), pPlayScene);
 
 		pbIntroSceneWrapper* pIntroScene = new pbIntroSceneWrapper("INTRO_SCENE");
@@ -92,6 +92,7 @@ void pbMainFrame::npShowIntro() {
 
 		//---------인트로 네비게이트 무버
 		pbSceneMover* newMover = new pbSceneMover(SCENESTATE::GAME_CREATE);
+		//																										 인트로로 변경 해줘야함
 		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
@@ -102,16 +103,13 @@ void pbMainFrame::npShowIntro() {
 
 		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
 		//-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-//
-
+		//---------되돌리기 테스트
+			newMover = new pbSceneMover(SCENESTATE::GAME_PLAY);
+			newMover->AddStateElement(SCENESTATE::ACTION_BACKWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
+			pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 		//
 	/*
-		pbTouchLayer::Initialize(m_InnerWidthRatio,m_InnerHeightRatio);
-		pbRenderProcess::Initialize();
 		nitroFrame::npTimer::initialize();
-		npAudioSystem::Initialize(m_env);
-
-		//버텍스, UV 생성
-		pbDataStorage::Create(apkPath);
 */
 
 		m_bFirstLoad = true;
@@ -155,13 +153,7 @@ void pbMainFrame::npGameLoop() {
 void pbMainFrame::npGameDestroy() {
 	pbUIProcessor::Release();
 
-/*	pbSceneNavigator::Release();
-	pbLoadingSceneWrapper::Release();
-	pbIntroSceneWrapper::Release();
-	pbPlaySceneWrapper::Release();
-
-	//XXX: OnDestroy
-	pbNoteProcessor::Release();
+/*	pbNoteProcessor::Release();
 	pbBoss::Release();
 	pbCharacter::Release();
 	pbGuideLineGenerator::Release();

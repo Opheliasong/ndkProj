@@ -150,7 +150,7 @@ public:
 		npLinkNode* iterator;
 
 		for(iterator = destroyListHead->next; iterator != destroyListHead; ){
-			npLinkNode<T>* nextTarget = iterator->prev;
+			npLinkNode<T>* nextTarget = iterator->next;
 			destroyNode(iterator);
 			iterator = nextTarget;
 		}
@@ -166,11 +166,11 @@ public:
 		npLinkNode* iterator;
 
 		for(iterator = destroyListHead->next; iterator != destroyListHead; ){
-			npLinkNode<T>* nextTarget = iterator->prev;
+			/*npLinkNode<T>* nextTarget = iterator->prev;*/
+			npLinkNode<T>* nextTarget = iterator->next;
 			destroyNode(iterator);
 			iterator = nextTarget;
 		}
-
 	}
 
 	T& getKernel(){
@@ -241,13 +241,22 @@ private:
 	}
 };
 
+//#define LinkNodeDeleteAllKernel(KernelType, listHeader)\
+//	npLinkNode<KernelType>* iterator = listHeader;\
+//		iterator = listHeader->getNext();\
+//		while (iterator != listHeader) {\
+//			KernelType pkernel = iterator->getKernel();\
+//			iterator = iterator->getNext();\
+//			delete pkernel;\
+//		}
+
 #define LinkNodeDeleteAllKernel(KernelType, listHeader)\
-	npLinkNode<KernelType>* iterator = listHeader;\
-		iterator = listHeader->getNext();\
-		while (iterator != listHeader) {\
-			KernelType pkernel = iterator->getKernel();\
-			iterator = iterator->getNext();\
-			delete pkernel;\
+	npLinkNode<KernelType>* iterator;\
+		for (iterator = listHeader->getNext(); iterator != listHeader; ) {\
+			npLinkNode<KernelType>* nextIter =  iterator->getNext();\
+			delete iterator->getKernel();\
+			iterator = nextIter;\
 		}
+
 
 #endif /* PBLINKNODE_H_ */

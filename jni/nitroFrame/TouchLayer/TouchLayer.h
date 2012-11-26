@@ -39,6 +39,7 @@ public:
 	void RegistedObserver(iTouchObserver* pointer);
 	void RemovedObserver(iTouchObserver* pointer);
 	void PausedObserver(iTouchObserver* pointer,unsigned int pauseMS);
+	void ClearRegistedList();
 
 	//Touch 관련 interface
 	virtual void onTouchPoint(int x, int y, int touchFlag, int touchPoint);

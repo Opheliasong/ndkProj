@@ -5,140 +5,80 @@
 
 using namespace projectBean;
 
-////------------------------------------------------------ UI �������̽�------------------------------------------------------------------------------///////
-class pbInterfaceUI {
-	void registLinkNode(pbInterfaceUI* pUI);
-	void removeLinkNode(pbInterfaceUI* pUI);
+class pbUI : public npDrawable{
 public:
-	pbInterfaceUI();
-	virtual ~pbInterfaceUI();
+	pbUI(){ /*m_Color.Init(1.0f, 1.0f, 1.0f, 1.0f);*/ m_Type = UITYPE::UI; m_ID = 0; m_pBaseDrawUnit = NULL; }
+	virtual ~pbUI(){};
 
-	void AddChildUnit(pbInterfaceUI* pChild);
-	void DeleteChildUnit(pbInterfaceUI* pChild);
+	virtual void SetID(GLuint ID) {m_ID = ID;}
+	virtual void SetPos(float PosX, float PosY) { m_vPos[0] = PosX; m_vPos[1] = PosY;}
+	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height) = 0;
 
-	void Draw();
+	virtual void PreSettingDraw() = 0;
+	virtual void DrawThis() = 0;
 	virtual void Update(float fTime) = 0;
 
-	virtual void SetV2Pos(float X, float Y);
-	inline void SetType(UITYPE::TYPE Type) { m_Type = Type; }
-	/*inline void SetV2Pos(float X, float Y) { m_vPos[iX] = X; m_vPos[iY] = Y; }*/
-
-	inline void SetV2ParentPos(float X, float Y) { m_vParentPos[iX] = X; m_vParentPos[iY] = Y; }
-
-	inline pbDrawUnit* GetBaseDrawUnit() { return m_pDrawUnit_Base;}
-	inline UITYPE::TYPE GetType() { return m_Type; }
-//	inline pbLinkNode<pbInterfaceUI>* GetUIListHeader() { return m_pUIListHeader; }
-
-private:
-	UITYPE::TYPE m_Type;
-	pbDrawUnit* m_pDrawUnit_Base;
-	npLinkNode<pbInterfaceUI>* m_pUIListHeader;
+	NP_DEFINE_PROPERTY(UITYPE::TYPE, m_Type, Type);
+protected:
+	GLuint m_ID;
+	//COLOR_RGBA m_Color;
 	npV2Vector m_vPos;
-	npV2Vector m_vParentPos;	//��ġ�� ���� ����� ��ġ
+	pbBasicDrawUnit* m_pBaseDrawUnit;
+
 };
 
-typedef npLinkNode<pbInterfaceUI> pbUIList;
-
-////------------------------------------------------------ ��ġ �Ұ� UI------------------------------------------------------------------------------///////
-class pbUI_Untouchable : public pbInterfaceUI{
+class pbBasicUI : public pbUI{
 public:
-	pbUI_Untouchable();
-	virtual ~pbUI_Untouchable();
+	pbBasicUI() {};
+	virtual ~pbBasicUI(){};
 
+	virtual void SetID(GLuint ID) {m_ID = ID;}
+	virtual void SetPos(float PosX, float PosY) { m_vPos[0] = PosX; m_vPos[1] = PosY;}
+	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height) = 0;
+
+	virtual void PreSettingDraw() = 0;
+	virtual void DrawThis() = 0;
 	virtual void Update(float fTime) = 0;
-private:
+
+protected:
+
 };
 
-////------------------------------------------------------ ��ġ ���� UI------------------------------------------------------------------------------///////
-class pbUI_Touchable : public pbInterfaceUI, public iTouchObserver{
+class pbTouchUI : public pbUI, public iTouchObserver{
 public:
-	pbUI_Touchable();
-	virtual ~pbUI_Touchable();
+	pbTouchUI() {m_bTouched = false; }
+	virtual ~pbTouchUI(){};
 
-	virtual void SetV2Pos(float X, float Y);
+	virtual void SetID(GLuint ID) {m_ID = ID;}
+	virtual void SetPos(float PosX, float PosY) { m_vPos[0] = PosX; m_vPos[1] = PosY;}
+	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height) = 0;
 
+	virtual void PreSettingDraw() = 0;
+	virtual void DrawThis() = 0;
 	virtual void Update(float fTime) = 0;
 
 	virtual void notify() = 0;
-private:
-	npSizef_WH m_pHalfWH;
-};
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ Base UI------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class pbBaseUI : public pbUI_Untouchable {
-public:
-	pbBaseUI();
-	virtual ~pbBaseUI();
 
-	virtual void Update(float fTime);
-
-private:
-};
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ TouchBase UI------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class pbTouchBaseUI : public pbUI_Touchable{
-public:
-	pbTouchBaseUI();
-	virtual ~pbTouchBaseUI();
-
-	void SetTouchActFunction(void (fpAction)() ) { m_fpTouchAction = fpAction; }
-
-	virtual void Update(float fTime);
-
-	virtual void notify(int x, int y, TOUCHSTATUS::TYPE Touchstatus);
-private:
-	void (*m_fpTouchAction)();
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ����ġ UI------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// �ѹ� ��ġ�ϸ� �����Ǵ� UI
-class pbOneTouchUI : public pbUI_Touchable{
-public:
-	pbOneTouchUI();
-	virtual ~pbOneTouchUI();
-
-	virtual void Update(float fTime);
-
-	virtual void notify(int x, int y, TOUCHSTATUS::TYPE Touchstatus);
-
-	bool IsTouched() { return m_bTouched; }
-private:
+	inline bool IsTouched() { return m_bTouched;}
+	inline void ResetTouched() { m_bTouched = false; }
+protected:
 	bool m_bTouched;
 };
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ������ UI------------------------------------------------------------------------------///////
+////------------------------------------------------------ pbAbilityPower_Indicator------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// �ѹ� ��ġ�ϸ� �����Ǵ� UI
-class pbGaugeUI : public pbUI_Untouchable{
-public:
-	pbGaugeUI();
-	virtual ~pbGaugeUI();
-
-	virtual void Update(float fTime);
-
-private:
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ �ֹ��� UI------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*class pbAbilityPower_Indicator : public pbUI {
+class pbAbilityPower_Indicator : public pbBasicUI {
 public:
 	pbAbilityPower_Indicator();
 	virtual ~pbAbilityPower_Indicator();
-	virtual void Init();
 
 	virtual void SetPos(float PosX, float PosY);
-	virtual void SetVertexIndex(GLuint BodyIndex, GLuint TextIndex);
-	virtual void SetUVIndex(GLuint BodyIndex, GLuint TextIndex);
+	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height);
+	virtual void SetGaugeSprite(screenplayTag Tag, float Width, float Height);
 
-	virtual void Draw();
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
 	virtual void Update(float fTime);
 
 private:
@@ -152,92 +92,105 @@ private:
 
 	float m_fGaugeHalfWidth;
 	float m_fGaugeHalfHeight;
-	float m_fTextHalfWidth;
-	float m_fTextHalfHeight;
 
 	bool m_bNoHaveGauge;
 
-	GLuint m_TextVertexIndex;
-	GLuint m_TextUVIndex;
-
 	GLfloat m_GaugeUV[8];
+	GLfloat m_GaugeVertex[12];
+	GLuint m_GaugeUVBindID;
+
 	float m_GaugeUV_WidthPercent;
-};*/
-
+};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ���� ���------------------------------------------------------------------------------///////
+////------------------------------------------------------ pbBackPanelUI------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*class pbScore_Indicator : public pbUI {
+class pbBackPanelUI : public pbBasicUI {
+public:
+	pbBackPanelUI();
+	virtual ~pbBackPanelUI();
+
+	virtual void SetPos(float PosX, float PosY);
+	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height);
+
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
+	virtual void Update(float fTime);
+
+private:
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////------------------------------------------------------ pbButtonUI------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class pbButtonUI : public pbTouchUI{
+public:
+	pbButtonUI();
+	virtual ~pbButtonUI();
+
+	virtual void SetPos(float PosX, float PosY);
+	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height);
+
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
+	virtual void Update(float fTime);
+
+	virtual void notify();
+private:
+
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////------------------------------------------------------pbScore_Indicator------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class pbScore_Indicator : public pbBasicUI {
 public:
 	pbScore_Indicator();
 	virtual ~pbScore_Indicator();
-	virtual void Init();
 
-	virtual void SetVertexIndex(GLuint BodyIndex, GLuint TextIndex);
-	virtual void SetUVIndex(GLuint StartNumberUVIndex, GLuint TextIndex);
+	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height);
+	virtual void SetScoreSprite(screenplayTag FirstSpriteTag, float Width, float Height);
 
-	virtual void Draw();
-
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
 	virtual void Update(float fTime);
 
 	void DataReset();
 
 	enum{ MAX_DIGITS = 10, NUMBERING = 10 };
 private:
-	float m_PlacementWidth;
-	GLuint m_NumberUVIndex[NUMBERING];	//0~9�� UVIndex
+	float m_fTextHalfWidth;
+
+
+	GLfloat m_ScoreVertex[12];
+	float m_ScoreWidth;
+	GLfloat* m_ScoreUV[NUMBERING];
+	GLuint m_ScoreBindID[NUMBERING];	//0~9�� UVIndex
 	GLuint m_DigitsNumber[MAX_DIGITS];
 	int m_NumberData;
 
-	float m_fTextHalfWidth;
-	float m_fTextHalfHeight;
 
-	GLuint m_TextVertexIndex;
-	GLuint m_TextUVIndex;
-};*/
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ �ε���� ���------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-class pbLoadingPercent_UI : public pbUI {
-public:
-	pbLoadingPercent_UI();
-	virtual ~pbLoadingPercent_UI();
-	virtual void Init();
-
-	virtual void SetVertexIndex(GLuint TextIndex, GLuint NumberIndex);
-	virtual void SetUVIndex(GLuint TextIndex ,GLuint StartNumberIndex);
-
-	virtual void Draw();
-
-	virtual void Update(float fTime);
-
-	void DataReset();
-
-	void SetLoadingPercentage(float fPercentage);
-
-	enum{ MAX_DIGITS = 3, NUMBERING = 10 };
-private:
-	float m_PlacementWidth;
-	GLuint m_NumberUVIndex[NUMBERING];	//0~9�� UVIndex
-	GLuint m_DigitsNumber[MAX_DIGITS];
-
-	float m_fTextHalfWidth;
-	float m_fTextHalfHeight;
-
-	GLuint m_TextVertexIndex;
-	GLuint m_TextUVIndex;
-
-	int m_CurrentDigits;
 };
-*/
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////-----------------------------------------------------���μ��� ------------------------------------------------------------------------------///////
+////---------------------------------------------------- XML Parser-----------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class XMLParsingBufferCreater {
+public:
+	XMLParsingBufferCreater();
+	~XMLParsingBufferCreater();
+
+	void SetArchive(std::string apkPath);
+	char* OpenAssetsByPath(xmlPath path);
+	void CloseAssetsAndBuffer(char* buffer);
+
+	static XMLParsingBufferCreater& GetInstance();
+private:
+	zip* apkArchive;
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////-----------------------------------------------------pbUIProcessor ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class pbUIProcessor{
@@ -249,23 +202,17 @@ public:
 	static void Create();
 	bool LoadData(const char* filename);
 
-	void CreateUIByType(const char* Type, float X, float Y, float Width, float Height);
+	void CreateUIByType(const char* Type, float X, float Y, screenplayTag BaseTag, screenplayTag ExtraTag);
 
-	pbInterfaceUI* AddBackPanelUI(float X, float Y, float Width, float Height, GLuint UVIndex);
-	pbInterfaceUI* AddMenuButtonUI(float X, float Y, float Width, float Height, GLuint UVIndex);
-	pbInterfaceUI* AddHelpButtonUI(float X, float Y, float Width, float Height, GLuint UVIndex);
-	pbInterfaceUI* AddOneTouchUI(float X, float Y, float Width, float Height, GLuint UVIndex);
-
-	pbInterfaceUI* AddTopSideInfoUI(float X, float Y, pbInterfaceUI* Menu, pbInterfaceUI* Help, pbInterfaceUI* Score, pbInterfaceUI* Gauge);
-
-/*	pbUI* AddAbillityPointUI(float X, float Y, GLuint GaugeVertexIndex, GLuint TextVertexIndex, GLuint GaugeUVIndex, GLuint TextUVIndex);
-	pbUI* AddScoreUI(float X, float Y, GLuint NumberVertexIndex, GLuint TextVertexIndex, GLuint NumberUVIndex, GLuint TextUVIndex);
-	pbUI* AddLoadingPercentUI(float X, float Y, GLuint TextVertexIndex, GLuint NumberVertexIndex, GLuint TextUVIndex, GLuint NumberUVIndex);*/
+	pbBasicUI* AddBackPanelUI(float X, float Y, screenplayTag Tag, float Width, float Height);
+	pbTouchUI* AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height);
+	pbBasicUI* AddAbillityPointUI(float X, float Y,screenplayTag TextTag, float TextWidth, float TextHeight,  screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight);
+	pbBasicUI* AddScoreUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight, screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight);
 
 
 	void Update(float time);
 
-	void DeleteUI(pbInterfaceUI* pUI);
+	void DeleteUI(pbUI* pUI);
 	static void Release();
 
 	void ClearDataStore();
@@ -273,13 +220,13 @@ public:
 	static  pbUIProcessor* GetInstance() { return SingleObject;}
 private:
 	static pbUIProcessor* SingleObject;
-
-	npLinkNode<pbInterfaceUI>* m_ControledUIStore;
+	typedef  npLinkNode<pbUI*> UIList;
+	UIList* m_ControledUIStore;
 
 	int m_UICounts;
 
-	void registControled(pbInterfaceUI* pUI);
-	void removeControled(pbInterfaceUI* pUI);
+	void registControled(pbUI* pUI);
+	void removeControled(pbUI* pUI);
 
 };
 

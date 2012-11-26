@@ -15,7 +15,7 @@
 #include "../include/tinystr.h"
 #include "../npDebugUtill.h"
 
-#include "npXMLParer.h"
+#include "npXMLParser.h"
 #include "../Render/npRenderTypedef.h"
 #include "../Render/npContainerDAO.h"
 

@@ -316,7 +316,7 @@ void pbBackgroundProcessor::ClearDataStore() {
 	LinkNodeDeleteAllKernel(pbBackground*, m_pBackgroundQueue)
 	BackgroundList::clearList(m_pBackgroundQueue);
 
-	LOGfloatString("ClearUI :", m_iBackgroundCount);
+	LOGfloatString("ClearBackground :", m_iBackgroundCount);
 
 	m_iBackgroundCount = 0;
 

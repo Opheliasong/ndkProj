@@ -5,7 +5,7 @@
  *      Author: Ophelia
  */
 
-#include "npXMLParer.h"
+#include "npXMLParser.h"
 
 /***
  * @fn 기본 SetUPXMLPath함수. OpenAssetsByPath를 통해 AssetManager를 통해 Asset을 생성하고 Assets폴더에서 XML Raw Data를 가져올 준비를 한다.

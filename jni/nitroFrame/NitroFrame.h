@@ -29,7 +29,7 @@
 #include "npAudioSystem.h"
 
 //XML Parsing 관련
-#include "xmlParser/npXMLParer.h"
+#include "xmlParser/npXMLParser.h"
 #include "xmlParser/npInsertParser.h"
 #include "xmlParser/npDeleterParser.h"
 

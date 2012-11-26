@@ -67,10 +67,14 @@ void TouchLayer::RegistedObserver(iTouchObserver* pointer) {
 }
 
 void TouchLayer::RemovedObserver(iTouchObserver* pointer) {
-	npLinkNode<iTouchObserver*>::findRemove(pointer,&this->RegistedList);
+	npLinkNode<iTouchObserver*>::findDelete(pointer,&this->RegistedList);
 }
 
 void TouchLayer::PausedObserver(iTouchObserver* pointer, unsigned int pauseMS) {
+}
+
+void TouchLayer::ClearRegistedList()  {
+	npLinkNode<iTouchObserver*>::clearList(&this->RegistedList);
 }
 
 

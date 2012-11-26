@@ -183,7 +183,7 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/../nitroFrame/Render/Sprite.h \
  jni/./ProjectBean/../nitroFrame/Render/DAODeleter.h \
  jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npDeleterParser.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npXMLParer.h \
+ jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npXMLParser.h \
  jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinyxml.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/ctype.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h \
@@ -213,7 +213,7 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinystr.h \
  jni/./ProjectBean/../nitroFrame/Render/../include/zip.h \
  jni/./ProjectBean/../nitroFrame/npAudioSystem.h \
- jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParer.h \
+ jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h \
  jni/./ProjectBean/../nitroFrame/xmlParser/npInsertParser.h \
  jni/./ProjectBean/../nitroFrame/xmlParser/npDeleterParser.h \
  jni/./ProjectBean/../nitroFrame/Render/npRenderTypedef.h \
@@ -243,15 +243,17 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/../nitroFrame/TouchLayer/../npLinkNode.h \
  jni/./ProjectBean/../nitroFrame/TouchLayer/TouchObserver.h \
  jni/./ProjectBean/../nitroFrame/npLinkNode.h \
- jni/./ProjectBean/../nitroFrame/npMath.h jni/./ProjectBean/pbTypes.h \
- jni/./ProjectBean/pbDrawUnit.h \
+ jni/./ProjectBean/../nitroFrame/npMath.h \
+ jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h \
+ jni/./ProjectBean/pbTypes.h jni/./ProjectBean/pbDrawUnit.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
  jni/./ProjectBean/pbGlobalVariable.h jni/./ProjectBean/pbSceneWrapper.h \
  jni/./ProjectBean/../nitroFrame/npTimer.h \
  jni/./ProjectBean/../nitroFrame/npSubject.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
- jni/./ProjectBean/pbBackground.h jni/npNativeEvent.h \
- jni/nitroFrame/NitroFrame.h jni/./nitroFrame/npDebugUtill.h
+ jni/./ProjectBean/pbBackground.h jni/./ProjectBean/pbUI.h \
+ jni/npNativeEvent.h jni/nitroFrame/NitroFrame.h \
+ jni/./nitroFrame/npDebugUtill.h
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/string.h:
 
@@ -621,7 +623,7 @@ jni/./ProjectBean/../nitroFrame/Render/DAODeleter.h:
 
 jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npDeleterParser.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npXMLParer.h:
+jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npXMLParser.h:
 
 jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinyxml.h:
 
@@ -681,7 +683,7 @@ jni/./ProjectBean/../nitroFrame/Render/../include/zip.h:
 
 jni/./ProjectBean/../nitroFrame/npAudioSystem.h:
 
-jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParer.h:
+jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h:
 
 jni/./ProjectBean/../nitroFrame/xmlParser/npInsertParser.h:
 
@@ -743,6 +745,8 @@ jni/./ProjectBean/../nitroFrame/npLinkNode.h:
 
 jni/./ProjectBean/../nitroFrame/npMath.h:
 
+jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h:
+
 jni/./ProjectBean/pbTypes.h:
 
 jni/./ProjectBean/pbDrawUnit.h:
@@ -760,6 +764,8 @@ jni/./ProjectBean/../nitroFrame/npSubject.h:
 jni/./ProjectBean/../nitroFrame/npObserver.h:
 
 jni/./ProjectBean/pbBackground.h:
+
+jni/./ProjectBean/pbUI.h:
 
 jni/npNativeEvent.h:
 

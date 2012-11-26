@@ -141,6 +141,7 @@ public:
 	virtual void notify();
 
 	inline bool IsTouched() {return m_bTouched;}
+	inline void ResetTouched() { m_bTouched = false; }
 private:
 	bool m_bTouched;
 };

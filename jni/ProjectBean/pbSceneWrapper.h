@@ -103,15 +103,26 @@ public:
 			iterator = iterator->getNext();
 
 			npRenderprocess::getInstance().DoDraw((*pkernel));
+
 		}
+	//	LOGE("DEBUG pbSceneWrapper : DrawScene complete");
 	}
 
 	void SetTag(sceneTag Tag) { m_Tag = Tag;}
 	sceneTag& GetTag() { return m_Tag;}
 	void RegistToRenderList(npDrawable* pDrawable) {
-		RenderList::addTail(pDrawable, 	m_RenderListHeader);
-		LOGI("pbSceneWrapper::RegistRenderList");
+		if(pDrawable != NULL ) {
+			RenderList::addTail(pDrawable, 	m_RenderListHeader);
+			LOGI("pbSceneWrapper::RegistRenderList");
+		}
+		else
+			LOGE("pbSceneWrapper::RegistRenderList Drawble is NULL");
 	}
+
+	void ClearToRenderList() {
+			RenderList::clearList(m_RenderListHeader);
+			LOGI("pbSceneWrapper::ClearToRenderList");
+		}
 
 	virtual void InitializeScene() = 0;
 	virtual void UpdateScene(float fTime) = 0;
@@ -124,6 +135,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////----------------------------------------------------- pbPlaySceneWrapper------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class pbTouchUI;
 class pbPlaySceneWrapper : public pbSceneWrapper{
 	pbPlaySceneWrapper();
 public:
@@ -134,7 +146,8 @@ public:
 	virtual void UpdateScene(float fTime);
 	virtual void ClearScene();
 private:
-
+	pbTouchUI* BackWardUI;
+	pbTouchUI* helpUI;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

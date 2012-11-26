@@ -11,7 +11,7 @@
 #include <jni.h>
 #include <GLES/gl.h>
 #include <GLES/glext.h>
-#include "npXMLParer.h"
+#include "npXMLParser.h"
 #include "../Render/npContainerDAO.h"
 #include "../Render/npRenderTypedef.h"
 
