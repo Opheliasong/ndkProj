@@ -293,11 +293,6 @@ void pbButtonUI::notify() {
 pbScore_Indicator::pbScore_Indicator(){
 	m_pBaseDrawUnit = new pbBasicDrawUnit();
 
-	for (int i = 0; i < NUMBERING; i++) {
-		m_ScoreUV[i] = new GLfloat[8];
-	}
-
-
 	m_ScoreWidth = 0;
 	m_NumberData = 0;
 
@@ -337,9 +332,7 @@ void pbScore_Indicator::SetScoreSprite(screenplayTag ZeroSpriteTag, float Width,
 		TextureAtlasIter textureAtlasIterator =  npAtlasMap::getInstance().FrameContainer.find(index);
 		UVPacket* uvPacket = &textureAtlasIterator->second;
 
-		m_ScoreBindID[i] = uvPacket->bindTextureID;
-
-		memcpy(m_ScoreUV[i], uvPacket->texture, sizeof(GLfloat)*8);
+		m_ScoreUV[i] = uvPacket;
 
 		pSprite->ReadyForNextScreenplay();
 	}
@@ -366,8 +359,9 @@ void pbScore_Indicator::DrawThis() {
 		///----------score------------------//
 		for (int i = 0; i < MAX_DIGITS; i++) {
 			glPushMatrix();
-			glBindTexture(GL_TEXTURE_2D,  m_ScoreBindID[m_DigitsNumber[i]] );
-			glTexCoordPointer(2,GL_FLOAT, 0,  m_ScoreUV[i]);
+			UVPacket* UV = m_ScoreUV[m_DigitsNumber[i]];
+			glBindTexture(GL_TEXTURE_2D,   UV->bindTextureID);
+			glTexCoordPointer(2,GL_FLOAT, 0,  UV->texture);
 			glTranslatef(8 + ((float) i) * m_ScoreWidth, 0, 0);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 			glPopMatrix();
@@ -384,7 +378,7 @@ void pbScore_Indicator::Update(float fTime)
 		m_NumberData += pbGlobalInGameVariable::PlusScore;
 		 pbGlobalInGameVariable::PlusScore = 0;
 
-		int DigitsNumber = m_NumberData;		//����ĭ�� ��ġ��  Score : [0] [1] [2] ... �� ���̹Ƿ� �ùٸ� ǥ���� ���� �������� �ִ´�
+		int DigitsNumber = m_NumberData;
 		for( int i = MAX_DIGITS - 1; i > 0; --i)
 		{
 			m_DigitsNumber[i] = DigitsNumber%10;
@@ -400,6 +394,8 @@ void pbScore_Indicator::Update(float fTime)
 		LOGfloatString("100000", m_DigitsNumber[5]);*/
 	}
 }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------XMLParsingBufferCreater ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

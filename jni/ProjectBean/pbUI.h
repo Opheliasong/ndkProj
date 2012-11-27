@@ -163,8 +163,7 @@ private:
 
 	GLfloat m_ScoreVertex[12];
 	float m_ScoreWidth;
-	GLfloat* m_ScoreUV[NUMBERING];
-	GLuint m_ScoreBindID[NUMBERING];	//0~9�� UVIndex
+	UVPacket* m_ScoreUV[NUMBERING];
 	GLuint m_DigitsNumber[MAX_DIGITS];
 	int m_NumberData;
 
