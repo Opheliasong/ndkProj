@@ -629,11 +629,11 @@ void pbEffectManager::AddStepUpEffect(float X, float Y, screenplayTag PanelTag, 
 	pbSceneManager::getInstance().RegistRenderToScene(m_SceneTag, pEffect);
 }
 
-void pbEffectManager::AddStickerEffect(float X, float Y, screenplayTag BaseTag, float fWidth, float fHeight) {
+void pbEffectManager::AddStickerEffect(float X, float Y, screenplayTag BaseTag, float fWidth, float fHeight, float lifeTime) {
 	pbStickerEffect* pEffect = m_pStickerEffectRentalUnit->RentalMemory();
 	if( pEffect == NULL) return;
 	pEffect->SetRegistedSceneTag(m_SceneTag);
-	pEffect->Initialize(BaseTag, fWidth, fHeight, 0.3f, false);
+	pEffect->Initialize(BaseTag, fWidth, fHeight, lifeTime, false);
 	pEffect->SetPos(X, Y);
 
 	registControled(pEffect);

@@ -197,7 +197,7 @@ public:
 
 	void AddStepUpEffect(float X, float Y, screenplayTag PanelTag, float PanelWidth, float PanelHeight,		screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
 															screenplayTag LabelTag, float LabelWidth, float LabelHeight,		screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight );
-	void AddStickerEffect(float X, float Y, screenplayTag BaseTag, float fWidth, float fHeight);
+	void AddStickerEffect(float X, float Y, screenplayTag BaseTag, float fWidth, float fHeight, float lifeTime);
 	void AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime,float fDamage, void (*DecreaseHP)(float fDamage) );
 	void AddMissEffect();
 

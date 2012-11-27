@@ -71,9 +71,10 @@ void pbMainFrame::npShowIntro() {
 		pbCharacter::Create();
 		pbBoss::Create();
 		pbEffectManager::Create();
+		pbComboManager::Create();
 /*
 		pbGuideLineGenerator::Create();
-		pbComboManager::Create();
+
 
 
 
@@ -160,10 +161,10 @@ void pbMainFrame::npGameDestroy() {
 	pbCharacter::Release();
 	pbBoss::Release();
 	pbEffectManager::Release();
+	pbComboManager::Release();
 /*	pbNoteProcessor::Release();
 	pbGuideLineGenerator::Release();
 
-	pbComboManager::Release();
 */
 
 	delete Instance;

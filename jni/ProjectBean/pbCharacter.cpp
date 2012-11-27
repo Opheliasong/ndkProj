@@ -262,11 +262,11 @@ void pbCharacter::notify(){
 
 			if (x >= left && x <= right) {
 				if (y >= bottom && y <= top) {
-					pbEffectManager::GetInstance()->AddStepUpEffect(400, 220, "ci", 800, 184, "run", 131, 36, "ci", 800, 36, "run", 164, 45);
-					//if( pbComboManager::GetInstance()->FeverOn() ) {
+					pbComboManager::GetInstance()->IncreaseCombo(10);
+					if( pbComboManager::GetInstance()->FeverOn() ) {
 						FeverEffectCancle();
 						FeverEffectOn();
-					//}
+					}
 					LOGE("[DEBUG]pbCharacter:: Touched");
 				}
 			}
@@ -276,7 +276,7 @@ void pbCharacter::notify(){
 //--------------------------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------�޺� �Ŵ���------------------------------------------------------------------//
 //--------------------------------------------------------------------------------------------------------------------------------------//
-/*pbComboManager* pbComboManager::SingleObject = NULL;
+pbComboManager* pbComboManager::SingleObject = NULL;
 
 pbComboManager::pbComboManager(){
 	SingleObject = NULL;
@@ -284,6 +284,13 @@ pbComboManager::pbComboManager(){
 	m_iCombo = 0;
 	m_iFever = 0;
 	m_iNextFeverCombo = 2;
+
+	m_pTextDrawUnit = NULL;
+	m_pFeverTextDrawUnit = NULL;
+
+	m_PlacementWidth = 0.0f;
+	m_fTextPlacementWidth = 0.0f;
+	m_CurrentDigits = 1;
 }
 
 pbComboManager::~pbComboManager() {
@@ -296,6 +303,9 @@ void pbComboManager::Create() {
 	{
 		SingleObject = new pbComboManager();
 
+		SingleObject->m_pTextDrawUnit = new pbBasicDrawUnit();
+		SingleObject->m_pFeverTextDrawUnit = new pbBasicDrawUnit();
+
 		LOGI("pbComboManager::Create() Complete");
 
 		return ;
@@ -307,17 +317,13 @@ void pbComboManager::Create() {
 void pbComboManager::LoadData() {
 	DataReset();
 
-	//SetVertexIndex(18);
-	GetBaseDrawUnit()->SetSizeWH(213,43);
-	GetBaseDrawUnit()->SetUVIndex(45);
-	GetBaseDrawUnit()->SetV2Pos(445, 400);
-	pbRenderProcess::RegistRenderUI(this);
-
+	SetTextTag("ci", "ci", 213, 43);
+	SetNumberTag("run", "run", 40, 43);
+	SetPos(400, 400);
 }
 
 
-void pbComboManager::DataReset()
-{
+void pbComboManager::DataReset(){
 	for(int i = 0; i < MAX_DIGITS; i++)
 		m_DigitsNumber[i] = 0;
 
@@ -327,58 +333,87 @@ void pbComboManager::DataReset()
 	m_iNextFeverCombo = 2;
 }
 
-void pbComboManager::SetVertexIndex(GLuint BodyIndex)
-{
-//	m_BodyVertexIndex =BodyIndex;
+void pbComboManager::SetTextTag(screenplayTag NormalTextTag, screenplayTag FeverTextTag, float fWidth, float fHeight){
+	m_pTextDrawUnit->SetTextureTAG(NormalTextTag);
+	m_pTextDrawUnit->SetSize(fWidth, fHeight);
 
-	m_FeverBodyVertexIndex = BodyIndex +1;
-	m_NumberVertexIndex = BodyIndex + 2;
-	m_FeverNumberVertexIndex = BodyIndex + 3;
+	m_pFeverTextDrawUnit->SetTextureTAG(FeverTextTag);
+	m_pFeverTextDrawUnit->SetSize(fWidth, fHeight);
 
-	float width = pbDataStorage::GetVertexWidth(m_NumberVertexIndex);
-
-	m_PlacementWidth = width;
-
-	width = pbDataStorage::GetVertexWidth(m_FeverBodyVertexIndex);
-	m_fTextPlacementWidth = width/2;
+	m_fTextPlacementWidth = fWidth/2;
 
 }
 
-void pbComboManager::SetUVIndex(GLuint StartNumberUVIndex)
-{
-	for(int i = 0; i < NUMBERING; i++)
-	{
-		m_NumberUVIndex[i] = (StartNumberUVIndex + 2) + i;
-		m_FeverNumberUVIndex[i] = (StartNumberUVIndex + 2 + 10) +i;
+void pbComboManager::SetNumberTag(screenplayTag NormalNumberTag, screenplayTag FeverNumberTag, float fWidth, float fHeight){
+	SetVertexByCenter(m_NumberVertex, fWidth, fHeight);
+	m_PlacementWidth = fWidth;
+
+	//Normal Number Setting
+	sprite* pSprite = npContainerDAO::GetInstance().getSpriteByTAG(NormalNumberTag);
+	for (int i = 0; i < NUMBERING; i++) {
+		int index = pSprite->currentScreenplay->getKernel();
+		TextureAtlasIter textureAtlasIterator =
+				npAtlasMap::getInstance().FrameContainer.find(index);
+		UVPacket* uvPacket = &textureAtlasIterator->second;
+
+		m_NumberUVPacket[i] = uvPacket;
+
+		pSprite->ReadyForNextScreenplay();
 	}
 
-//	m_BodyUVIndex = StartNumberUVIndex;
-	m_FeverBodyUVIndex = StartNumberUVIndex + 1;
+	//Fever Number Setting
+	pSprite = npContainerDAO::GetInstance().getSpriteByTAG(FeverNumberTag);
+	for (int i = 0; i < NUMBERING; i++) {
+		int index = pSprite->currentScreenplay->getKernel();
+		TextureAtlasIter textureAtlasIterator =
+				npAtlasMap::getInstance().FrameContainer.find(index);
+		UVPacket* uvPacket = &textureAtlasIterator->second;
+
+		m_FeverNumberUVPacket[i] = uvPacket;
+
+		pSprite->ReadyForNextScreenplay();
+	}
 }
 
-void pbComboManager::Draw() {
+void pbComboManager::PreSettingDraw() {
 	glPushMatrix();
-	glTranslatef(m_vPos[0], m_vPos[1], 0.0f);
-	//�޺� �ؽ�Ʈ
-		glPushMatrix();
-		if( m_iCombo >= m_iNextFeverCombo)
-			pbDataStorage::BindVertexAndTexture(m_FeverBodyVertexIndex, m_FeverBodyUVIndex);
-		else
-			pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_BodyUVIndex);
+	glTranslatef(m_vPos[0], m_vPos[1], 0);
+}
 
-		//�ؽ�ó ���ε�
-		glTranslatef(-35 - m_fTextPlacementWidth, 0,  0);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+void pbComboManager::DrawThis(){
+		glPushMatrix();
+		///---------text----------------//
+		pbBasicDrawUnit* pDrawUnit;
+		if( m_iCombo >= m_iNextFeverCombo) {
+			pDrawUnit = m_pTextDrawUnit;
+			glScalef(1.05f, 1.1f, 1.0f);
+		}
+		else
+			pDrawUnit = m_pFeverTextDrawUnit;
+
+		pDrawUnit->PreSettingDraw();
+		glTranslatef( -m_fTextPlacementWidth - 10,  0.0f,  0);
+		pDrawUnit->DrawThis();
 		glPopMatrix();
 
-		//���̺?�� ���̵�� ã�´�
+
+		//number
+		glVertexPointer(3, GL_FLOAT, 0, m_NumberVertex);
+
 		int count = m_CurrentDigits - 1;
 		for(int i = 0 ; i < m_CurrentDigits; ++i)		{
 			glPushMatrix();
-			if( m_iCombo >= m_iNextFeverCombo)
-				pbDataStorage::BindVertexAndTexture(m_FeverNumberVertexIndex, m_FeverNumberUVIndex[m_DigitsNumber[count]]);
+			UVPacket* UV;
+			if( m_iCombo >= m_iNextFeverCombo) {
+				UV = m_FeverNumberUVPacket[m_DigitsNumber[count]];
+				glScalef(1.05f, 1.1f, 1.0f);
+			}
 			else
-				pbDataStorage::BindVertexAndTexture(m_NumberVertexIndex, m_NumberUVIndex[m_DigitsNumber[count]]);
+				UV = m_NumberUVPacket[m_DigitsNumber[count]];
+
+			glBindTexture(GL_TEXTURE_2D,  UV->bindTextureID );
+			glTexCoordPointer(2,GL_FLOAT, 0,  UV->texture);
+
 			//�ؽ�ó ���ε�
 			glTranslatef( ((float)i)*m_PlacementWidth, 0,  0);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -386,11 +421,8 @@ void pbComboManager::Draw() {
 
 			count--;
 		}
+
 	glPopMatrix();
-}
-
-void pbComboManager::Update(float fTime) {
-
 }
 
 void pbComboManager::IncreaseCombo(int Score) {
@@ -449,16 +481,17 @@ bool pbComboManager::FeverOn() {
 			m_DigitsNumber[i] = 0;
 
 		m_CurrentDigits = 1;
+
 		//�ǹ� ����Ʈ �۵�
-		npAudioSystem::playEffect(3);
-		pbUserData::SingleObject->UsingAbilityPoint(-100*m_iFever);
-		pbEffectProcess::GetInstance()->AddStepUpEffect(400, 220, 22, 67, 1.0f);
+//		npAudioSystem::playEffect(3);
+//		pbUserData::GetInstance().UsingAbilityPoint(-100*m_iFever);
+		pbEffectManager::GetInstance()->AddStepUpEffect(400, 220, "ci", 800, 184, "run", 131, 36, "ci", 800, 36, "run", 164, 45);
 		return true;
 	}
 	else {
 		//�ǹ� ����Ʈ �۵� �Ұ�
-		npAudioSystem::playEffect(5);
-		pbEffectProcess::GetInstance()->AddStickerEffect(pbCharacter::GetInstance()->GetPosX(), pbCharacter::GetInstance()->GetPosY(), 43, 3.0f);
+//		npAudioSystem::playEffect(5);
+		pbEffectManager::GetInstance()->AddStickerEffect(pbCharacter::GetInstance()->GetPosX(), pbCharacter::GetInstance()->GetPosY(), "ci", 200, 200, 0.3f);
 		return false;
 	}
 
@@ -468,22 +501,28 @@ bool pbComboManager::FeverOn() {
 void pbComboManager::ResetCombo() {
 	pbGlobalInGameVariable::fWorldMoveSpeed = WORLD_MOVESPEED;
 
-	npAudioSystem::playEffect(4);
-	 DataReset();
+//	npAudioSystem::playEffect(4);
+	DataReset();
 
-	 pbCharacter::GetInstance()->FeverEffectCancle();
+	pbCharacter::GetInstance()->FeverEffectCancle();
 
-	 pbEffectProcess::GetInstance()->AddMissEffect();
+	pbEffectManager::GetInstance()->AddMissEffect();
 }
 
 void pbComboManager::ClearDataStore() {
-	pbRenderProcess::RemoveRenderUI(this);
+	pbGlobalInGameVariable::fWorldMoveSpeed = WORLD_MOVESPEED;
+	DataReset();
+	pbCharacter::GetInstance()->FeverEffectCancle();
+
+	//	npAudioSystem::playEffect(4);
 	LOGI("pbComboManager ClearDataStore");
 }
 
 void pbComboManager::Release() {
 	if( SingleObject != NULL)	{
 		SingleObject->ClearDataStore();
+		delete SingleObject->m_pTextDrawUnit;
+		delete SingleObject->m_pFeverTextDrawUnit;
 		delete SingleObject;
 
 		SingleObject = NULL;
@@ -491,5 +530,5 @@ void pbComboManager::Release() {
 		LOGI("pbComboManager Release");
 	}
 
-}*/
+}
 

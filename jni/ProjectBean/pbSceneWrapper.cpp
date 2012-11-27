@@ -284,10 +284,13 @@ void pbPlaySceneWrapper::InitializeScene() {
 	createUI = pbUIProcessor::GetInstance()->AddScoreUI(195, 450, "ci", 119, 25, "run", 20, 35);
 	this->RegistToRenderList(createUI);
 
-/*	pbComboManager::GetInstance()->LoadData();
+/*
 	pbGuideLineGenerator::GetInstance()->LoadGuideLine("GuideLine.xml");
 	pbNoteProcessor::GetInstance()->LoadData("NoteData.xml");
 */
+	pbComboManager::GetInstance()->LoadData();
+	RegistToRenderList(pbComboManager::GetInstance());
+
 	// 캐릭터
 	pbCharacter::GetInstance()->LoadData(GetTag());
 	RegistToRenderList(pbCharacter::GetInstance());
@@ -344,11 +347,13 @@ void pbPlaySceneWrapper::ClearScene() {
 	pbBoss::GetInstance()->ClearDataStore();
 	pbEffectManager::GetInstance()->ClearDataStore();
 	pbGlobalInGameVariable::ResetGlobalVariable();
+	pbComboManager::GetInstance()->ClearDataStore();
 
 	BackWardUI = NULL;
+	helpUI = NULL;
 
 /*	pbNoteProcessor::GetInstance()->ClearDataStore();
-	pbComboManager::GetInstance()->ClearDataStore();
+
 	pbGuideLineGenerator::GetInstance()->ClearDataStore();
 	*/
 	LOGI("pbPlaySceneWrapper ClearScene Complete");

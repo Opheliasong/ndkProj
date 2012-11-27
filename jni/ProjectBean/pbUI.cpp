@@ -309,8 +309,7 @@ pbScore_Indicator::~pbScore_Indicator(){
 	delete m_pBaseDrawUnit;
 }
 
-void pbScore_Indicator::DataReset()
-{
+void pbScore_Indicator::DataReset(){
 	for(int i = 0; i < MAX_DIGITS; i++)
 		m_DigitsNumber[i] = 0;
 

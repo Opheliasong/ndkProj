@@ -161,7 +161,6 @@ public:
 private:
 	float m_fTextHalfWidth;
 
-
 	GLfloat m_ScoreVertex[12];
 	float m_ScoreWidth;
 	GLfloat* m_ScoreUV[NUMBERING];
