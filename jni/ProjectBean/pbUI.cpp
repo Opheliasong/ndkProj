@@ -77,8 +77,10 @@ void pbAbilityPower_Indicator::PreSettingDraw(){
 	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1],  0);
 	///------------Power Text--------------------
+	glPushMatrix();
 	m_pBaseDrawUnit->PreSettingDraw();
 	m_pBaseDrawUnit->DrawThis();
+	glPopMatrix();
 }
 
 void pbAbilityPower_Indicator::DrawThis() {
@@ -345,18 +347,22 @@ void pbScore_Indicator::SetScoreSprite(screenplayTag ZeroSpriteTag, float Width,
 }
 
 void pbScore_Indicator::PreSettingDraw() {
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1], 0);
+}
+
+void pbScore_Indicator::DrawThis() {
+		glPushMatrix();
 		///---------text----------------//
 		m_pBaseDrawUnit->PreSettingDraw();
 		glTranslatef( -m_fTextHalfWidth - 10,  0.0f,  0);
 		m_pBaseDrawUnit->DrawThis();
-}
+		glPopMatrix();
 
-void pbScore_Indicator::DrawThis() {
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glVertexPointer(3, GL_FLOAT, 0, m_ScoreVertex);
+		glVertexPointer(3, GL_FLOAT, 0, m_ScoreVertex);
 
 		///----------score------------------//
 		for (int i = 0; i < MAX_DIGITS; i++) {

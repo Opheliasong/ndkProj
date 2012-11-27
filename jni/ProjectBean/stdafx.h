@@ -18,8 +18,8 @@
 #include "pbUI.h"
 #include "pbCharacter.h"
 #include "pbBoss.h"
+#include "pbEffect.h"
 //#include "pbGuideLine.h"
-//#include "pbEffect.h"
 //#include "pbNote.h"
 //#include "pbNoteProcessor.h"
 

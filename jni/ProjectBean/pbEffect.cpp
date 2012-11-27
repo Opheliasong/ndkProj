@@ -1,9 +1,7 @@
 #include "pbEffect.h"
-#include "pbDataStorage.h"
-#include "pbRenderProcess.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ∆«¡§ ¿Ã∆Â∆Æ------------------------------------------------------------------------------///////
+////------------------------------------------------------ ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ∆Æ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*pbJudgementEffect::pbJudgementEffect()
@@ -32,7 +30,7 @@ void pbJudgementEffect::Draw()
 	///--------------------------------------
 	pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_BodyUVIndex);
 
-	//≈ÿΩ∫√≥ πŸ¿Œµ˘
+	//ÔøΩÿΩÔøΩ√≥ ÔøΩÔøΩÔøΩŒµÔøΩ
 	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1],  0);
 	glScalef(m_fScale, m_fScale, 1.0f);
@@ -59,60 +57,89 @@ void pbJudgementEffect::Update(float fTime)
 	}
 }*/
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ Ω∫≈‹æ˜ ¿Ã∆Â∆Æ------------------------------------------------------------------------------///////
+////------------------------------------------------------ ÔøΩÔøΩÔøΩ‹æÔøΩ ÔøΩÔøΩÔøΩÔøΩ∆Æ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-pbStepUpEffect::pbStepUpEffect()
-{
+pbStepUpEffect::pbStepUpEffect(){
+	m_fMaxLifeTime = 0.0f;
+	m_iPanelPhase = 0;
+	m_fPanelScale = 0.0f;
+	m_fPanelLerp = 0.0f;
+	m_fPanelPosX = 0.0f;
+
+	m_iStepUpPhase = 0;
+	m_fStepUpLerp = 0.0f;
+	m_fStepUpScale = 0.0f;
+	m_fStepUpPosX = 0.0f;
+	m_fStepUpAniTime = 0.0f;
+
+	m_bLabelDrawing = true;
+	m_fLabelTextWidth = 0.0f;
+	m_fLabelTextPosX = 0.0f;
+	m_iLabelPhase = 0;
+	m_fLabelLerp = 0.0f;
+
+	m_pPanelDrawUnit = new pbBasicDrawUnit();
+	m_pLabelDrawUnit = new pbBasicDrawUnit();
+	m_pLabelTextDrawUnit = new pbBasicDrawUnit();
+	m_pStepUpDrawUnit = new pbBasicDrawUnit();
+
 
 }
 
-pbStepUpEffect::~pbStepUpEffect()
-{
-
+pbStepUpEffect::~pbStepUpEffect(){
+	delete m_pPanelDrawUnit;
+	delete m_pLabelDrawUnit;
+	delete m_pLabelTextDrawUnit;
+	delete m_pStepUpDrawUnit;
 }
 
-void pbStepUpEffect::Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite)
+void pbStepUpEffect::Initialize(screenplayTag PanelTag, float PanelWidth, float PanelHeight,
+		screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
+		screenplayTag LabelTag, float LabelWidth, float LabelHeight,
+		screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight )
 {
-	m_BodyVertexIndex = 24;
-	m_BodyUVIndex = 74;
-
-	m_StepUpVertexIndex = 22;
-	m_StepUpUVIndex = 67;
-
-	m_LabelVertexIndex = 25;
-	m_LabelUVIndex = 75;
-
-	m_LabelTextVertexIndex =23;
-	m_LabelTextUVIndex = 73;
-
-	m_fLifeTime = LifeTime;
-	m_bInfinite = Infinite;
-	m_bAlive = true;
-
 	DataReset();
+
+	m_bInfinite = false;
+
+	m_pPanelDrawUnit->SetTextureTAG(PanelTag);
+	m_pPanelDrawUnit->SetSize(PanelWidth, PanelHeight);
+
+	m_pLabelTextDrawUnit->SetTextureTAG(LabelTextTag);
+	m_pLabelTextDrawUnit->SetSize(LabelTextWidth, LabelTextHeight);
+	m_fLabelTextWidth = LabelTextWidth;
+
+	m_pLabelDrawUnit->SetTextureTAG(LabelTag);
+	m_pLabelDrawUnit->SetSize(LabelWidth, LabelHeight);
+
+	m_pStepUpDrawUnit->SetTextureTAG(StepUpTag);
+	m_pStepUpDrawUnit->SetSize(StepUpWidth, StepUpHeight);
+
 
 }
 
 void pbStepUpEffect::DataReset()
 {
+	m_fLifeTime = 0;
+
 //	m_bPanelDrawing = false;
 	m_iPanelPhase = 0;
 	m_fPanelScale = 0.2f;
-	m_PanelPosX = -600.0f;
+	m_fPanelPosX = -600.0f;
 
 //	m_bStepUpDrawing = false;
 	m_fStepUpScale = 1.0f;
 	m_fStepUpPosX = -600.0f;
 	m_iStepUpPhase = 0;
-	m_StepUpAniCount = 0;
-
 
 	m_bLabelDrawing = false;
 	m_iLabelPhase = 0;
 	m_fLabelLerp = 0.0f;
-	m_fLabelWidth = pbDataStorage::GetVertexWidth(m_LabelTextVertexIndex);
-	m_fLabelPosX = 0.0f;
+	m_fLabelTextWidth = 0;
+	m_fLabelTextPosX = 0.0f;
+
+	m_bAlive = true;
 }
 
 void pbStepUpEffect::SetMaxLifeTime(float fLifeTime) {
@@ -120,69 +147,64 @@ void pbStepUpEffect::SetMaxLifeTime(float fLifeTime) {
 	m_fLifeTime = 0.0f;
 }
 
-void pbStepUpEffect::Draw()
-{
-
+void pbStepUpEffect::PreSettingDraw() {
 	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1],  0);
-	///---------------∂Û∫ß∆–≥Œ-------------------//
-	if( m_bLabelDrawing ) {
-		glPushMatrix();
-		glTranslatef(0, -20,  0);
+}
 
+void pbStepUpEffect::DrawThis() {
+	///---------------Label Draw-------------------//
+		if( m_bLabelDrawing ) {
 			glPushMatrix();
-			pbDataStorage::BindVertexAndTexture(m_LabelVertexIndex, m_LabelUVIndex);
+			glTranslatef(0, -20,  0);
+			m_pLabelDrawUnit->PreSettingDraw();
+			m_pLabelDrawUnit->DrawThis();
+			glPopMatrix();
+			///---------------TextDraw-------------------//
+			glPushMatrix();
+				m_pLabelTextDrawUnit->PreSettingDraw();
+				glTranslatef(m_fLabelTextPosX - 500, 0,  0);
+				for(int i = 0; i < 10; i++) {
+					glPushMatrix();
+					glTranslatef( m_fLabelTextWidth*i, 0,  0);
+					m_pLabelTextDrawUnit->DrawThis();
+					glPopMatrix();
+				}
 
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			glPopMatrix();
+		}
+		///---------------BackPanel-------------------//
+	//	if( m_bPanelDrawing ) {
+			glPushMatrix();
+			glTranslatef(m_fPanelPosX, 40,  0);
+			glScalef(1.0f, m_fPanelScale, 1.0f);
+			m_pPanelDrawUnit->PreSettingDraw();
+			m_pPanelDrawUnit->DrawThis();
+			glPopMatrix();
+	//	}
+		///---------------StepUp Text------------------//
+			glPushMatrix();
+			glTranslatef(m_fStepUpPosX, 40,  0);
+			glScalef(m_fStepUpScale, m_fStepUpScale, 1.0f);
+			m_pStepUpDrawUnit->PreSettingDraw();
+			m_pStepUpDrawUnit->DrawThis();
 			glPopMatrix();
 
-		///---------------∂Û∫ß≈ÿΩ∫∆Æ-------------------//
-			glPushMatrix();
-			pbDataStorage::BindVertexAndTexture(m_LabelTextVertexIndex, m_LabelTextUVIndex);
-
-			glTranslatef(m_fLabelPosX - 500, 0,  0);
-			for(int i = 0; i < 10; i++) {
-				glTranslatef( m_fLabelWidth, 0,  0);
-				glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			}
-			glPopMatrix();
-
-		glPopMatrix();
-	}
-	///---------------πÈ∆–≥Œ-------------------//
-//	if( m_bPanelDrawing ) {
-		glPushMatrix();
-		pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_BodyUVIndex);
-
-		glTranslatef(m_PanelPosX, 40,  0);
-		glScalef(1.0f, m_fPanelScale, 1.0f);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glPopMatrix();
-//	}
-	///---------------≈ÿΩ∫∆Æ-------------------//
-		glPushMatrix();
-		pbDataStorage::BindVertexAndTexture(m_StepUpVertexIndex, m_StepUpUVIndex + m_StepUpAniCount);
-
-		glTranslatef(m_fStepUpPosX, 40,  0);
-		glScalef(m_fStepUpScale, m_fStepUpScale, 1.0f);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glPopMatrix();
 
 	glPopMatrix();
-
 }
 
 void pbStepUpEffect::Update(float fTime)
 {
 	if( m_bAlive)
 	{
-		//---------------------------∆–≥Œ ∆‰¿Ã¡Ó ¡∂¿˝---------------------------------------//
+		//---------------------------ÔøΩ–≥ÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ---------------------------------------//
 		if( m_iPanelPhase == 0) {
 			m_fPanelLerp += (1/0.15f)*fTime;
-			//-------------µÓ¿Â ¿Ãµø-----------------//
-			m_PanelPosX = Lerp(-600, 0.0f, m_fPanelLerp*m_fPanelLerp);
-			if( m_PanelPosX > 0.0f)
-				m_PanelPosX = 0.0f;
+			//-------------ÔøΩÔøΩÔøΩÔøΩ ÔøΩÃµÔøΩ-----------------//
+			m_fPanelPosX = npLerp(-600, 0.0f, m_fPanelLerp*m_fPanelLerp);
+			if( m_fPanelPosX > 0.0f)
+				m_fPanelPosX = 0.0f;
 
 			if( m_fPanelLerp > 1.0f) {
 				m_fPanelLerp = 0.0f;
@@ -191,8 +213,8 @@ void pbStepUpEffect::Update(float fTime)
 		}
 		else if( m_iPanelPhase == 1) {
 			m_fPanelLerp += (1/0.15f)*fTime;
-			//-------------Ω∫ƒ…¿œ ≈∞øÏ±‚-----------------//
-			m_fPanelScale = Lerp(0.2f, 1.0f, m_fPanelLerp);
+			//-------------ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ≈∞ÔøΩÔøΩÔøΩ-----------------//
+			m_fPanelScale = npLerp(0.2f, 1.0f, m_fPanelLerp);
 
 			if( m_fPanelLerp > 1.0f) {
 				m_fPanelLerp = 0.0f;
@@ -202,7 +224,7 @@ void pbStepUpEffect::Update(float fTime)
 		}
 		else if( m_iPanelPhase == 2) {
 			m_fPanelLerp += (1/0.55f)*fTime;
-			//-------------¥Î±‚ -----------------//
+			//-------------ÔøΩÔøΩÔøΩ -----------------//
 			if( m_fPanelLerp > 1.0f) {
 				m_fPanelLerp = 0.0f;
 				m_iPanelPhase++;
@@ -212,9 +234,9 @@ void pbStepUpEffect::Update(float fTime)
 		else if( m_iPanelPhase == 3) {
 			m_fPanelLerp += (1/0.15f)*fTime;
 
-			//-------------≈¿Â ø¨√‚-----------------//
-			m_fPanelScale = Lerp(1.0f, 0.2f, m_fPanelLerp);
-			m_PanelPosX = Lerp(0, 600.0f, m_fPanelLerp);
+			//-------------ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ-----------------//
+			m_fPanelScale = npLerp(1.0f, 0.2f, m_fPanelLerp);
+			m_fPanelPosX = npLerp(0, 600.0f, m_fPanelLerp);
 
 			if( m_fPanelLerp > 1.0f) {
 				m_fPanelLerp = 0.0f;
@@ -223,12 +245,12 @@ void pbStepUpEffect::Update(float fTime)
 
 		}
 		//================================================//
-		//---------------------------Ω∫≈‹æ˜ ∆‰¿Ã¡Ó ¡∂¿˝---------------------------------------//
+		//---------------------------ÔøΩÔøΩÔøΩ‹æÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ---------------------------------------//
 		if( m_iStepUpPhase == 0) {
 			m_fStepUpLerp += (1/0.15f)*fTime;
 
-			//--------------------µÓ¿Â ¿Ãµø-------------------//
-			m_fStepUpPosX = Lerp(-600, 0.0f, m_fStepUpLerp*m_fStepUpLerp);
+			//--------------------ÔøΩÔøΩÔøΩÔøΩ ÔøΩÃµÔøΩ-------------------//
+			m_fStepUpPosX = npLerp(-600, 0.0f, m_fStepUpLerp*m_fStepUpLerp);
 			if( m_fStepUpPosX > 0.0f)
 				m_fStepUpPosX = 0.0f;
 
@@ -238,24 +260,24 @@ void pbStepUpEffect::Update(float fTime)
 			}
 		}
 		else if( m_iStepUpPhase == 1) {
-			//-------Ω∫ƒ…¿œ------------//
+			//-------ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ------------//
 			m_fStepUpScale = 2.0f;
 			m_iStepUpPhase++;
 		}
 		else if( m_iStepUpPhase == 2) {
-			//--------æ÷¥œ∏ﬁ¿Ãº«------------//
+			//--------ÔøΩ÷¥œ∏ÔøΩÔøΩÃºÔøΩ------------//
 			m_fStepUpAniTime += fTime;
 
-			if( m_fStepUpAniTime > 0.10f) {
+/*			if( m_fStepUpAniTime > 0.10f) {
 				m_StepUpAniCount++;
 				m_fStepUpAniTime = 0.0f;
 				if( m_StepUpAniCount > 5  )
 					m_StepUpAniCount = 5;
-			}
+			}*/
 			//=====================//
 
 			m_fStepUpLerp += (1/0.6f)*fTime;
-			//-------¿Ãµø-----------//
+			//-------ÔøΩÃµÔøΩ-----------//
 			m_fStepUpPosX += 200*fTime;
 
 			if( m_fStepUpLerp > 1.0f) {
@@ -266,8 +288,8 @@ void pbStepUpEffect::Update(float fTime)
 		else if( m_iStepUpPhase == 3) {
 			m_fStepUpLerp += (1/0.15f)*fTime;
 
-			//-------------≈¿Â ¿Ãµø-----------------//
-			m_fStepUpPosX = Lerp(m_fStepUpPosX, 800, m_fStepUpLerp);
+			//-------------ÔøΩÔøΩÔøΩÔøΩ ÔøΩÃµÔøΩ-----------------//
+			m_fStepUpPosX = npLerp(m_fStepUpPosX, 800, m_fStepUpLerp);
 
 			if( m_fStepUpLerp > 1.0f) {
 				m_fStepUpLerp = 0.0f;
@@ -276,7 +298,7 @@ void pbStepUpEffect::Update(float fTime)
 
 		}
 		//================================================//
-		//---------------------------∂Û∫ß ∆‰¿Ã¡Ó ¡∂¿˝---------------------------------------//
+		//---------------------------ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ---------------------------------------//
 		if (m_iLabelPhase == 0) {
 			m_fLabelLerp += (1 / 0.25f) * fTime;
 
@@ -289,8 +311,8 @@ void pbStepUpEffect::Update(float fTime)
 		} else if (m_iLabelPhase == 1) {
 			m_fLabelLerp += (1 / 0.6f) * fTime;
 
-			//-------------∂Û∫ß π´∫˘-----------------//
-			m_fLabelPosX -= fTime*m_fLabelWidth*2.0f;
+			//-------------ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ-----------------//
+			m_fLabelTextPosX -= fTime*m_fLabelTextWidth*2.0f;
 
 			if (m_fLabelLerp > 1.0f) {
 				m_fLabelLerp = 0.0f;
@@ -303,8 +325,8 @@ void pbStepUpEffect::Update(float fTime)
 		if( m_fLifeTime >= m_fMaxLifeTime )
 		{
 			m_bAlive = false;
-			pbEffectProcess::GetInstance()->RemoveEffectAndReturningMemory(this);
-			pbRenderProcess::RemoveRenderEffect(this);
+			pbEffectManager::GetInstance()->RemoveEffectAndReturningMemory(this);
+			pbSceneManager::getInstance().RemoveRenderToScene(m_RegistedScene, this);
 		}
 
 		if( !m_bInfinite)
@@ -313,421 +335,40 @@ void pbStepUpEffect::Update(float fTime)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ««πˆ∞°¥… ¿Ã∆Â∆Æ------------------------------------------------------------------------------///////
+////------------------------------------------------------ ÔøΩÔøΩ∆ºƒø ÔøΩÔøΩÔøΩÔøΩ∆Æ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-pbFeverAvailableEffect::pbFeverAvailableEffect()
-{
-
+pbStickerEffect::pbStickerEffect(){
+	m_pDrawUnit = new pbBasicDrawUnit();
 }
 
-pbFeverAvailableEffect::~pbFeverAvailableEffect()
-{
-
+pbStickerEffect::~pbStickerEffect(){
+	delete m_pDrawUnit;
 }
 
-void pbFeverAvailableEffect::Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite)
+void pbStickerEffect::Initialize(screenplayTag BaseTag, float fWidth, float fHeight, float LifeTime, bool Infinite)
 {
-	m_BodyVertexIndex = 24;
-	m_BodyUVIndex = 74;
-
-	m_StepUpVertexIndex = 23;
-	m_StepUpUVIndex = 73;
-
-/*	m_LabelVertexIndex = 25;
-	m_LabelUVIndex = 75;
-
-	m_LabelTextVertexIndex =23;
-	m_LabelTextUVIndex = 73;*/
+	m_pDrawUnit->SetTextureTAG(BaseTag);
+	m_pDrawUnit->SetSize(fWidth, fHeight);
 
 	m_fLifeTime = LifeTime;
 	m_bInfinite = Infinite;
 	m_bAlive = true;
-
-	DataReset();
-
-}
-
-void pbFeverAvailableEffect::DataReset()
-{
-//	m_bPanelDrawing = false;
-	m_iPanelPhase = 0;
-	m_fPanelScale = 0.2f;
-	m_PanelPosX = -600.0f;
-
-//	m_bStepUpDrawing = false;
-	m_fStepUpScale = 1.0f;
-	m_fStepUpPosX = -600.0f;
-	m_iStepUpPhase = 0;
-	m_StepUpAniCount = 0;
 
 	m_Color.Init(1.0f, 1.0f, 1.0f, 1.0f);
 
-/*	m_bLabelDrawing = false;
-	m_iLabelPhase = 0;
-	m_fLabelLerp = 0.0f;
-	m_fLabelWidth = pbDataStorage::GetVertexWidth(m_LabelTextVertexIndex);
-	m_fLabelPosX = 0.0f;*/
 }
-
-void pbFeverAvailableEffect::SetMaxLifeTime(float fLifeTime) {
-	m_fMaxLifeTime =fLifeTime;
-	m_fLifeTime = 0.0f;
+void pbStickerEffect::PreSettingDraw() {
+	glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
 }
-
-void pbFeverAvailableEffect::Draw()
-{
-
-	glPushMatrix();
-//	glScalef(m_fScale, m_fScale, 1.0f);
-	glTranslatef(m_vPos[0], m_vPos[1],  0);
-	///---------------∂Û∫ß∆–≥Œ-------------------//
-/*	if( m_bLabelDrawing ) {
-		glPushMatrix();
-		glTranslatef(0, -20,  0);
-
-			glPushMatrix();
-			pbDataStorage::BindVertexAndTexture(m_LabelVertexIndex, m_LabelUVIndex);
-
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			glPopMatrix();
-
-		///---------------∂Û∫ß≈ÿΩ∫∆Æ-------------------//
-			glPushMatrix();
-			pbDataStorage::BindVertexAndTexture(m_LabelTextVertexIndex, m_LabelTextUVIndex);
-
-			glTranslatef(m_fLabelPosX - 500, 0,  0);
-			for(int i = 0; i < 10; i++) {
-				glTranslatef( m_fLabelWidth, 0,  0);
-				glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			}
-			glPopMatrix();
-
-		glPopMatrix();
-	}*/
-	///---------------πÈ∆–≥Œ-------------------//
-//	if( m_bPanelDrawing ) {
-		glPushMatrix();
-		pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_BodyUVIndex);
-
-		glTranslatef(m_PanelPosX, 40,  0);
-		glScalef(m_fScale, m_fScale*m_fPanelScale, 1.0f);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glPopMatrix();
-//	}
-	///---------------≈ÿΩ∫∆Æ-------------------//
-		glPushMatrix();
-		glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
-		pbDataStorage::BindVertexAndTexture(m_StepUpVertexIndex, m_StepUpUVIndex );
-
-		glTranslatef(m_fStepUpPosX, 40,  0);
-		glScalef(m_fScale*m_fStepUpScale, m_fScale*m_fStepUpScale, 1.0f);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glPopMatrix();
-
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glPopMatrix();
-
-}
-
-void pbFeverAvailableEffect::Update(float fTime)
-{
-	if( m_bAlive)
-	{
-		//---------------------------∆–≥Œ ∆‰¿Ã¡Ó ¡∂¿˝---------------------------------------//
-		if( m_iPanelPhase == 0) {
-			m_fPanelLerp += (1/0.15f)*fTime;
-			//-------------µÓ¿Â ¿Ãµø-----------------//
-			m_PanelPosX = Lerp(-600, 0.0f, m_fPanelLerp*m_fPanelLerp);
-			if( m_PanelPosX > 0.0f)
-				m_PanelPosX = 0.0f;
-
-			if( m_fPanelLerp > 1.0f) {
-				m_fPanelLerp = 0.0f;
-				m_iPanelPhase++;
-			}
-		}
-		else if( m_iPanelPhase == 1) {
-			m_fPanelLerp += (1/0.15f)*fTime;
-			//-------------Ω∫ƒ…¿œ ≈∞øÏ±‚-----------------//
-			m_fPanelScale = Lerp(0.2f, 1.0f, m_fPanelLerp);
-
-			if( m_fPanelLerp > 1.0f) {
-				m_fPanelLerp = 0.0f;
-				m_fPanelScale = 1.0f;
-				m_iPanelPhase++;
-			}
-		}
-		else if( m_iPanelPhase == 2) {
-			m_fPanelLerp += (1/0.55f)*fTime;
-			//-------------¥Î±‚ -----------------//
-			if( m_fPanelLerp > 1.0f) {
-				m_fPanelLerp = 0.0f;
-				m_iPanelPhase++;
-			}
-
-		}
-		else if( m_iPanelPhase == 3) {
-			m_fPanelLerp += (1/0.15f)*fTime;
-
-			//-------------≈¿Â ø¨√‚-----------------//
-			m_fPanelScale = Lerp(1.0f, 0.2f, m_fPanelLerp);
-			m_PanelPosX = Lerp(0, 600.0f, m_fPanelLerp);
-
-			if( m_fPanelLerp > 1.0f) {
-				m_fPanelLerp = 0.0f;
-				m_iPanelPhase++;
-			}
-
-		}
-		//================================================//
-		//---------------------------Ω∫≈‹æ˜ ∆‰¿Ã¡Ó ¡∂¿˝---------------------------------------//
-		if( m_iStepUpPhase == 0) {
-			m_fStepUpLerp += (1/0.15f)*fTime;
-
-			//--------------------µÓ¿Â ¿Ãµø-------------------//
-			m_fStepUpPosX = Lerp(-600, 0.0f, m_fStepUpLerp*m_fStepUpLerp);
-			if( m_fStepUpPosX > 0.0f)
-				m_fStepUpPosX = 0.0f;
-
-			if( m_fStepUpLerp > 1.0f) {
-				m_fStepUpLerp = 0.0f;
-				m_iStepUpPhase++;
-			}
-		}
-		else if( m_iStepUpPhase == 1) {
-			//-------Ω∫ƒ…¿œ------------//
-			m_fStepUpScale = 2.0f;
-			m_iStepUpPhase++;
-		}
-		else if( m_iStepUpPhase == 2) {
-			//--------æ÷¥œ∏ﬁ¿Ãº«------------//
-			m_fStepUpAniTime += fTime;
-
-			if( m_fStepUpAniTime > 0.10f) {
-				m_fStepUpAniTime = 0.0f;
-				m_StepUpAniCount++;
-
-				//π›¬¶π›¬¶
-				if( (m_StepUpAniCount % 2) == 0 ) {
-					m_Color.R = 1.0f;
-					m_Color.G = 0.2f;
-					m_Color.B = m_Color.G;
-				}
-				else {
-					m_Color.R = 1.0f;
-					m_Color.G = 1.0f;
-					m_Color.B = 0.6f;
-				}
-			}
-			//=====================//
-
-			m_fStepUpLerp += (1/0.6f)*fTime;
-			//-------¿Ãµø-----------//
-			m_fStepUpPosX += 200*fTime;
-
-			if( m_fStepUpLerp > 1.0f) {
-				m_fStepUpLerp = 0.0f;
-				m_iStepUpPhase++;
-			}
-		}
-		else if( m_iStepUpPhase == 3) {
-			m_fStepUpLerp += (1/0.15f)*fTime;
-
-			//-------------≈¿Â ¿Ãµø-----------------//
-			m_fStepUpPosX = Lerp(m_fStepUpPosX, 800, m_fStepUpLerp);
-
-			if( m_fStepUpLerp > 1.0f) {
-				m_fStepUpLerp = 0.0f;
-				m_iStepUpPhase++;
-			}
-
-		}
-		//================================================//
-		//---------------------------∂Û∫ß ∆‰¿Ã¡Ó ¡∂¿˝---------------------------------------//
-/*		if (m_iLabelPhase == 0) {
-			m_fLabelLerp += (1 / 0.25f) * fTime;
-
-			if (m_fLabelLerp > 1.0f) {
-				m_fLabelLerp = 0.0f;
-				m_iLabelPhase++;
-				m_bLabelDrawing = true;
-			}
-
-		} else if (m_iLabelPhase == 1) {
-			m_fLabelLerp += (1 / 0.6f) * fTime;
-
-			//-------------∂Û∫ß π´∫˘-----------------//
-			m_fLabelPosX -= fTime*m_fLabelWidth*2.0f;
-
-			if (m_fLabelLerp > 1.0f) {
-				m_fLabelLerp = 0.0f;
-				m_iLabelPhase++;
-				m_bLabelDrawing = false;
-			}
-
-		}*/
-		//================================================//
-		if( m_fLifeTime >= m_fMaxLifeTime )
-		{
-			m_bAlive = false;
-			pbEffectProcess::GetInstance()->RemoveEffectAndReturningMemory(this);
-			pbRenderProcess::RemoveRenderEffect(this);
-		}
-
-		if( !m_bInfinite)
-			m_fLifeTime += fTime;
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ƒﬁ∫∏ ¿Ã∆Â∆Æ------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/*
-pbComboEffect::pbComboEffect()
-{
-
-}
-
-pbComboEffect::~pbComboEffect()
-{
-
-}
-
-void pbComboEffect::Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite)
-{
-	m_BodyVertexIndex = VertexIndex;
-	m_BodyUVIndex = UVIndex;
-
-	m_fLifeTime = LifeTime;
-	m_bInfinite = Infinite;
-	m_bAlive = true;
-
-	//πˆ≈ÿΩ∫ ºº∆√
-	m_BodyVertexIndex =VertexIndex;
-	float width = pbDataStorage::GetVertexWidth(VertexIndex);
-	m_PlacementWidth = width;
-
-	//≥—πˆ∏µ UV ºº∆√
-	for(int i = 0; i < NUMBERING; i++)
-	{
-		m_NumberUVIndex[i] = UVIndex + i;
-	}
-
-	DataReset();
-
-}
-
-void pbComboEffect::DataReset()
-{
-	for(int i = 0; i < MAX_DIGITS; i++)
-		m_DigitsNumber[i] = 0;
-
-	m_CurrentDigits = 1;
-}
-
-void pbComboEffect::SetCombo(int Combo) {
-	int count = 0;
-	int DigitsNumber = Combo;
-	while(1)
-	{
-		m_DigitsNumber[count++] = DigitsNumber%10;
-		DigitsNumber /= 10;
-
-		if( DigitsNumber == 0 )
-			break;
-
-	}
-
-	m_CurrentDigits = count;
-}
-
-
-void pbComboEffect::Draw()
-{
+void pbStickerEffect::DrawThis() {
 	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1], 0.0f);
-		//≈◊¿Ã∫Ìø°º≠ æ∆¿Ãµ∑Œ √£¥¬¥Ÿ
-		for(int i = 0 ; i < m_CurrentDigits; ++i)		{
-			glPushMatrix();
-			pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_NumberUVIndex[m_DigitsNumber[i]]);
-			//≈ÿΩ∫√≥ πŸ¿Œµ˘
-			glTranslatef(m_PlacementWidth -((float)i)*m_PlacementWidth, 0,  0);
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			glPopMatrix();
-		}
+	m_pDrawUnit->PreSettingDraw();
+	m_pDrawUnit->DrawThis();
 	glPopMatrix();
 
-}
-
-void pbComboEffect::Update(float fTime)
-{
-	if( m_bAlive)
-	{
-		if( !m_bInfinite)
-			m_fLifeTime -= fTime;
-
-		if(m_fLifeTime < 0.0f)
-		{
-			m_bAlive = false;
-			pbEffectProcess::GetInstance()->removeControled(this);
-			pbRenderProcess::RemoveRenderEffect(this);
-			pbEffectProcess::GetInstance()->m_ComboEffectRentalUnit.ReturningRentalMemory(this);
-		}
-		m_vPos[1] += 50*fTime;
-	}
-}
-*/
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ Ω∫∆ºƒø ¿Ã∆Â∆Æ------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-pbStickerEffect::pbStickerEffect()
-{
-
-}
-
-pbStickerEffect::~pbStickerEffect()
-{
-
-}
-
-void pbStickerEffect::Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite)
-{
-	m_BodyVertexIndex = VertexIndex;
-	m_BodyUVIndex = UVIndex;
-
-	m_fLifeTime = LifeTime;
-	m_bInfinite = Infinite;
-	m_bAlive = true;
-
-	//πˆ≈ÿΩ∫ ºº∆√
-	m_fScaleX = pbDataStorage::GetUVWidth(UVIndex);
-	m_fScaleY = pbDataStorage::GetUVHeight(UVIndex);
-
-	m_Color.Init(1.0f, 1.0f, 1.0f, 1.0f);
-
-}
-
-
-void pbStickerEffect::Draw()
-{
-	///--------------------------------------
-	pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_BodyUVIndex);
-
-	glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
-
-	//≈ÿΩ∫√≥ πŸ¿Œµ˘
-	glPushMatrix();
-	glTranslatef(m_vPos[0], m_vPos[1],  0);
-	glScalef(m_fScale*m_fScaleX, m_fScale*m_fScaleY, 1.0f);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-
-	glColor4f(1.0f, 1.0f,1.0f,1.0f);
+	glColor4f(1.0f, 1.0f,1.0f, 1.0f);
 }
 
 void pbStickerEffect::Update(float fTime)
@@ -740,8 +381,8 @@ void pbStickerEffect::Update(float fTime)
 		if(m_fLifeTime < 0.0f)
 		{
 			m_bAlive = false;
-			pbRenderProcess::RemoveRenderEffect(this);
-			pbEffectProcess::GetInstance()->RemoveEffectAndReturningMemory(this);
+			pbSceneManager::getInstance().RemoveRenderToScene(m_RegistedScene, this);
+			pbEffectManager::GetInstance()->RemoveEffectAndReturningMemory(this);
 			LOGE("RETURN StickerEffect");
 		}
 //		m_vPos[1] += 50*fTime;
@@ -749,7 +390,7 @@ void pbStickerEffect::Update(float fTime)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ¿ØµµπÃªÁ¿œ ¿Ã∆Â∆Æ------------------------------------------------------------------------------///////
+////------------------------------------------------------ ÔøΩÔøΩÔøΩÔøΩÔøΩÃªÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ∆Æ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 pbHomingMissileEffect::pbHomingMissileEffect(){
@@ -758,36 +399,32 @@ pbHomingMissileEffect::pbHomingMissileEffect(){
 	m_vDestination[0] = 0;
 	m_vDestination[1] = 0;
 
-
-	m_fScaleX = 1.0f;
-	m_fScaleY = 1.0f;
-
 	m_fBezierLerp = 1.0f;
 
 	m_fpDecreaseHP= NULL;
+	m_pMissileDrawUnit = new pbBasicDrawUnit();
+
+	m_pPosArray[0] = m_vPos;
+	m_pPosArray[1] = m_vPos_1;
+	m_pPosArray[2] = m_vPos_2;
+	m_pPosArray[3] = m_vPos_3;
+
+	 m_fDamage = 0.0f;
 }
 
-pbHomingMissileEffect::~pbHomingMissileEffect()
-{
+pbHomingMissileEffect::~pbHomingMissileEffect(){
+	delete m_pMissileDrawUnit;
 
 }
 
-void pbHomingMissileEffect::Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite)
-{
-	m_BodyVertexIndex = VertexIndex;
-	m_BodyUVIndex = UVIndex;
+void pbHomingMissileEffect::Initialize(screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime, bool Infinite){
+	m_pMissileDrawUnit->SetTextureTAG(MissileTag);
+	m_pMissileDrawUnit->SetSize(fWidth, fHeight);
 
 	m_fLifeTime = LifeTime;
 	m_bInfinite = Infinite;
 	m_bAlive = true;
 	m_fBezierLerp = 0;
-
-	//πˆ≈ÿΩ∫ ºº∆√
-	m_fScaleX = pbDataStorage::GetUVWidth(UVIndex);
-	m_fScaleY = pbDataStorage::GetUVHeight(UVIndex);
-
-	m_Color.Init(1.0f, 1.0f, 1.0f, 1.0f);
-
 
 }
 
@@ -795,7 +432,7 @@ void pbHomingMissileEffect::SetMissileCurve(float* pV2Origin, float* pV2Destinat
 	m_Bezier_Start.x = pV2Origin[0];
 	m_Bezier_Start.y = pV2Origin[1];
 
-	//--------------------0π¯ ªÁ√‚ ------------------------------//
+	//--------------------0ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ------------------------------//
 	srand(time(NULL));
 	int randX = rand() % 400 - 400;
 	int randY = rand() % 400 - 200;
@@ -806,7 +443,7 @@ void pbHomingMissileEffect::SetMissileCurve(float* pV2Origin, float* pV2Destinat
 	m_Bezier_0_2.x =  pV2Origin[0] + 200;
 	m_Bezier_0_2.y = pV2Destination[1] + randY;*/
 
-	//--------------------1π¯ ªÁ√‚ ------------------------------//
+	//--------------------1ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ------------------------------//
 	randX = rand() % 400 - 400;
 	randY = rand() % 400 - 200;
 	m_Bezier_1_1.x = pV2Origin[0] + randX;
@@ -816,7 +453,7 @@ void pbHomingMissileEffect::SetMissileCurve(float* pV2Origin, float* pV2Destinat
 	m_Bezier_1_2.x =  pV2Origin[0] + 200;
 	m_Bezier_1_2.y = pV2Destination[1] + randY;*/
 
-	//--------------------2π¯ ªÁ√‚ ------------------------------//
+	//--------------------2ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ------------------------------//
 	randX = rand() % 400 - 400;
 	randY = rand() % 400 - 200;
 	m_Bezier_2_1.x = pV2Origin[0] + randX;
@@ -826,7 +463,7 @@ void pbHomingMissileEffect::SetMissileCurve(float* pV2Origin, float* pV2Destinat
 	m_Bezier_2_2.x =  pV2Origin[0] + 200;
 	m_Bezier_2_2.y = pV2Destination[1] + randY;*/
 
-	//--------------------3π¯ ªÁ√‚ ------------------------------//
+	//--------------------3ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ------------------------------//
 	randX = rand() % 400 - 400;
 	randY = rand() % 400 - 200;
 	m_Bezier_3_1.x = pV2Origin[0] + randX;
@@ -836,11 +473,11 @@ void pbHomingMissileEffect::SetMissileCurve(float* pV2Origin, float* pV2Destinat
 	m_Bezier_3_2.x =  pV2Origin[0] + 200;
 	m_Bezier_3_2.y = pV2Destination[1] + randY;*/
 
-	//--------------------4π¯ ªÁ√‚ ------------------------------//
-	randX = rand() % 400 - 400;
+	//--------------------4ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ------------------------------//
+/*	randX = rand() % 400 - 400;
 	randY = rand() % 400 - 200;
 	m_Bezier_4_1.x = pV2Origin[0] + randX;
-	m_Bezier_4_1.y = pV2Origin[1] + randY;
+	m_Bezier_4_1.y = pV2Origin[1] + randY;*/
 
 /*	randY = rand() % 400 - 200;
 	m_Bezier_4_2.x =  pV2Origin[0] + 200;
@@ -850,55 +487,21 @@ void pbHomingMissileEffect::SetMissileCurve(float* pV2Origin, float* pV2Destinat
 	m_Bezier_End.y = pV2Destination[1];
 }
 
-
-void pbHomingMissileEffect::Draw()
-{
-	///--------------------------------------
-	pbDataStorage::BindVertexAndTexture(m_BodyVertexIndex, m_BodyUVIndex);
-
-	glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
-
-	//≈ÿΩ∫√≥ πŸ¿Œµ˘
-	glPushMatrix();
-	glTranslatef(m_vPos[0], m_vPos[1],  0);
-	glScalef(m_fScale*m_fScaleX, m_fScale*m_fScaleY, 1.0f);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-
-	//≈ÿΩ∫√≥ πŸ¿Œµ˘
-	glPushMatrix();
-	glTranslatef(m_vPos_1[0], m_vPos_1[1],  0);
-	glScalef(m_fScale*m_fScaleX, m_fScale*m_fScaleY, 1.0f);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-
-	//≈ÿΩ∫√≥ πŸ¿Œµ˘
-	glPushMatrix();
-	glTranslatef(m_vPos_2[0], m_vPos_2[1],  0);
-	glScalef(m_fScale*m_fScaleX, m_fScale*m_fScaleY, 1.0f);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-
-	//≈ÿΩ∫√≥ πŸ¿Œµ˘
-	glPushMatrix();
-	glTranslatef(m_vPos_3[0], m_vPos_3[1],  0);
-	glScalef(m_fScale*m_fScaleX, m_fScale*m_fScaleY, 1.0f);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-
-	//≈ÿΩ∫√≥ πŸ¿Œµ˘
-	glPushMatrix();
-	glTranslatef(m_vPos_4[0], m_vPos_4[1],  0);
-	glScalef(m_fScale*m_fScaleX, m_fScale*m_fScaleY, 1.0f);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-
-
-	glColor4f(1.0f, 1.0f,1.0f,1.0f);
+void pbHomingMissileEffect::PreSettingDraw() {
+	m_pMissileDrawUnit->PreSettingDraw();
 }
 
-void pbHomingMissileEffect::Update(float fTime)
-{
+void pbHomingMissileEffect::DrawThis() {
+	for(int i = 0; i < MAX_MISSILE; i++) {
+		glPushMatrix();
+		glTranslatef(m_pPosArray[i][0], m_pPosArray[i][1],  0);
+		m_pMissileDrawUnit->DrawThis();
+		glPopMatrix();
+	}
+
+}
+
+void pbHomingMissileEffect::Update(float fTime){
 	if( m_bAlive)
 	{
 		if( !m_bInfinite)
@@ -910,8 +513,8 @@ void pbHomingMissileEffect::Update(float fTime)
 		{
 			m_bAlive = false;
 			m_fBezierLerp = 0.0f;
-			pbRenderProcess::RemoveRenderEffect(this);
-			pbEffectProcess::GetInstance()->RemoveEffectAndReturningMemory(this);
+			pbSceneManager::getInstance().RemoveRenderToScene(m_RegistedScene, this);
+			pbEffectManager::GetInstance()->RemoveEffectAndReturningMemory(this);
 
 			if( m_fpDecreaseHP != NULL)
 				(*m_fpDecreaseHP)(m_fDamage);
@@ -938,9 +541,9 @@ void pbHomingMissileEffect::Update(float fTime)
 		m_vPos_3[0] = CurrentBezierPoint.x;
 		m_vPos_3[1] = CurrentBezierPoint.y;
 
-		CurrentBezierPoint = GetPointFromBezier3(&m_Bezier_Start, &m_Bezier_4_1, &m_Bezier_End, m_fBezierLerp);
+/*		CurrentBezierPoint = GetPointFromBezier3(&m_Bezier_Start, &m_Bezier_4_1, &m_Bezier_End, m_fBezierLerp);
 		m_vPos_4[0] = CurrentBezierPoint.x;
-		m_vPos_4[1] = CurrentBezierPoint.y;
+		m_vPos_4[1] = CurrentBezierPoint.y;*/
 
 /*		BEZIER_2POINT CurrentBezierPoint = GetPointFromBezier4(&m_Bezier_Start, &m_Bezier_0_1, &m_Bezier_0_2, &m_Bezier_End, m_fBezierLerp);
 		m_vPos[0] = CurrentBezierPoint.x;
@@ -965,41 +568,38 @@ void pbHomingMissileEffect::Update(float fTime)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////-----------------------------------------------------¿Ã∆Â∆Æ ∏≈¥œ¿˙------------------------------------------------------------------------------///////
+////-----------------------------------------------------ÔøΩÔøΩÔøΩÔøΩ∆Æ ÔøΩ≈¥ÔøΩÔøΩÔøΩ------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-pbEffectProcess* pbEffectProcess::SingleObject = NULL;
+pbEffectManager* pbEffectManager::SingleObject = NULL;
 
-pbEffectProcess::pbEffectProcess(){
+pbEffectManager::pbEffectManager(){
 	m_pEffectLinkHeader = NULL;
 
 	m_pStickerEffectRentalUnit = NULL;
 	m_pStepUpEffectRentalUnit = NULL;
-	m_pFeverAvailableEffectRentalUnit = NULL;
 	m_pHomingMissileEffectRentalUnit = NULL;
 
 }
-pbEffectProcess::~pbEffectProcess(){
+pbEffectManager::~pbEffectManager(){
 	if(SingleObject != NULL) {
 		ClearDataStore();
 	}
 }
 
 
-void pbEffectProcess::Create()
+void pbEffectManager::Create()
 {
 	if(SingleObject == NULL)
 	{
-		SingleObject = new pbEffectProcess();
+		SingleObject = new pbEffectManager();
 
-		SingleObject->m_pEffectLinkHeader = new pbLinkNode<pbEffect>;
+		SingleObject->m_pEffectLinkHeader = new EffectList;
 		SingleObject->m_pEffectLinkHeader->setHeader();
 
 		SingleObject->m_pStickerEffectRentalUnit = new pbMemoryRentalUnit<pbStickerEffect>;
 		SingleObject->m_pStickerEffectRentalUnit->Initialize(5);
 		SingleObject->m_pStepUpEffectRentalUnit =new pbMemoryRentalUnit<pbStepUpEffect>;
 		SingleObject->m_pStepUpEffectRentalUnit->Initialize(2);
-		SingleObject->m_pFeverAvailableEffectRentalUnit =new pbMemoryRentalUnit<pbFeverAvailableEffect>;
-		SingleObject->m_pFeverAvailableEffectRentalUnit->Initialize(2);
 
 		SingleObject->m_pHomingMissileEffectRentalUnit =new pbMemoryRentalUnit<pbHomingMissileEffect>;
 		SingleObject->m_pHomingMissileEffectRentalUnit->Initialize(4);
@@ -1012,109 +612,77 @@ void pbEffectProcess::Create()
 	LOGE("pbEffectProcess Create Failed");
 }
 
-void pbEffectProcess::AddStepUpEffect(float X, float Y, GLuint StartVertexIndex, GLuint StartUVIndex, float fScale) {
-	//«ˆ¿Á Ω∫≈‹æ˜ ¿Ã∆Â∆Æ¥¬ «œ≥™∏∏ æ≤π«∑Œ ∑ª≈ª¿Ø¥÷¿ª æ≤¡ˆæ ¥¬¥Ÿ
+void pbEffectManager::AddStepUpEffect(float X, float Y, screenplayTag PanelTag, float PanelWidth, float PanelHeight,		screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
+		screenplayTag LabelTag, float LabelWidth, float LabelHeight,		screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight )
+{
 	pbStepUpEffect* pEffect = m_pStepUpEffectRentalUnit->RentalMemory();
 	if( pEffect == NULL) return ;
-	// 17 33
-	pEffect->Initialize(StartVertexIndex, StartUVIndex, 0.0f, false);
+	pEffect->SetRegistedSceneTag(m_SceneTag);
+	pEffect->Initialize(PanelTag, PanelWidth, PanelHeight, 		LabelTextTag, LabelTextWidth, LabelTextHeight,
+								LabelTag, LabelWidth, LabelHeight, 	StepUpTag, StepUpWidth, StepUpHeight);
 	pEffect->SetPos(X, Y);
-	pEffect->SetScale(fScale);
+	//pEffect->SetScale(fScale);
 
 	pEffect->SetMaxLifeTime(1.0f);
 
 	registControled(pEffect);
-	pbRenderProcess::RegistRenderEffect(pEffect);
+	pbSceneManager::getInstance().RegistRenderToScene(m_SceneTag, pEffect);
 }
 
-void pbEffectProcess::AddFeverAvailableEffect(float X, float Y, GLuint StartVertexIndex, GLuint StartUVIndex, float fScale) {
-	//«ˆ¿Á ¿Ã ¿Ã∆Â∆Æ¥¬ «œ≥™∏∏ æ≤π«∑Œ ∑ª≈ª¿Ø¥÷¿ª æ≤¡ˆæ ¥¬¥Ÿ
-	pbFeverAvailableEffect* pEffect = m_pFeverAvailableEffectRentalUnit->RentalMemory();
+void pbEffectManager::AddStickerEffect(float X, float Y, screenplayTag BaseTag, float fWidth, float fHeight) {
+	pbStickerEffect* pEffect = m_pStickerEffectRentalUnit->RentalMemory();
 	if( pEffect == NULL) return;
-
-	// 23 24
-	pEffect->Initialize(StartVertexIndex, StartUVIndex, 0.0f, false);
+	pEffect->SetRegistedSceneTag(m_SceneTag);
+	pEffect->Initialize(BaseTag, fWidth, fHeight, 0.3f, false);
 	pEffect->SetPos(X, Y);
-	pEffect->SetScale(fScale);
-
-	pEffect->SetMaxLifeTime(1.0f);
 
 	registControled(pEffect);
-	pbRenderProcess::RegistRenderEffect(pEffect);
+	pbSceneManager::getInstance().RegistRenderToScene(m_SceneTag, pEffect);
+
+	LOGE("ADD StickerEffect");
 }
 
-void pbEffectProcess::AddStickerEffect(float X, float Y, GLuint StartUVIndex, float fScale) {
-	//Ω∫∆ºƒø ¿Ã∆Â∆Æ¥¬ ∫“∑Øø¬ ≈ÿΩ∫√ƒ¿« ≈©±‚øÕ ∞∞¿∫ πˆ≈ÿΩ∫∏¶ ¿⁄µø¿∏∑Œ ªÁøÎ«—¥Ÿ
-	if( m_pStickerEffectRentalUnit != NULL) {
-		pbStickerEffect* pEffect = m_pStickerEffectRentalUnit->RentalMemory();
-		if( pEffect == NULL) return;
+void pbEffectManager::AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime, float fDamage, void (*DecreaseHP)(float fDamage) ) {
+	pbHomingMissileEffect* pEffect = m_pHomingMissileEffectRentalUnit->RentalMemory();
+	if( pEffect == NULL) return;
+	pEffect->SetRegistedSceneTag(m_SceneTag);
+	pEffect->Initialize(MissileTag, fWidth, fHeight, LifeTime, false);
 
-		pEffect->Initialize(17, StartUVIndex, 0.3f, false);
-		pEffect->SetPos(X, Y);
-		pEffect->SetScale(fScale);
+	npV2Vector vOrigin, vDestination;
+	vOrigin[0] = fStartX;
+	vOrigin[1] = fStartY;
+	vDestination[0] = fDestX;
+	vDestination[1] = fDestY;
 
-		registControled(pEffect);
-		pbRenderProcess::RegistRenderEffect(pEffect);
-
-		LOGE("ADD StickerEffect");
-	}
-}
-
-void pbEffectProcess::AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, GLuint StartUVIndex, float LifeTime, float fDamage, void (*DecreaseHP)(float fDamage) ) {
-	//Ω∫∆ºƒø ¿Ã∆Â∆Æ¥¬ ∫“∑Øø¬ ≈ÿΩ∫√ƒ¿« ≈©±‚øÕ ∞∞¿∫ πˆ≈ÿΩ∫∏¶ ¿⁄µø¿∏∑Œ ªÁøÎ«—¥Ÿ
-	if( m_pStickerEffectRentalUnit != NULL) {
-		pbHomingMissileEffect* pEffect = m_pHomingMissileEffectRentalUnit->RentalMemory();
-		if( pEffect == NULL) return;
-
-		pEffect->Initialize(17, StartUVIndex, LifeTime, false);
-
-		npV2Vector vOrigin, vDestination;
-		vOrigin[0] = fStartX;
-		vOrigin[1] = fStartY;
-		vDestination[0] = fDestX;
-		vDestination[1] = fDestY;
-
-		pEffect->SetMissileCurve(vOrigin, vDestination);
-		pEffect->SetDecreaseHPFunc(DecreaseHP);
-		pEffect->SetDamage(fDamage);
+	pEffect->SetMissileCurve(vOrigin, vDestination);
+	pEffect->SetDecreaseHPFunc(DecreaseHP);
+	pEffect->SetDamage(fDamage);
 
 //		pEffect->SetPos(X, Y);
-		pEffect->SetScale(1.0f);
 
-		registControled(pEffect);
-		pbRenderProcess::RegistRenderEffect(pEffect);
+	registControled(pEffect);
+	pbSceneManager::getInstance().RegistRenderToScene(m_SceneTag, pEffect);
 
-		LOGE("ADD HomingMissileEffect");
-	}
+	LOGE("ADD HomingMissileEffect");
 }
 
-void pbEffectProcess::AddMissEffect() {
-	//πÃΩ∫¿Ã∆Â∆Æ¥¬ Ω∫∆ºƒø ¿Ã∆Â∆Æ∏¶ º≥¡§«ÿº≠ ªÁøÎ«—¥Ÿ
-	if( m_pStickerEffectRentalUnit != NULL) {
-		pbStickerEffect* pEffect = m_pStickerEffectRentalUnit->RentalMemory();
-		if( pEffect == NULL) return;
+void pbEffectManager::AddMissEffect() {
+	pbStickerEffect* pEffect = m_pStickerEffectRentalUnit->RentalMemory();
+	if( pEffect == NULL) return;
+	pEffect->SetRegistedSceneTag(m_SceneTag);
+	pEffect->Initialize("ci", 200, 200, 0.1f, false);
+	pEffect->SetPos(400, 240);
 
-		pEffect->Initialize(8, 29, 0.1f, false);
-		pEffect->SetPos(400, 240);
-		pEffect->SetScale(1.0f);
+	pEffect->SetColor(1.0f,1.0f,1.0f,1.0f);
 
-		pEffect->SetWidth(800);
-		pEffect->SetHeight(480);
-
-		pEffect->m_Color.R = 1.0f;
-		pEffect->m_Color.G = 0.0f;
-		pEffect->m_Color.B = 0.0f;
-		pEffect->m_Color.A = 1.0f;
-
-		registControled(pEffect);
-		pbRenderProcess::RegistRenderEffect(pEffect);
-	}
+	registControled(pEffect);
+	pbSceneManager::getInstance().RegistRenderToScene(m_SceneTag, pEffect);
 }
 
-void pbEffectProcess::Update(float fTime)
+void pbEffectManager::Update(float fTime)
 {
-	pbLinkNode<pbEffect>* iterator;
-	pbLinkNode<pbEffect>* head = m_pEffectLinkHeader;
+	EffectList* iterator;
+	EffectList* head = m_pEffectLinkHeader;
 
 	iterator = head->getNext();
 	while( iterator != head ) {
@@ -1126,14 +694,14 @@ void pbEffectProcess::Update(float fTime)
 
 }
 
-void pbEffectProcess::ClearDataStore() {
-	if( m_pEffectLinkHeader != NULL)
-		pbLinkNode<pbEffect>::ClearList(m_pEffectLinkHeader);
+void pbEffectManager::ClearDataStore() {
+	LinkNodeDeleteAllKernel(pbEffect*, m_pEffectLinkHeader)
+	EffectList::clearList(m_pEffectLinkHeader);
 
 	LOGI("pbEffectProcess ClearDataStore");
 }
 
-void pbEffectProcess::Release()
+void pbEffectManager::Release()
 {
 	if( SingleObject != NULL) {
 		SingleObject->ClearDataStore();
@@ -1148,12 +716,6 @@ void pbEffectProcess::Release()
 			SingleObject->m_pStepUpEffectRentalUnit->Release();
 			delete SingleObject->m_pStepUpEffectRentalUnit;
 			SingleObject->m_pStepUpEffectRentalUnit = NULL;
-		}
-
-		if( SingleObject->m_pFeverAvailableEffectRentalUnit != NULL) {
-			SingleObject->m_pFeverAvailableEffectRentalUnit->Release();
-			delete SingleObject->m_pFeverAvailableEffectRentalUnit;
-			SingleObject->m_pFeverAvailableEffectRentalUnit = NULL;
 		}
 
 		if( SingleObject->m_pHomingMissileEffectRentalUnit != NULL) {
@@ -1173,42 +735,37 @@ void pbEffectProcess::Release()
 	}
 }
 
-void pbEffectProcess::registControled(pbEffect* pEffect){
-	pbLinkNode<pbEffect>* pTargetNode = pbLinkNode<pbEffect>::makeLinkNode(pEffect);
-	pbLinkNode<pbEffect>::addTail(pTargetNode,m_pEffectLinkHeader);
+void pbEffectManager::registControled(pbEffect* pEffect){
+	EffectList::addTail(pEffect,m_pEffectLinkHeader);
 }
 
-void pbEffectProcess::removeControled(pbEffect* pEffect){
-	pbLinkNode<pbEffect>* pTargetNode = pbLinkNode<pbEffect>::makeLinkNode(pEffect);
-	pbLinkNode<pbEffect>::findDelete(pTargetNode,m_pEffectLinkHeader);
+void pbEffectManager::removeControled(pbEffect* pEffect){
+	EffectList::findDelete(pEffect,m_pEffectLinkHeader);
 }
 
 
-// ∏ÆΩ∫∆Æø°º≠ ¡¶∞≈«œ∞Ì ∑ª≈ª∏ﬁ∏∏Æ∏¶ π›»Ø«—¥Ÿ
-void pbEffectProcess::RemoveEffectAndReturningMemory(pbStickerEffect* pEffect) {
+// ÔøΩÔøΩÔøΩÔøΩ∆ÆÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩœ∞ÔøΩ ÔøΩÔøΩ≈ªÔøΩﬁ∏∏Æ∏ÔøΩ ÔøΩÔøΩ»ØÔøΩ—¥ÔøΩ
+void pbEffectManager::RemoveEffectAndReturningMemory(pbStickerEffect* pEffect) {
 	if( pEffect != NULL) {
 		removeControled(pEffect);
 		m_pStickerEffectRentalUnit->ReturningRentalMemory(pEffect);
+
+		LOGI("pbEffectProcess::ReturningMemory: pbStickerEffect");
 	}
 }
 
-void pbEffectProcess::RemoveEffectAndReturningMemory(pbStepUpEffect* pEffect) {
+void pbEffectManager::RemoveEffectAndReturningMemory(pbStepUpEffect* pEffect) {
 	if( pEffect != NULL) {
 		removeControled(pEffect);
 		m_pStepUpEffectRentalUnit->ReturningRentalMemory(pEffect);
+		LOGI("pbEffectProcess::ReturningMemory: pbStepUpEffect");
 	}
 }
 
-void pbEffectProcess::RemoveEffectAndReturningMemory(pbFeverAvailableEffect* pEffect) {
-	if( pEffect != NULL) {
-		removeControled(pEffect);
-		m_pFeverAvailableEffectRentalUnit->ReturningRentalMemory(pEffect);
-	}
-}
-
-void pbEffectProcess::RemoveEffectAndReturningMemory(pbHomingMissileEffect* pEffect) {
+void pbEffectManager::RemoveEffectAndReturningMemory(pbHomingMissileEffect* pEffect) {
 	if( pEffect != NULL) {
 		removeControled(pEffect);
 		m_pHomingMissileEffectRentalUnit->ReturningRentalMemory(pEffect);
+		LOGI("pbEffectProcess::ReturningMemory: pbHomingMissileEffect");
 	}
 }

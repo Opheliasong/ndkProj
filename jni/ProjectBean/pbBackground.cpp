@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void pbBasicBackground::PreSettingDraw() {
+	glPushMatrix();
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	m_BackgroundTextureRect->PreSettingDraw();
@@ -14,6 +15,7 @@ void pbBasicBackground::PreSettingDraw() {
 void pbBasicBackground::DrawThis() {
 	glTranslatef(m_vPos[0], m_vPos[1],  0);
 	m_BackgroundTextureRect->DrawThis();
+	glPopMatrix();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,25 +57,6 @@ void pbMoveBackground::Initialize(float Width, float Height, screenplayTag Tag){
 	m_fVertexWidth = Width;
 
 }
-
-/*void pbMoveBackground::PreSettingDraw() {
-	TextureAtlasIter textureAtlasIterator =  npAtlasMap::getInstance().FrameContainer.find(m_BackgroundUVIndex);
-	UVPacket* uvPacket = &textureAtlasIterator->second;
-
-	glBindTexture(GL_TEXTURE_2D,  uvPacket->bindTextureID );
-	glTexCoordPointer(2,GL_FLOAT, 0,  uvPacket->texture);	//텍스처좌표(UV) 배열 넘겨주기
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-}
-void pbMoveBackground::DrawThis() {
-	///--------------------------------------
-	glPushMatrix();
-	glTranslatef(m_vPos[0], m_vPos[1],  0);
-	glVertexPointer(3, GL_FLOAT, 0, m_BackgroundVertex);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	glPopMatrix();
-}*/
 
 void pbMoveBackground::Update(float fTime) {
 	m_fBackgroundFlowPercent += (1/ ( (m_fBGAreaWidth/pbGlobalInGameVariable::fWorldMoveSpeed)/m_fScrollRatio ) )*fTime;

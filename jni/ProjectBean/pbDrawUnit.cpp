@@ -117,7 +117,6 @@ pbBasicDrawUnit::~pbBasicDrawUnit(){
 }
 
 void pbBasicDrawUnit::PreSettingDraw() {
-	glPushMatrix();
 	npContainerDAO::GetInstance().BindingFrameBySprite(*this->sprtie);
 }
 
@@ -125,8 +124,7 @@ void pbBasicDrawUnit::DrawThis() {
 	glScalef(this->m_Width, this->m_Height, 1.0f);
 	glVertexPointer(3, GL_FLOAT, 0,this->vertex);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-
+//	glScalef(1/this->m_Width, 1/this->m_Height, 1.0f);
 }
 
 void pbBasicDrawUnit::SetSize(float width, float Height) {

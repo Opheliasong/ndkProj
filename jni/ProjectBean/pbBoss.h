@@ -137,7 +137,9 @@ public:
 	static void Release();
 
 	inline void SetState(int State) { m_pMarionette->SelectMoveState(State); }
+	inline void SetBattlePhase(bool Switch) { m_bBattlePhase = Switch;}
 	inline bool IsBattlePhase() { return m_bBattlePhase;}
+
 
 	inline static pbBoss* GetInstance() { return SingleObject; }
 	inline static pbMarionette* GetMarionette() { return GetInstance()->m_pMarionette;}

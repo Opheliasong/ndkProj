@@ -253,8 +253,8 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
  jni/./ProjectBean/pbBackground.h jni/./ProjectBean/pbUI.h \
  jni/./ProjectBean/pbCharacter.h jni/./ProjectBean/pbBoss.h \
- jni/npNativeEvent.h jni/nitroFrame/NitroFrame.h \
- jni/./nitroFrame/npDebugUtill.h
+ jni/./ProjectBean/pbEffect.h jni/npNativeEvent.h \
+ jni/nitroFrame/NitroFrame.h jni/./nitroFrame/npDebugUtill.h
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/string.h:
 
@@ -771,6 +771,8 @@ jni/./ProjectBean/pbUI.h:
 jni/./ProjectBean/pbCharacter.h:
 
 jni/./ProjectBean/pbBoss.h:
+
+jni/./ProjectBean/pbEffect.h:
 
 jni/npNativeEvent.h:
 

@@ -151,8 +151,12 @@ void pbBoss::LoadData() {
 	m_pMarionette->SetPosY(240);
 
 	m_pMarionette->SelectMoveState(APPROACHING);
+	m_pMarionette->SetMovePause(false);
 	LOGE("CHANGE TO APPROACHING");
 
+	m_bBattlePhase = false;
+	m_bBossAlive = true;
+	m_fHP = 100.f;
 }
 
 void pbBoss::Update(float fTime) {
@@ -160,7 +164,6 @@ void pbBoss::Update(float fTime) {
 
 	if( m_BossState == APPROACHING) {
 		if(m_pMarionette->GetV2Pos()[0] < 800) {
-
 			m_pMarionette->SetPosX(800);
 			m_pMarionette->SelectMoveState(WEAVING_UP);
 //			LOGE("CHANGE TO WEAVING_UP");
@@ -196,21 +199,21 @@ void pbBoss::Update(float fTime) {
 		}
 	}
 
-
 	m_pMarionette->MoveUpdate(fTime);
 
 }
 
 void pbBoss::PreSettingDraw() {
-	m_pMarionette->Translate();
-
-	m_pBodyDrawUnit->PreSettingDraw();
+	glPushMatrix();
+		m_pMarionette->Translate();
+		m_pBodyDrawUnit->PreSettingDraw();
 }
 
 void pbBoss::DrawThis() {
-	glColor4f(1.0f , 0.0f, 0.0f, 1.0f);
-	m_pBodyDrawUnit->DrawThis();
-	glColor4f(1.0f , 1.0f, 1.0f, 1.0f);
+		glColor4f(1.0f , 0.0f, 0.0f, 1.0f);
+		m_pBodyDrawUnit->DrawThis();
+		glColor4f(1.0f , 1.0f, 1.0f, 1.0f);
+	glPopMatrix();
 }
 
 void pbBoss::DecreaseHP(float fDamage){
@@ -220,7 +223,7 @@ void pbBoss::DecreaseHP(float fDamage){
 		if( GetInstance()->m_fHP < 0) {
 			GetInstance()->m_pMarionette->SelectMoveState(WALKOUT);
 			LOGE("CHANGE TO WALKOUT");
-
+			GetInstance()->SetBattlePhase(false);
 //			pbNoteProcessor::GetNoteDropper()->SetGenerateNote(false);
 		}
 
@@ -230,7 +233,6 @@ void pbBoss::DecreaseHP(float fDamage){
 }
 
 void pbBoss::ClearDataStore() {
-	m_bBattlePhase = false;
 	m_pMarionette->ClearDataStore();
 	pbSceneManager::getInstance().RemoveRenderToCurrentScene(this);
 

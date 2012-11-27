@@ -70,8 +70,8 @@ void pbMainFrame::npShowIntro() {
 		pbUIProcessor::Create();
 		pbCharacter::Create();
 		pbBoss::Create();
+		pbEffectManager::Create();
 /*
-		pbEffectProcess::Create();
 		pbGuideLineGenerator::Create();
 		pbComboManager::Create();
 
@@ -159,12 +159,10 @@ void pbMainFrame::npGameDestroy() {
 	pbUIProcessor::Release();
 	pbCharacter::Release();
 	pbBoss::Release();
-
+	pbEffectManager::Release();
 /*	pbNoteProcessor::Release();
-
 	pbGuideLineGenerator::Release();
 
-	pbEffectProcess::Release();
 	pbComboManager::Release();
 */
 

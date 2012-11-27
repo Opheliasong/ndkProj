@@ -6,9 +6,9 @@
 using namespace projectBean;
 
 
-class pbEffect {
+class pbEffect : public npDrawable{
 public:
-	pbEffect():m_BodyUVIndex(0), m_BodyVertexIndex(0), m_bAlive(true), m_bInfinite(false), m_fLifeTime(0.0f), m_fScale(1.0f){};
+	pbEffect():m_bAlive(true), m_bInfinite(false), m_fLifeTime(0.0f), m_RentalIndex(-1), m_Type(EFFECTTYPE::NONE) /*,m_fScale(1.0f) */ {};
 	virtual ~pbEffect(){};
 
 	virtual void SetInfinite(bool bInfinite){ m_bInfinite = bInfinite;}
@@ -18,29 +18,27 @@ public:
 	virtual void SetPos(float PosX, float PosY) { m_vPos[0] = PosX; m_vPos[1] = PosY; }
 	virtual float* GetVPos() { return m_vPos;}
 
-	virtual void SetBodyUVIndex(GLuint UVIndex) { m_BodyUVIndex = UVIndex;}
+//	virtual void SetScale(float fScale) { m_fScale = fScale;}
 
-	virtual void SetScale(float fScale) { m_fScale = fScale;}
+	virtual void PreSettingDraw() = 0;
+	virtual void DrawThis()=0;
 
-	virtual void Draw(){};
-
-	virtual void Update(float fTime){};
+	virtual void Update(float fTime)=0;
 
 
+	inline void SetRegistedSceneTag(sceneTag sceneTag) { m_RegistedScene = sceneTag;}
 
 	EFFECTTYPE::TYPE m_Type;
 	int m_RentalIndex;
 protected:
-	GLuint m_BodyVertexIndex;
-	GLuint m_BodyUVIndex;
-
+	sceneTag m_RegistedScene;
 	npV2Vector m_vPos;
 
 	float m_fLifeTime;
 	bool m_bInfinite;
 	bool m_bAlive;
 
-	float m_fScale;
+//	float m_fScale;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------ ���� ����Ʈ------------------------------------------------------------------------------///////
@@ -64,32 +62,36 @@ private:
 class pbStepUpEffect : public pbEffect{
 public:
 	pbStepUpEffect();
-	~pbStepUpEffect();
+	virtual ~pbStepUpEffect();
 
-	void Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite);
+	void Initialize(screenplayTag PanelTag, float PanelWidth, float PanelHeight,
+			screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
+			screenplayTag LabelTag, float LabelWidth, float LabelHeight,
+			screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight );
 
 	void DataReset();
 
 	void SetMaxLifeTime(float fLifeTime);
 
-	void Draw();
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
 
-	void Update(float fTime);
+	virtual void Update(float fTime);
 
 private:
 	float m_fMaxLifeTime;
+	pbBasicDrawUnit* m_pPanelDrawUnit;
+	pbBasicDrawUnit* m_pLabelDrawUnit;
+	pbBasicDrawUnit* m_pLabelTextDrawUnit;
+	pbBasicDrawUnit* m_pStepUpDrawUnit;
 
 	//----�г� ����-----//
-//	bool m_bPanelDrawing;
 	int m_iPanelPhase;
 	float m_fPanelScale;
 	float m_fPanelLerp;
-	float m_PanelPosX;
+	float m_fPanelPosX;
 
 	//----���ܾ� ����-----//
-	GLuint m_StepUpVertexIndex;
-	GLuint m_StepUpUVIndex;
-	GLuint m_StepUpAniCount;
 
 	int m_iStepUpPhase;
 	float m_fStepUpLerp;
@@ -97,104 +99,15 @@ private:
 	float m_fStepUpPosX;
 	float m_fStepUpAniTime;
 //	bool m_bStepUpDrawing;
+
 	//----�� ����-----//
-	GLuint m_LabelVertexIndex;
-	GLuint m_LabelUVIndex;
-
-	GLuint m_LabelTextVertexIndex;
-	GLuint m_LabelTextUVIndex;
-
 	bool m_bLabelDrawing;
-	float m_fLabelWidth;
-	float m_fLabelPosX;
+	float m_fLabelTextWidth;
+	float m_fLabelTextPosX;
 	int m_iLabelPhase;
 	float m_fLabelLerp;
 
 };
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ ���ܾ� ����Ʈ------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class pbFeverAvailableEffect : public pbEffect{
-public:
-	pbFeverAvailableEffect();
-	~pbFeverAvailableEffect();
-
-	void Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite);
-
-	void DataReset();
-
-	void SetMaxLifeTime(float fLifeTime);
-
-	void Draw();
-
-	void Update(float fTime);
-
-private:
-	float m_fMaxLifeTime;
-	COLOR_RGBA m_Color;
-
-	//----�г� ����-----//
-//	bool m_bPanelDrawing;
-	int m_iPanelPhase;
-	float m_fPanelScale;
-	float m_fPanelLerp;
-	float m_PanelPosX;
-
-	//----���ܾ� ����-----//
-	GLuint m_StepUpVertexIndex;
-	GLuint m_StepUpUVIndex;
-	GLuint m_StepUpAniCount;
-
-	int m_iStepUpPhase;
-	float m_fStepUpLerp;
-	float m_fStepUpScale;
-	float m_fStepUpPosX;
-	float m_fStepUpAniTime;
-//	bool m_bStepUpDrawing;
-	//----�� ����-----//
-/*	GLuint m_LabelVertexIndex;
-	GLuint m_LabelUVIndex;
-
-	GLuint m_LabelTextVertexIndex;
-	GLuint m_LabelTextUVIndex;
-
-	bool m_bLabelDrawing;
-	float m_fLabelWidth;
-	float m_fLabelPosX;
-	int m_iLabelPhase;
-	float m_fLabelLerp;*/
-
-};
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////------------------------------------------------------ �޺� ����Ʈ------------------------------------------------------------------------------///////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-class pbComboEffect : public pbEffect{
-public:
-	pbComboEffect();
-	~pbComboEffect();
-
-	void Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite);
-
-	void SetCombo(int Combo);
-	void DataReset();
-
-	void Draw();
-
-	void Update(float fTime);
-
-	enum{ MAX_DIGITS = 3, NUMBERING = 10 };
-private:
-	float m_PlacementWidth;
-	GLuint m_NumberUVIndex[NUMBERING];	//0~9�� UVIndex
-	GLuint m_DigitsNumber[MAX_DIGITS];
-	GLuint m_CurrentDigits;
-
-	float m_fTextHalfWidth;
-	float m_fTextHalfHeight;
-};
-*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------ ��ƼĿ ����Ʈ (UV ��������)------------------------------------------------------------------------------///////
@@ -202,23 +115,20 @@ private:
 class pbStickerEffect : public pbEffect{
 public:
 	pbStickerEffect();
-	~pbStickerEffect();
+	virtual ~pbStickerEffect();
 
-	void Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite);
+	void Initialize(screenplayTag BaseTag, float fWidth, float fHeight, float LifeTime, bool Infinite);
 
-	void Draw();
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
 
-	void SetWidth(float Width) { m_fScaleX = Width;}
-	void SetHeight(float Height) { m_fScaleY = Height;}
+	virtual void Update(float fTime);
 
-	void Update(float fTime);
+	inline void SetColor(float R, float G, float B, float A) { m_Color.Init(R, G, B, A); }
 
-public:
-	COLOR_RGBA m_Color;
 private:
-
-	float m_fScaleX;
-	float m_fScaleY;
+	COLOR_RGBA m_Color;
+	pbBasicDrawUnit* m_pDrawUnit;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,52 +137,43 @@ private:
 class pbHomingMissileEffect : public pbEffect{
 public:
 	pbHomingMissileEffect();
-	~pbHomingMissileEffect();
+	virtual ~pbHomingMissileEffect();
 
-	void Initialize(GLuint VertexIndex, GLuint UVIndex, float LifeTime, bool Infinite);
+	void Initialize(screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime, bool Infinite);
 
-	void Draw();
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
 
-	void SetWidth(float Width) { m_fScaleX = Width;}
-	void SetHeight(float Height) { m_fScaleY = Height;}
-
-	void Update(float fTime);
+	virtual void Update(float fTime);
 
 	void SetMissileCurve(float* pV2Origin, float* pV2Destination);
 
 	void SetDecreaseHPFunc(void (DecreaseHP)(float fDamage) ) { m_fpDecreaseHP = DecreaseHP; }
 	void SetDamage(float fDamage) { m_fDamage = fDamage;}
 
-public:
-	COLOR_RGBA m_Color;
 private:
 	npV2Vector m_vOrigin;
 	npV2Vector m_vDestination;
 
-	float m_fScaleX;
-	float m_fScaleY;
+	pbBasicDrawUnit* m_pMissileDrawUnit;
 
 	float m_fBezierLerp;
 
 	BEZIER_2POINT m_Bezier_Start;
 
-	BEZIER_2POINT m_Bezier_1_1;
-//	BEZIER_2POINT m_Bezier_1_2;
-	BEZIER_2POINT m_Bezier_2_1;
-//	BEZIER_2POINT m_Bezier_2_2;
-	BEZIER_2POINT m_Bezier_3_1;
-//	BEZIER_2POINT m_Bezier_3_2;
-	BEZIER_2POINT m_Bezier_4_1;
-//	BEZIER_2POINT m_Bezier_4_2;
 	BEZIER_2POINT m_Bezier_0_1;
-//	BEZIER_2POINT m_Bezier_0_2;
+	BEZIER_2POINT m_Bezier_1_1;
+	BEZIER_2POINT m_Bezier_2_1;
+	BEZIER_2POINT m_Bezier_3_1;
 
 	BEZIER_2POINT m_Bezier_End;
 
+	enum {MAX_MISSILE = 4};
+	float* m_pPosArray[MAX_MISSILE];
 	npV2Vector m_vPos_1;
 	npV2Vector m_vPos_2;
 	npV2Vector m_vPos_3;
-	npV2Vector m_vPos_4;
+//	npV2Vector m_vPos_4;
 
 	 void (*m_fpDecreaseHP)(float fDamage);
 	 float m_fDamage;
@@ -282,9 +183,9 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------ ����Ʈ �Ŵ���------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class pbEffectProcess{
-	pbEffectProcess();
-	~pbEffectProcess();
+class pbEffectManager{
+	pbEffectManager();
+	~pbEffectManager();
 
 	void registControled(pbEffect* pEffect);
 	void removeControled(pbEffect* pEffect);
@@ -292,10 +193,12 @@ class pbEffectProcess{
 public:
 	static void Create();
 
-	void AddStepUpEffect(float X, float Y, GLuint StartVertexIndex, GLuint StartUVIndex, float fScale);
-	void AddFeverAvailableEffect(float X, float Y, GLuint StartVertexIndex, GLuint StartUVIndex, float fScale);
-	void AddStickerEffect(float X, float Y, GLuint StartUVIndex, float fScale);
-	void AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, GLuint StartUVIndex, float LifeTime,float fDamage, void (*DecreaseHP)(float fDamage) );
+	inline void SetSceneTag(sceneTag SceneTag) { m_SceneTag = SceneTag;}
+
+	void AddStepUpEffect(float X, float Y, screenplayTag PanelTag, float PanelWidth, float PanelHeight,		screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
+															screenplayTag LabelTag, float LabelWidth, float LabelHeight,		screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight );
+	void AddStickerEffect(float X, float Y, screenplayTag BaseTag, float fWidth, float fHeight);
+	void AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime,float fDamage, void (*DecreaseHP)(float fDamage) );
 	void AddMissEffect();
 
 	void Update(float fTime);
@@ -305,18 +208,19 @@ public:
 	// �����ε�
 	void RemoveEffectAndReturningMemory(pbStickerEffect* pEffect);
 	void RemoveEffectAndReturningMemory(pbStepUpEffect* pEffect);
-	void RemoveEffectAndReturningMemory(pbFeverAvailableEffect* pEffect);
 	void RemoveEffectAndReturningMemory(pbHomingMissileEffect* pEffect);
 
-	static pbEffectProcess* GetInstance() { return SingleObject; }
+	static pbEffectManager* GetInstance() { return SingleObject; }
 private:
-	static pbEffectProcess* SingleObject;
+	static pbEffectManager* SingleObject;
 
-	npLinkNode<pbEffect>* m_pEffectLinkHeader;
+	sceneTag m_SceneTag;
+
+	typedef npLinkNode<pbEffect*> EffectList;
+	EffectList* m_pEffectLinkHeader;
 
 	pbMemoryRentalUnit<pbStickerEffect>* m_pStickerEffectRentalUnit;
 	pbMemoryRentalUnit<pbStepUpEffect>* m_pStepUpEffectRentalUnit;
-	pbMemoryRentalUnit<pbFeverAvailableEffect>* m_pFeverAvailableEffectRentalUnit;
 	pbMemoryRentalUnit<pbHomingMissileEffect>* m_pHomingMissileEffectRentalUnit;
 
 };

@@ -258,6 +258,8 @@ pbPlaySceneWrapper::~pbPlaySceneWrapper() {
 }
 
 void pbPlaySceneWrapper::InitializeScene() {
+	pbEffectManager::GetInstance()->SetSceneTag(GetTag());
+
 	//background
 	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 480, 400, 240, 0.1f, "ci");
 	RegistToRenderList(pCreateBG);
@@ -274,10 +276,9 @@ void pbPlaySceneWrapper::InitializeScene() {
 	pbUI* createUI = pbUIProcessor::GetInstance()->AddBackPanelUI(400, 450, "ci", 800, 50);
 	this->RegistToRenderList(createUI);
 	BackWardUI = pbUIProcessor::GetInstance()->AddButtonUI(25, 450, "run", 36, 36);
-	createUI = BackWardUI;
-	this->RegistToRenderList(createUI);
-	createUI = pbUIProcessor::GetInstance()->AddButtonUI(777, 450, "ci", 40, 38);
-	this->RegistToRenderList(createUI);
+	this->RegistToRenderList(BackWardUI);
+	helpUI = pbUIProcessor::GetInstance()->AddButtonUI(777, 450, "ci", 40, 38);
+	this->RegistToRenderList(helpUI);
 	createUI = pbUIProcessor::GetInstance()->AddAbillityPointUI(585, 447, "ci", 82, 23, "ci", 310, 17);
 	this->RegistToRenderList(createUI);
 	createUI = pbUIProcessor::GetInstance()->AddScoreUI(195, 450, "ci", 119, 25, "run", 20, 35);
@@ -309,9 +310,10 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 		pbUIProcessor::GetInstance()->Update(fTime);
 		pbCharacter::GetInstance()->Update(fTime);
 		pbBoss::GetInstance()->Update(fTime);
+		pbEffectManager::GetInstance()->Update(fTime);
+
 /*		nitroFrame::npTimer::updateTime(mesc);
 		pbNoteProcessor::GetInstance()->Update(fTime);
-		pbEffectProcess::GetInstance()->Update(fTime);
 		pbGuideLineGenerator::GetInstance()->Update(fTime);
 		*/
 
@@ -321,6 +323,15 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 				BackWardUI->ResetTouched();
 			 }
 		}
+
+		if( helpUI != NULL ) {
+			if( helpUI->IsTouched() ) {
+				pbEffectManager::GetInstance()->AddMissEffect();
+				helpUI->ResetTouched();
+			 }
+		}
+
+
 	}
 }
 
@@ -331,18 +342,15 @@ void pbPlaySceneWrapper::ClearScene() {
 	pbUIProcessor::GetInstance()->ClearDataStore();
 	pbCharacter::GetInstance()->ClearDataStore();
 	pbBoss::GetInstance()->ClearDataStore();
+	pbEffectManager::GetInstance()->ClearDataStore();
+	pbGlobalInGameVariable::ResetGlobalVariable();
 
 	BackWardUI = NULL;
 
 /*	pbNoteProcessor::GetInstance()->ClearDataStore();
 	pbComboManager::GetInstance()->ClearDataStore();
-	pbEffectProcess::GetInstance()->ClearDataStore();
 	pbGuideLineGenerator::GetInstance()->ClearDataStore();
-	pbCharacter::GetInstance()->ClearDataStore();
-	pbUIProcessor::GetInstance()->ClearDataStore();
-	pbGlobalInGameVariable::ResetGlobalVariable();
-	pbRenderProcess::ClearDataStore();
-	pbTouchLayer::ClearDataStore();*/
+	*/
 	LOGI("pbPlaySceneWrapper ClearScene Complete");
 }
 

@@ -77,7 +77,7 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 
 	m_pBodyDrawUnit->SetTextureTAG("run");
 	m_pBodyDrawUnit->SetSize(104, 110);
-	m_pSatelliteDrawUnit->SetTextureTAG("ci");
+	m_pSatelliteDrawUnit->SetTextureTAG("run");
 	m_pSatelliteDrawUnit->SetSize(28, 28);
 
 	m_fLifePosX = 104*0.43f;
@@ -93,19 +93,23 @@ void pbCharacter::PreSettingDraw() {
 		glTranslatef(m_vBodyPos[0] , m_vBodyPos[1], 0.f);
 }
 void pbCharacter::DrawThis() {
+		glPushMatrix();
 		m_pBodyDrawUnit->PreSettingDraw();
 		m_pBodyDrawUnit->DrawThis();
+		glPopMatrix();
 
-		m_pSatelliteDrawUnit->PreSettingDraw();
+
 		glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
+		m_pSatelliteDrawUnit->PreSettingDraw();
 		for(int i = 0; i < pbGlobalInGameVariable::NumLife ; i++)
 		{
 			glPushMatrix();
 			glRotatef((float(i)*120.0f) + m_fLifeRotate*360.0f, 0.0f, 0.0f, 1.0f);
 			glTranslatef(m_fLifePosX + m_fFeverEffectDistance, 0.0f, 0.f);
 			m_pSatelliteDrawUnit->DrawThis();
+			glPopMatrix();
 		}
-		glPopMatrix();
+
 
 	glPopMatrix();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -183,7 +187,6 @@ void pbCharacter::DecreaseLife(){
 	if( pbGlobalInGameVariable::NumLife > 0)
 		pbGlobalInGameVariable::NumLife--;
 
-//	pbGlobalInGameVariable::bCameraShake = true;
 }
 
 void pbCharacter::FeverEffectOn() {
@@ -191,9 +194,9 @@ void pbCharacter::FeverEffectOn() {
 	m_fFeverEffectDistance = 0.0f;
 	m_fFeverDestDistance = FEVER_DISTANCE_EXPLOSION;
 
-/*	if( pbBoss::GetInstance()->IsBattlePhase() )
-		pbEffectProcess::GetInstance()->AddHomingMissileEffect(m_vBodyPos[0], m_vBodyPos[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], 1 , 2.0f ,
-				pbComboManager::GetInstance()->GetFever()*10.0f, &(pbBoss::DecreaseHP));*/
+	if( pbBoss::GetInstance()->IsBattlePhase() )
+		pbEffectManager::GetInstance()->AddHomingMissileEffect(m_vBodyPos[0], m_vBodyPos[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], "run", 40, 40, 2.0f ,
+				/*pbComboManager::GetInstance()->GetFever()*10.0f,*/21, &(pbBoss::DecreaseHP));
 }
 
 void pbCharacter::FeverEffectReady() {
@@ -259,10 +262,11 @@ void pbCharacter::notify(){
 
 			if (x >= left && x <= right) {
 				if (y >= bottom && y <= top) {
-/*					if( pbComboManager::GetInstance()->FeverOn() ) {
-						FeverEffectCancle();	//
+					pbEffectManager::GetInstance()->AddStepUpEffect(400, 220, "ci", 800, 184, "run", 131, 36, "ci", 800, 36, "run", 164, 45);
+					//if( pbComboManager::GetInstance()->FeverOn() ) {
+						FeverEffectCancle();
 						FeverEffectOn();
-					}*/
+					//}
 					LOGE("[DEBUG]pbCharacter:: Touched");
 				}
 			}
