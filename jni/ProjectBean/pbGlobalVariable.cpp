@@ -3,7 +3,7 @@
 
 
 //-----------------�ΰ��ӿ��� ���� �� ����------------------------//
-void pbGlobalInGameVariable::ResetGlobalVariable() {
+/*void pbGlobalInGameVariable::ResetGlobalVariable() {
 	fWorldMoveDir = Direction::BACKWARD;
 	fWorldMoveX = 0.0f;//����*���ǵ�*Ÿ��
 	fWorldX = 0.0f;
@@ -23,7 +23,7 @@ bool pbGlobalInGameVariable::bGamePause = false;
 //float pbGlobalInGameVariable::fColorKey[3] = { 0, 50, 50};
 GLuint pbGlobalInGameVariable::NumLife = 0;
 int pbGlobalInGameVariable::PlusScore = 0;
-/*bool pbGlobalInGameVariable::bCameraShake = false;
+bool pbGlobalInGameVariable::bCameraShake = false;
 float pbGlobalInGameVariable::fCameraShakeTime = 0.0f;
 float pbGlobalInGameVariable::fCameraShakeX = 0.0f;
 float pbGlobalInGameVariable::fCameraShakeY = 0.0f;*/

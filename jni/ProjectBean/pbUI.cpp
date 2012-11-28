@@ -4,7 +4,7 @@
 ////------------------------------------------------------ �ֹ��� UI------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbAbilityPower_Indicator::pbAbilityPower_Indicator(){
-	m_fMaxAbilityPoint = (float)pbUserData::GetInstance().GetMaxAbilityPoint();
+	m_fMaxAbilityPoint = pbStageValue::m_fGettingFeverGauge;
 
 	m_bNoHaveGauge = false;
 
@@ -126,11 +126,11 @@ void pbAbilityPower_Indicator::Update(float fTime)
 	///
 	if(!m_bNoHaveGauge)
 	{
-		float UseAP = (float)pbUserData::GetInstance().GetUsedAbilityPoint();
+		float UseAP = pbStageValue::m_fGettingFeverGauge;
 		if( UseAP != 0.0f)
 		{
 			m_fMinusPercent = UseAP/m_fMaxAbilityPoint;
-			pbUserData::GetInstance().ResetUsedAbilityPoint();
+			pbStageValue::m_fGettingFeverGauge = 0.0f;
 
 			if( m_fMinusPercent > 0.0f) {
 				m_fGaugePercent -= m_fMinusPercent;
@@ -294,7 +294,6 @@ pbScore_Indicator::pbScore_Indicator(){
 	m_pBaseDrawUnit = new pbBasicDrawUnit();
 
 	m_ScoreWidth = 0;
-	m_NumberData = 0;
 
 	m_fTextHalfWidth = 0;
 
@@ -308,7 +307,8 @@ void pbScore_Indicator::DataReset(){
 	for(int i = 0; i < MAX_DIGITS; i++)
 		m_DigitsNumber[i] = 0;
 
-	m_NumberData = 0;
+	pbStageValue::m_TotalScore = 0;
+	pbStageValue::m_GettingScore = 0;
 }
 
 void pbScore_Indicator::SetBaseSprite(screenplayTag Tag, float Width, float Height) {
@@ -373,16 +373,15 @@ void pbScore_Indicator::DrawThis() {
 
 void pbScore_Indicator::Update(float fTime)
 {
-	if( pbGlobalInGameVariable::PlusScore != 0)
+	if( pbStageValue::m_GettingScore != 0)
 	{
-		m_NumberData += pbGlobalInGameVariable::PlusScore;
-		 pbGlobalInGameVariable::PlusScore = 0;
+		pbStageValue::m_TotalScore += pbStageValue::m_GettingScore;
+		pbStageValue::m_GettingScore = 0;
 
-		int DigitsNumber = m_NumberData;
 		for( int i = MAX_DIGITS - 1; i > 0; --i)
 		{
-			m_DigitsNumber[i] = DigitsNumber%10;
-			DigitsNumber /= 10;
+			m_DigitsNumber[i] = pbStageValue::m_TotalScore%10;
+			pbStageValue::m_TotalScore /= 10;
 		}
 
 /*		LOGfloatString("Real", m_NumberData);

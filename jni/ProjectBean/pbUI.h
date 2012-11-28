@@ -165,7 +165,6 @@ private:
 	float m_ScoreWidth;
 	UVPacket* m_ScoreUV[NUMBERING];
 	GLuint m_DigitsNumber[MAX_DIGITS];
-	int m_NumberData;
 
 
 };

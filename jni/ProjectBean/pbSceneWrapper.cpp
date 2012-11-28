@@ -196,10 +196,14 @@ void pbSceneNavigator::ClearSceneState() {
 ////-----------------------------------------------------pbSceneWrapper  Base Class------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbSceneWrapper::pbSceneWrapper() {
-	m_RenderListHeader =new RenderList; m_RenderListHeader->setHeader();
+	m_RenderListHeader =new RenderList;
+	m_RenderListHeader->setHeader();
+
+	m_StageTrigger = new pbStageTrigger();
 }
 pbSceneWrapper::~pbSceneWrapper() {
 	RenderList::destroyList(m_RenderListHeader);
+	delete m_StageTrigger;
 }
 
 void pbSceneWrapper::DrawScene() {
@@ -254,12 +258,11 @@ pbPlaySceneWrapper::pbPlaySceneWrapper(const char* SceneTag) {
 }
 
 pbPlaySceneWrapper::~pbPlaySceneWrapper() {
-
 }
 
 void pbPlaySceneWrapper::InitializeScene() {
 	pbEffectManager::GetInstance()->SetSceneTag(GetTag());
-
+	GetStageTrigger()->Initialize();
 	//background
 	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 480, 400, 240, 0.1f, "ci");
 	RegistToRenderList(pCreateBG);
@@ -295,18 +298,20 @@ void pbPlaySceneWrapper::InitializeScene() {
 	pbCharacter::GetInstance()->LoadData(GetTag());
 	RegistToRenderList(pbCharacter::GetInstance());
 
+	// 보스
 	pbBoss::GetInstance()->LoadData();
 	RegistToRenderList(pbBoss::GetInstance());
-
+	GetStageTrigger()->AddState(1400, &(pbBoss::Approaching));
 
 	LOGI("pbPlaySceneWrapper InitializeScene Complete");
 }
 
 void pbPlaySceneWrapper::UpdateScene(float fTime) {
-	if(!pbGlobalInGameVariable::bGamePause)
+	if(!GetStageTrigger()->IsPaused())
 	{
-		pbGlobalInGameVariable::fWorldMoveX = pbGlobalInGameVariable::fWorldMoveDir*pbGlobalInGameVariable::fWorldMoveSpeed*fTime;
-		pbGlobalInGameVariable::fWorldX += pbGlobalInGameVariable::fWorldMoveX;
+		GetStageTrigger()->Update(fTime);
+		//pbGlobalInGameVariable::fWorldMoveX = pbGlobalInGameVariable::fWorldMoveDir*pbGlobalInGameVariable::fWorldMoveSpeed*fTime;
+		//pbGlobalInGameVariable::fWorldX += pbGlobalInGameVariable::fWorldMoveX;
 
 		//float mesc = 1000.f * fTime;
 		pbBackgroundProcessor::GetInstance().Update(fTime);
@@ -346,7 +351,7 @@ void pbPlaySceneWrapper::ClearScene() {
 	pbCharacter::GetInstance()->ClearDataStore();
 	pbBoss::GetInstance()->ClearDataStore();
 	pbEffectManager::GetInstance()->ClearDataStore();
-	pbGlobalInGameVariable::ResetGlobalVariable();
+//	pbGlobalInGameVariable::ResetGlobalVariable();
 	pbComboManager::GetInstance()->ClearDataStore();
 
 	BackWardUI = NULL;

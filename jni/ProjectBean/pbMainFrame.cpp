@@ -65,7 +65,7 @@ void pbMainFrame::npShowIntro() {
 																	0.0f,1.0f,0.0f);
 		//XMLParsingBufferCreater::GetInstance().SetArchive(apkPath);
 
-		pbGlobalInGameVariable::ResetGlobalVariable();
+//		pbGlobalInGameVariable::ResetGlobalVariable();
 
 		pbUIProcessor::Create();
 		pbCharacter::Create();

@@ -131,6 +131,7 @@ public:
 	virtual void PreSettingDraw();
 	virtual void DrawThis();
 
+	static void Approaching();
 	static void DecreaseHP(float fDamage);
 
 	void ClearDataStore();

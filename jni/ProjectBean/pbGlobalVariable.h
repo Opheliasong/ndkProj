@@ -4,7 +4,7 @@
 #include "stdafx.h"
 
 
-class pbGlobalInGameVariable{
+/*class pbGlobalInGameVariable{
 public:
 	pbGlobalInGameVariable();
 	~pbGlobalInGameVariable();
@@ -19,11 +19,11 @@ public:
 	static float fColorKey[3];
 	static GLuint NumLife;
 	static int PlusScore;
-/*	static bool bCameraShake;
+	static bool bCameraShake;
 	static float fCameraShakeX;
 	static float fCameraShakeY;
-	static float fCameraShakeTime;*/
-};
+	static float fCameraShakeTime;
+};*/
 
 class pbUserData{
 private:

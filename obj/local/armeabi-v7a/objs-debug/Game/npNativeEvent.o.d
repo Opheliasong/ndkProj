@@ -148,6 +148,10 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_tree.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_tree.c \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_relops_cont.h \
+ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/vector \
+ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_vector.h \
+ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_vector.c \
+ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_bvector.h \
  jni/./ProjectBean/../nitroFrame/npDebugUtill.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/assert.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/assert.h \
@@ -247,7 +251,7 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h \
  jni/./ProjectBean/pbTypes.h jni/./ProjectBean/pbDrawUnit.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
- jni/./ProjectBean/pbGlobalVariable.h jni/./ProjectBean/pbSceneWrapper.h \
+ jni/./ProjectBean/pbStageTrigger.h jni/./ProjectBean/pbSceneWrapper.h \
  jni/./ProjectBean/../nitroFrame/npTimer.h \
  jni/./ProjectBean/../nitroFrame/npSubject.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
@@ -554,6 +558,14 @@ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_tree.c:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_relops_cont.h:
 
+D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/vector:
+
+D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_vector.h:
+
+D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_vector.c:
+
+D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_bvector.h:
+
 jni/./ProjectBean/../nitroFrame/npDebugUtill.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/assert.h:
@@ -754,7 +766,7 @@ jni/./ProjectBean/pbDrawUnit.h:
 
 jni/./ProjectBean/../nitroFrame/npObserver.h:
 
-jni/./ProjectBean/pbGlobalVariable.h:
+jni/./ProjectBean/pbStageTrigger.h:
 
 jni/./ProjectBean/pbSceneWrapper.h:
 

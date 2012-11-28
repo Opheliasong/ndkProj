@@ -59,7 +59,7 @@ void pbMoveBackground::Initialize(float Width, float Height, screenplayTag Tag){
 }
 
 void pbMoveBackground::Update(float fTime) {
-	m_fBackgroundFlowPercent += (1/ ( (m_fBGAreaWidth/pbGlobalInGameVariable::fWorldMoveSpeed)/m_fScrollRatio ) )*fTime;
+	m_fBackgroundFlowPercent += (1/ ( (m_fBGAreaWidth/pbStageValue::m_fStageMoveSpeed )/m_fScrollRatio ) )*fTime;
 
 	if( m_fBackgroundFlowPercent > 1.0f)
 		m_fBackgroundFlowPercent = 0.0f;
@@ -142,8 +142,7 @@ void pbScrollBackground::DrawThis() {
 }
 
 void pbScrollBackground::Update(float fTime) {
-
-	m_fBackgroundFlowPercent += (1/ ( (m_fBGAreaWidth/pbGlobalInGameVariable::fWorldMoveSpeed)/m_fScrollRatio ) )*fTime;
+	m_fBackgroundFlowPercent += (1/ ( (m_fBGAreaWidth/pbStageValue::m_fStageMoveSpeed)/m_fScrollRatio ) )*fTime;
 
 	if( m_fBackgroundFlowPercent > 1.0f)
 		m_fBackgroundFlowPercent = 0.0f;

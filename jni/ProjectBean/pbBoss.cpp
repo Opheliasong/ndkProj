@@ -139,7 +139,7 @@ void pbBoss::Create() {
 }
 
 void pbBoss::LoadData() {
-	m_pMarionette->AddLineMoveState(APPROACHING, pbGlobalInGameVariable::fWorldMoveDir*200, 0);
+	m_pMarionette->AddLineMoveState(APPROACHING, -200, 0);
 	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 30);
 	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -30);
 	m_pMarionette->AddZigZagMoveState(WALKOUT, 0, -200, 10, 80);
@@ -150,9 +150,8 @@ void pbBoss::LoadData() {
 	m_pMarionette->SetPosX(1400);
 	m_pMarionette->SetPosY(240);
 
-	m_pMarionette->SelectMoveState(APPROACHING);
+	m_pMarionette->SelectMoveState(NONE);
 	m_pMarionette->SetMovePause(false);
-	LOGE("CHANGE TO APPROACHING");
 
 	m_bBattlePhase = false;
 	m_bBossAlive = true;
@@ -214,6 +213,12 @@ void pbBoss::DrawThis() {
 		m_pBodyDrawUnit->DrawThis();
 		glColor4f(1.0f , 1.0f, 1.0f, 1.0f);
 	glPopMatrix();
+}
+
+void pbBoss::Approaching() {
+	GetInstance()->m_pMarionette->SelectMoveState(APPROACHING);
+	GetInstance()->m_pMarionette->SetMovePause(false);
+	LOGE("CHANGE TO APPROACHING");
 }
 
 void pbBoss::DecreaseHP(float fDamage){

@@ -68,6 +68,7 @@ npNativeEvent.cpp\
 /ProjectBean/pbCharacter.cpp\
 /ProjectBean/pbBoss.cpp\
 /ProjectBean/pbEffect.cpp\
+/ProjectBean/pbStageTrigger.cpp\
 #/ProjectBean/pbNote.cpp\
 /ProjectBean/pbNoteProcessor.cpp\
 /ProjectBean/pbGuideLine.cpp\

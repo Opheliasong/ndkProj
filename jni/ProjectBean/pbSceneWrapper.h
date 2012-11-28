@@ -87,7 +87,7 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef npLinkNode<npDrawable*> RenderList;
-
+class pbStageTrigger;
 class pbSceneWrapper {
 public:
 	pbSceneWrapper();
@@ -102,12 +102,15 @@ public:
 	void RemoveToRenderList(npDrawable* pDrawable);
 	void ClearToRenderList();
 
+	pbStageTrigger* GetStageTrigger() {return m_StageTrigger;}
+
 	virtual void InitializeScene() = 0;
 	virtual void UpdateScene(float fTime) = 0;
 	virtual void ClearScene() = 0;
 private:
 	RenderList* m_RenderListHeader;
 	sceneTag m_Tag;
+	pbStageTrigger* m_StageTrigger;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

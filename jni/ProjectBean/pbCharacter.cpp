@@ -101,7 +101,7 @@ void pbCharacter::DrawThis() {
 
 		glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
 		m_pSatelliteDrawUnit->PreSettingDraw();
-		for(int i = 0; i < pbGlobalInGameVariable::NumLife ; i++)
+		for(int i = 0; i < pbStageValue::m_iNumLife; i++)
 		{
 			glPushMatrix();
 			glRotatef((float(i)*120.0f) + m_fLifeRotate*360.0f, 0.0f, 0.0f, 1.0f);
@@ -118,7 +118,7 @@ void pbCharacter::DrawThis() {
 void pbCharacter::Update(float fTime){
 	static float fPartOfLine, fWholeOfLine = 0.0f;
 
-	m_fLifeRotate += (pbGlobalInGameVariable::fWorldMoveSpeed/400)*fTime;
+	m_fLifeRotate += 360*fTime;
 
 	///---------------�ǹ� ����Ʈ------------//
 	if( m_bFeverReady) {
@@ -184,9 +184,8 @@ void pbCharacter::Update(float fTime){
 
 
 void pbCharacter::DecreaseLife(){
-	if( pbGlobalInGameVariable::NumLife > 0)
-		pbGlobalInGameVariable::NumLife--;
-
+	if( pbStageValue::m_iNumLife> 0)
+		pbStageValue::m_iNumLife--;
 }
 
 void pbCharacter::FeverEffectOn() {
@@ -429,7 +428,7 @@ void pbComboManager::IncreaseCombo(int Score) {
 	m_iCombo++;
 //	pbEffectProcess::pEffectProcessor->AddEffect(EFFECTTYPE::COMBO, 400, 240, 1.0f, m_iCombo);
 
-	pbGlobalInGameVariable::PlusScore += Score * (m_iFever+1);
+	pbStageValue::m_GettingScore += Score * (m_iFever+1);
 
 	int count = 0;
 	int DigitsNumber = m_iCombo;
@@ -459,19 +458,19 @@ bool pbComboManager::FeverOn() {
 			m_iNextFeverCombo = m_iNextFeverCombo*2;
 			//�ǹ� �ӵ�
 			if(m_iFever == 1)
-				pbGlobalInGameVariable::fWorldMoveSpeed *= 1.20f;
+				pbStageValue::m_fStageMoveSpeed *= 1.20f;
 			else if(m_iFever == 2)
-				pbGlobalInGameVariable::fWorldMoveSpeed *= 1.18f;
+				pbStageValue::m_fStageMoveSpeed  *= 1.18f;
 			else if(m_iFever == 3)
-				pbGlobalInGameVariable::fWorldMoveSpeed *= 1.171f;
+				pbStageValue::m_fStageMoveSpeed  *= 1.171f;
 			else if(m_iFever == 4)
-				pbGlobalInGameVariable::fWorldMoveSpeed *= 1.149f;
+				pbStageValue::m_fStageMoveSpeed  *= 1.149f;
 			else if(m_iFever == 5)
-				pbGlobalInGameVariable::fWorldMoveSpeed *= 1.134f;
+				pbStageValue::m_fStageMoveSpeed  *= 1.134f;
 
 		}
 		else if( m_iNextFeverCombo >= 32 ) {
-			pbGlobalInGameVariable::fWorldMoveSpeed *= 1.11f;
+			pbStageValue::m_fStageMoveSpeed  *= 1.11f;
 		}
 		m_iCombo = 0;
 		m_iFever++;
@@ -499,7 +498,7 @@ bool pbComboManager::FeverOn() {
 }
 
 void pbComboManager::ResetCombo() {
-	pbGlobalInGameVariable::fWorldMoveSpeed = WORLD_MOVESPEED;
+	pbStageValue::m_fStageMoveSpeed  = WORLD_MOVESPEED;
 
 //	npAudioSystem::playEffect(4);
 	DataReset();
@@ -510,7 +509,7 @@ void pbComboManager::ResetCombo() {
 }
 
 void pbComboManager::ClearDataStore() {
-	pbGlobalInGameVariable::fWorldMoveSpeed = WORLD_MOVESPEED;
+	pbStageValue::m_fStageMoveSpeed  = WORLD_MOVESPEED;
 	DataReset();
 	pbCharacter::GetInstance()->FeverEffectCancle();
 

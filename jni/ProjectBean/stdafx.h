@@ -2,6 +2,7 @@
 #define STDAFX_H
 #include <string>
 #include <map>
+#include <vector>
 #include "../nitroFrame/npDebugUtill.h"
 #include "../nitroFrame/NitroFrame.h"
 #include "../nitroFrame/npLinkNode.h"
@@ -11,7 +12,8 @@
 #include "pbDrawUnit.h"
 #include "../nitroFrame/npObserver.h"
 
-#include "pbGlobalVariable.h"
+#include "pbStageTrigger.h"
+//#include "pbGlobalVariable.h"
 #include "pbSceneWrapper.h"
 #include "../nitroFrame/npTimer.h"
 #include "pbBackground.h"
