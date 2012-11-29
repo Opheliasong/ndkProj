@@ -5,6 +5,7 @@
 
 using namespace projectBean;
 
+class pbMarionette;
 class pbCharacter : public npDrawable, public iTouchObserver{
 private:
 	pbCharacter();
@@ -20,29 +21,32 @@ public:
 
 	void Update(float fTime);
 
-	void SetPos(float X, float Y){ m_vBodyPos[0] = X; m_vBodyPos[1] = Y; }
-	void DecreaseLife();
+	inline void SetPos(float X, float Y);
+	inline float GetPosX();
+	inline float GetPosY();
 
+	void DecreaseLife();
 	void FeverEffectOn();
 	void FeverEffectReady();
 	void FeverEffectCancle();
 	bool GetFeverReady() { return m_bFeverReady;}
 
-	inline float GetPosX() {return m_vBodyPos[0]; }
-	inline float GetPosY() {return m_vBodyPos[1]; }
-	inline float* GetPos() {return m_vBodyPos;}
-
 	void ClearDataStore();
 	static void Release();
 
+	//상태 관련
+	static void Appeared();
+	static void WalkOut();
 
 	virtual void notify();
 
-
+	enum {NONE = -1, APPEARED = 0, WEAVING_UP, WEAVING_DOWN, WALKOUT, DIE };
 
 	static pbCharacter* GetInstance() { return SingleObject;}
 private:
 	static pbCharacter* SingleObject;
+
+	pbMarionette* m_pMarionette;
 
 	sceneTag m_RegistSceneTag;
 
@@ -50,8 +54,6 @@ private:
 	pbBasicDrawUnit* m_pSatelliteDrawUnit;
 
 	COLOR_RGBA m_Color;
-
-	npV2Vector m_vBodyPos;
 
 	float m_fLifeRotate;
 	float m_fLifePosX;

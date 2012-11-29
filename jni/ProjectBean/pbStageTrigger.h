@@ -11,22 +11,59 @@
 #include "stdafx.h"
 
 
-class pbStageState {
-	pbStageState();
+class pbStagePosState {
+	pbStagePosState();
 public:
-	pbStageState(float fStartStatePosX, void(Func)()) {m_fStartStatePosX = fStartStatePosX; m_fpFunc = Func; }
-	~pbStageState() {};
+	pbStagePosState(float fStartStatePosX, void(Func)()) {m_fStartStatePosX = fStartStatePosX; m_fpFunc = Func; }
+	~pbStagePosState() {};
 
 	float m_fStartStatePosX;
 	 void (*m_fpFunc)();
 };
 
-class StageState_CompLess : public std::binary_function<pbStageState, pbStageState, bool>{
+class StagePosState_CompLess : public std::binary_function<pbStagePosState, pbStagePosState, bool>{
 public:
-	bool operator()(const pbStageState& lhs, const pbStageState& rhs) const{
+	bool operator()(const pbStagePosState& lhs, const pbStagePosState& rhs) const{
 		return lhs.m_fStartStatePosX < rhs.m_fStartStatePosX;
 	}
 };
+
+class pbStageIDState {
+	pbStageIDState();
+public:
+	pbStageIDState(int ID, void(Func)()) {m_ID= ID; m_fpFunc = Func; }
+	~pbStageIDState() {};
+
+	inline bool operator<(const pbStageIDState& rhs) {
+		return m_ID < rhs.m_ID;
+	}
+
+	int m_ID;
+	 void (*m_fpFunc)();
+};
+
+class StageIDState_CompLess : public std::binary_function<pbStageIDState, pbStageIDState, bool>{
+public:
+	bool operator()(const pbStageIDState& lhs, const pbStageIDState& rhs) const{
+		return lhs.m_ID < rhs.m_ID;
+	}
+	bool operator()(const pbStageIDState& lhs, const int& ID) const{
+		return lhs.m_ID < ID;
+	}
+	bool operator()(const int& ID, const pbStageIDState& rhs) const{
+		return ID < rhs.m_ID;
+	}
+
+};
+
+/*
+class StageIDState_FindLess : public std::binary_function<int, pbStageIDState, bool>{
+public:
+	bool operator()(const int ID, const pbStageIDState& rhs) const{
+			return ID > rhs.m_ID;
+		}
+};
+*/
 
 
 class pbStageValue {
@@ -55,16 +92,20 @@ public:
 
 	void Initialize();
 
-	void AddState(float fStartStatePosX, void(Func)() );
+	void AddPosState(float fStartStatePosX, void(Func)() );
+	void AddIDState(int ID, void(Func)() );
+	void ActivateIDState(int ID);
 
 	void Update(float fTime);
 
 	inline bool IsPaused() { return m_bGamePause;}
 
-
 private:
-	typedef std::vector<pbStageState> StageStateVector;
-	StageStateVector m_StageStateVector;
+	typedef std::vector<pbStagePosState> PosStateVector;
+	PosStateVector m_PosStateVector;
+
+	typedef std::vector<pbStageIDState> IDStateVector;
+	IDStateVector m_IDStateVector;
 
 	bool m_bGamePause;
 	int m_Stateindex;

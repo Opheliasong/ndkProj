@@ -8,9 +8,6 @@ pbCharacter* pbCharacter::SingleObject = NULL;
 pbCharacter::pbCharacter(): m_fLifeRotate(0.0f){
 	m_Color.Init(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_vBodyPos[0] = 0.0f;
-	m_vBodyPos[1] = 0.0f;
-
 	m_fLifePosX = 0.0f;
 
 	m_iFeverEffectMode = FEVER_NONE;
@@ -29,25 +26,10 @@ pbCharacter::pbCharacter(): m_fLifeRotate(0.0f){
 	m_pBodyDrawUnit = NULL;
 	m_pSatelliteDrawUnit = NULL;
 
-	COLOR_RGBA m_Color;
+	m_pMarionette = NULL;
 
-	npV2Vector m_vBodyPos;
+	m_fLifeRotate = 0.0f;
 
-	float m_fLifeRotate;
-	float m_fLifePosX;
-
-	enum { FEVER_NONE = 0, FEVER_EXPAND, FEVER_RETURN , FEVER_DISTANCE_READY = 10, FEVER_DISTANCE_EXPLOSION = 100};
-	int m_iFeverEffectMode;
-	float m_fFeverEffectDistance;
-	float m_fFeverTime;
-	float m_fFeverDestDistance;
-	bool m_bFeverReady;
-
-	GLuint m_EffectVertexIndex;
-	GLuint m_EffectUVIndex;
-
-	float m_fFeverTargetTime;
-	float m_fEffectScale;
 }
 pbCharacter::~pbCharacter(){
 
@@ -60,7 +42,7 @@ void pbCharacter::Create(){
 
 		SingleObject->m_pBodyDrawUnit = new pbBasicDrawUnit();
 		SingleObject->m_pSatelliteDrawUnit = new pbBasicDrawUnit();
-
+		SingleObject->m_pMarionette = new pbMarionette();
 		LOGI("CHARACTER Create Complete");
 
 		return;
@@ -82,7 +64,16 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 
 	m_fLifePosX = 104*0.43f;
 
-	SetPos(72.0f, 240.0f);
+	m_pMarionette->AddLineMoveState(APPEARED, 200, 0);
+	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 15);
+	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -15);
+	m_pMarionette->AddLineMoveState(WALKOUT, 600, 0);
+
+	m_pMarionette->SetPosX(-200);
+	m_pMarionette->SetPosY(240);
+
+	m_pMarionette->SelectMoveState(NONE);
+	m_pMarionette->SetMovePause(false);
 
 	LOGI("pbCharacter::LoadData complete");
 }
@@ -90,7 +81,7 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 void pbCharacter::PreSettingDraw() {
 	glColor4f(1.0f, 1.0f,1.0f, m_Color.A);
 	glPushMatrix();
-		glTranslatef(m_vBodyPos[0] , m_vBodyPos[1], 0.f);
+		m_pMarionette->Translate();
 }
 void pbCharacter::DrawThis() {
 		glPushMatrix();
@@ -180,8 +171,59 @@ void pbCharacter::Update(float fTime){
 			}
 		}
 	}
+
+	//------------------------Marionette--------------------------------//
+	int m_MarionetteState = m_pMarionette->GetState();
+
+	if( m_MarionetteState == APPEARED) {
+		if(m_pMarionette->GetV2Pos()[0] > 72) {
+			m_pMarionette->SetPosX(72);
+			m_pMarionette->SelectMoveState(WEAVING_UP);
+		}
+
+	}
+	else if( m_MarionetteState == WEAVING_UP) {
+		if(m_pMarionette->GetV2Pos()[1] > 260) {
+			m_pMarionette->SelectMoveState(WEAVING_DOWN);
+		}
+	}
+	else if( m_MarionetteState == WEAVING_DOWN) {
+		if(m_pMarionette->GetV2Pos()[1] < 220) {
+			m_pMarionette->SelectMoveState(WEAVING_UP);
+		}
+	}
+	else if( m_MarionetteState == WALKOUT) {
+		if(m_pMarionette->GetV2Pos()[0] > 1000) {
+			m_pMarionette->SelectMoveState(NONE);
+			m_pMarionette->SetMovePause(true);
+
+			pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_BACKWARD);
+		}
+	}
+
+	m_pMarionette->MoveUpdate(fTime);
 }
 
+void pbCharacter::SetPos(float X, float Y){
+	m_pMarionette->SetPosX(X);
+	m_pMarionette->SetPosY(Y);
+}
+
+float pbCharacter::GetPosX() { return m_pMarionette->GetV2Pos()[0]; }
+float pbCharacter::GetPosY() { return m_pMarionette->GetV2Pos()[1]; }
+
+void pbCharacter::Appeared() {
+	GetInstance()->m_pMarionette->SelectMoveState(APPEARED);
+	GetInstance()->m_pMarionette->SetMovePause(false);
+
+	LOGE("pbCharacter::Appeared() APPEARED");
+}
+
+void pbCharacter::WalkOut() {
+	GetInstance()->m_pMarionette->SelectMoveState(WALKOUT);
+
+	LOGE("pbCharacter::Appeared() WalkOut");
+}
 
 void pbCharacter::DecreaseLife(){
 	if( pbStageValue::m_iNumLife> 0)
@@ -194,8 +236,8 @@ void pbCharacter::FeverEffectOn() {
 	m_fFeverDestDistance = FEVER_DISTANCE_EXPLOSION;
 
 	if( pbBoss::GetInstance()->IsBattlePhase() )
-		pbEffectManager::GetInstance()->AddHomingMissileEffect(m_vBodyPos[0], m_vBodyPos[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], "run", 40, 40, 2.0f ,
-				/*pbComboManager::GetInstance()->GetFever()*10.0f,*/21, &(pbBoss::DecreaseHP));
+		pbEffectManager::GetInstance()->AddHomingMissileEffect(m_pMarionette->GetV2Pos()[0], m_pMarionette->GetV2Pos()[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], "run", 40, 40, 2.0f ,
+				pbComboManager::GetInstance()->GetFever()*20.0f, &(pbBoss::DecreaseHP));
 }
 
 void pbCharacter::FeverEffectReady() {
@@ -223,6 +265,7 @@ void pbCharacter::FeverEffectCancle() {
 }
 
 void pbCharacter::ClearDataStore() {
+	m_pMarionette->ClearDataStore();
 	TouchLayer::GetInstance().RemovedObserver(this);
 
 	LOGI("pbCharacter::ClearDataStore");
@@ -234,6 +277,7 @@ void pbCharacter::Release(){
 
 		delete SingleObject->m_pBodyDrawUnit;
 		delete SingleObject->m_pSatelliteDrawUnit;
+		delete SingleObject->m_pMarionette;
 
 		delete SingleObject;
 		SingleObject = NULL;
@@ -254,10 +298,12 @@ void pbCharacter::notify(){
 			int HalfWidth = m_pBodyDrawUnit->getWidth()/2;
 			int HalfHeight =m_pBodyDrawUnit->getHeight()/2;
 
-			int left = m_vBodyPos[0] - HalfWidth;
-			int right = m_vBodyPos[0] + HalfWidth;
-			int top = m_vBodyPos[1] + HalfHeight;
-			int bottom = m_vBodyPos[1] - HalfHeight;
+			float* pV2Pos = m_pMarionette->GetV2Pos();
+
+			int left = pV2Pos[0] - HalfWidth;
+			int right = pV2Pos[0] + HalfWidth;
+			int top = pV2Pos[1] + HalfHeight;
+			int bottom = pV2Pos[1] - HalfHeight;
 
 			if (x >= left && x <= right) {
 				if (y >= bottom && y <= top) {

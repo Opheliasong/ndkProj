@@ -61,7 +61,7 @@ npNativeEvent.cpp\
 /nitroFrame/TouchLayer/TouchLayer.cpp\
 /ProjectBean/pbDrawUnit.cpp\
 /ProjectBean/pbMainFrame.cpp\
-/ProjectBean/pbGlobalVariable.cpp\
+/ProjectBean/pbMarionette.cpp\
 /ProjectBean/pbSceneWrapper.cpp\
 /ProjectBean/pbBackground.cpp\
 /ProjectBean/pbUI.cpp\

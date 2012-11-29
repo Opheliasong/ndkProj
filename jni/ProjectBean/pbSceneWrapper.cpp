@@ -297,11 +297,13 @@ void pbPlaySceneWrapper::InitializeScene() {
 	// 캐릭터
 	pbCharacter::GetInstance()->LoadData(GetTag());
 	RegistToRenderList(pbCharacter::GetInstance());
+	GetStageTrigger()->AddPosState(0, &(pbCharacter::Appeared));
+	GetStageTrigger()->AddIDState(pbCharacter::WALKOUT, &(pbCharacter::WalkOut));
 
 	// 보스
 	pbBoss::GetInstance()->LoadData();
 	RegistToRenderList(pbBoss::GetInstance());
-	GetStageTrigger()->AddState(1400, &(pbBoss::Approaching));
+	GetStageTrigger()->AddPosState(1400, &(pbBoss::Approaching));
 
 	LOGI("pbPlaySceneWrapper InitializeScene Complete");
 }

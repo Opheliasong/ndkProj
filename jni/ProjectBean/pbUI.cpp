@@ -378,10 +378,11 @@ void pbScore_Indicator::Update(float fTime)
 		pbStageValue::m_TotalScore += pbStageValue::m_GettingScore;
 		pbStageValue::m_GettingScore = 0;
 
+		int TempScore = pbStageValue::m_TotalScore;
 		for( int i = MAX_DIGITS - 1; i > 0; --i)
 		{
-			m_DigitsNumber[i] = pbStageValue::m_TotalScore%10;
-			pbStageValue::m_TotalScore /= 10;
+			m_DigitsNumber[i] = TempScore%10;
+			TempScore /= 10;
 		}
 
 /*		LOGfloatString("Real", m_NumberData);

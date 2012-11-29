@@ -11,6 +11,7 @@
 #include "pbTypes.h"
 #include "pbDrawUnit.h"
 #include "../nitroFrame/npObserver.h"
+#include "pbMarionette.h"
 
 #include "pbStageTrigger.h"
 //#include "pbGlobalVariable.h"
