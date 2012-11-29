@@ -112,10 +112,11 @@ void pbMainFrame::npShowIntro() {
 		//---------스코어 네비게이트 무버
 		newMover = new pbSceneMover(SCENESTATE::GAME_PLAY);
 		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_RESULT, pScoreScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_BACKWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
 		//-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-//
-		//---------되돌리기 테스트
+		//---------인트로 되돌리기
 		newMover = new pbSceneMover(SCENESTATE::GAME_RESULT);
 		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);

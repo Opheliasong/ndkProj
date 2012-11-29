@@ -126,6 +126,9 @@ public:
 	virtual void InitializeScene();
 	virtual void UpdateScene(float fTime);
 	virtual void ClearScene();
+
+	static void MenuTouch();
+	static void HelpTouch();
 private:
 	pbTouchUI* BackWardUI;
 	pbTouchUI* helpUI;

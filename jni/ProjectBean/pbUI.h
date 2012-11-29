@@ -46,9 +46,10 @@ protected:
 
 class pbTouchUI : public pbUI, public iTouchObserver{
 public:
-	pbTouchUI() {m_bTouched = false; }
+	pbTouchUI() {m_fpTouchFunc = NULL; }
 	virtual ~pbTouchUI(){};
 
+	void SetTouchFunc(void(Func)() ) {m_fpTouchFunc = Func; }
 	virtual void SetID(GLuint ID) {m_ID = ID;}
 	virtual void SetPos(float PosX, float PosY) { m_vPos[0] = PosX; m_vPos[1] = PosY;}
 	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height) = 0;
@@ -59,11 +60,8 @@ public:
 
 	virtual void notify() = 0;
 
-
-	inline bool IsTouched() { return m_bTouched;}
-	inline void ResetTouched() { m_bTouched = false; }
 protected:
-	bool m_bTouched;
+	void (*m_fpTouchFunc)();
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------ pbAbilityPower_Indicator------------------------------------------------------------------------------///////
@@ -137,7 +135,6 @@ public:
 
 	virtual void notify();
 private:
-
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,7 +199,7 @@ public:
 	void CreateUIByType(const char* Type, float X, float Y, screenplayTag BaseTag, screenplayTag ExtraTag);
 
 	pbBasicUI* AddBackPanelUI(float X, float Y, screenplayTag Tag, float Width, float Height);
-	pbTouchUI* AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height);
+	pbTouchUI* AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height, void(Func)());
 	pbBasicUI* AddAbillityPointUI(float X, float Y,screenplayTag TextTag, float TextWidth, float TextHeight,  screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight);
 	pbBasicUI* AddScoreUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight, screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight);
 

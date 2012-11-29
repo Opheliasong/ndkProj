@@ -279,7 +279,8 @@ void pbButtonUI::notify() {
 
 		if (x >= left && x <= right) {
 			if (y >= bottom && y <= top) {
-				m_bTouched = true;
+				if( m_fpTouchFunc != NULL)
+					(*m_fpTouchFunc)();
 				LOGE("[DEBUG]pbMenuButtonUI:: Touched");
 			}
 		}
@@ -554,10 +555,11 @@ pbBasicUI* pbUIProcessor::AddBackPanelUI(float X, float Y,  screenplayTag Tag, f
 }
 
 //----------------------------Menu-------------------------------------//
-pbTouchUI* pbUIProcessor::AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height) {
+pbTouchUI* pbUIProcessor::AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height, void(Func)()) {
 	pbTouchUI* newUI = new pbButtonUI();
 	newUI->SetPos(X, Y);
 	newUI->SetBaseSprite(Tag, Width, Height);
+	newUI->SetTouchFunc(Func);
 
 	registControled(newUI );
 	TouchLayer::GetInstance().RegistedObserver(newUI);

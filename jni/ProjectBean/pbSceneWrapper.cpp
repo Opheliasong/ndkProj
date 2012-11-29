@@ -273,10 +273,10 @@ void pbPlaySceneWrapper::InitializeScene() {
 	//pbUIProcessor::GetInstance()->LoadData("UI_Placement.xml");
 	pbUI* createUI = pbUIProcessor::GetInstance()->AddBackPanelUI(400, 450, "ci", 800, 50);
 	this->RegistToRenderList(createUI);
-	BackWardUI = pbUIProcessor::GetInstance()->AddButtonUI(25, 450, "run", 36, 36);
-	this->RegistToRenderList(BackWardUI);
-	helpUI = pbUIProcessor::GetInstance()->AddButtonUI(777, 450, "ci", 40, 38);
-	this->RegistToRenderList(helpUI);
+	createUI = pbUIProcessor::GetInstance()->AddButtonUI(25, 450, "run", 36, 36, &(pbPlaySceneWrapper::MenuTouch));
+	this->RegistToRenderList(createUI);
+	createUI = pbUIProcessor::GetInstance()->AddButtonUI(777, 450, "ci", 40, 38, &(pbPlaySceneWrapper::HelpTouch));
+	this->RegistToRenderList(createUI);
 	createUI = pbUIProcessor::GetInstance()->AddAbillityPointUI(585, 447, "ci", 82, 23, "ci", 310, 17);
 	this->RegistToRenderList(createUI);
 	createUI = pbUIProcessor::GetInstance()->AddScoreUI(195, 450, "ci", 119, 25, "run", 20, 35);
@@ -327,22 +327,29 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 		pbGuideLineGenerator::GetInstance()->Update(fTime);
 		*/
 
-		if( BackWardUI != NULL ) {
+/*		if( BackWardUI != NULL ) {
 			if( BackWardUI->IsTouched() ) {
-				pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_BACKWARD);
+
 				BackWardUI->ResetTouched();
 			 }
 		}
 
 		if( helpUI != NULL ) {
 			if( helpUI->IsTouched() ) {
-				pbEffectManager::GetInstance()->AddMissEffect();
+
 				helpUI->ResetTouched();
 			 }
-		}
+		}*/
 
 
 	}
+}
+
+void pbPlaySceneWrapper::MenuTouch() {
+	pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_BACKWARD);
+}
+void pbPlaySceneWrapper::HelpTouch() {
+	pbEffectManager::GetInstance()->AddMissEffect();
 }
 
 void pbPlaySceneWrapper::ClearScene() {

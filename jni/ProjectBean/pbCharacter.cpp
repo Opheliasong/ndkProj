@@ -80,7 +80,6 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 void pbCharacter::PreSettingDraw() {
 	glColor4f(1.0f, 1.0f,1.0f, m_Color.A);
 	glPushMatrix();
-		LOGE("Debug pbCharacter::PreSettingDraw()");
 		m_pMarionette->Translate();
 }
 void pbCharacter::DrawThis() {
