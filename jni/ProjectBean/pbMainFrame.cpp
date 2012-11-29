@@ -92,13 +92,15 @@ void pbMainFrame::npShowIntro() {
 		pbIntroSceneWrapper* pIntroScene = new pbIntroSceneWrapper("INTRO_SCENE");
 		pbSceneManager::getInstance().AddScene(pIntroScene->GetTag(), pIntroScene);
 
+		pbScoreSceneWrapper* pScoreScene = new pbScoreSceneWrapper("SCORE_SCENE");
+		pbSceneManager::getInstance().AddScene(pScoreScene->GetTag(), pScoreScene);
+
 		//---------네비게이터 세팅-----------------//
 		//pbSceneNavigator::GetInstance().LoadSceneState();
 		pbSceneNavigator::GetInstance().SetCurrentState(SCENESTATE::GAME_CREATE);
 
 		//---------인트로 네비게이트 무버
 		pbSceneMover* newMover = new pbSceneMover(SCENESTATE::GAME_CREATE);
-		//																										 인트로로 변경 해줘야함
 		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
@@ -107,16 +109,18 @@ void pbMainFrame::npShowIntro() {
 		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
-		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+		//---------스코어 네비게이트 무버
+		newMover = new pbSceneMover(SCENESTATE::GAME_PLAY);
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_RESULT, pScoreScene->GetTag() );
+		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
+
 		//-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-//
 		//---------되돌리기 테스트
-			newMover = new pbSceneMover(SCENESTATE::GAME_PLAY);
-			newMover->AddStateElement(SCENESTATE::ACTION_BACKWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
-			pbSceneNavigator::GetInstance().AddSceneMover(newMover);
-		//
-	/*
-		nitroFrame::npTimer::initialize();
-*/
+		newMover = new pbSceneMover(SCENESTATE::GAME_RESULT);
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
+		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
+
+		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
 
 		m_bFirstLoad = true;
 		LOGI("pbMainFrame::npShowIntro() Complete");

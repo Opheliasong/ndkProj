@@ -26,21 +26,22 @@ pbMarionette::pbMarionette() {
 	m_CurrentState = -1;
 	m_fAccumulateTime = 0.0f;
 	m_bUpdatePause = false;
+	m_bActionComplete = false;
 }
 pbMarionette::~pbMarionette() {
 	ClearDataStore();
 	delete m_pMoverHead;
 }
 
-void pbMarionette::AddLineMoveState(int ID, float dirX, float dirY){
-	pbObjectMover* createMover = new pbLineMover(ID, dirX, dirY);
+void pbMarionette::AddLineMoveState(int ID, float dirX, float dirY, bool(ActionFunc)(float*)){
+	pbObjectMover* createMover = new pbLineMover(ID, dirX, dirY, ActionFunc);
 
 	pbObjectMoverList* pTargetNode =  pbObjectMoverList::makeLinkNode(createMover);
 	pbObjectMoverList::addTail(pTargetNode, m_pMoverHead);
 }
 
-void pbMarionette::AddZigZagMoveState(int ID, float dirX, float dirY, float fAmplitude, float fCycle){
-	pbObjectMover* createMover = new pbZigZagMover(ID, dirX, dirY, fAmplitude, fCycle);
+void pbMarionette::AddZigZagMoveState(int ID, float dirX, float dirY, float fAmplitude, float fCycle, bool(ActionFunc)(float*)){
+	pbObjectMover* createMover = new pbZigZagMover(ID, dirX, dirY, fAmplitude, fCycle, ActionFunc);
 
 	pbObjectMoverList* pTargetNode =  pbObjectMoverList::makeLinkNode(createMover);
 	pbObjectMoverList::addTail(pTargetNode, m_pMoverHead);
@@ -88,6 +89,7 @@ void pbMarionette::DeleteMoveState(int ID) {
 }
 
 void pbMarionette::ClearDataStore() {
+	m_bActionComplete = false;
 	LinkNodeDeleteAllKernel(pbObjectMover*, m_pMoverHead);
 	pbObjectMoverList::clearList(m_pMoverHead);
 }
@@ -100,6 +102,7 @@ void pbMarionette::MoveUpdate(float fTime) {
 			m_vPos[0] = pMoverV2Pos[0];
 			m_vPos[1] = pMoverV2Pos[1];
 
+			m_bActionComplete = m_pCurrentMover->CallActionFunc(m_vPos);
 //			LOGE("DEBUG pbMarionette::MoveUpdate ");
 		}
 //		else

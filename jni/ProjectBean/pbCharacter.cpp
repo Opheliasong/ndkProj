@@ -30,6 +30,8 @@ pbCharacter::pbCharacter(): m_fLifeRotate(0.0f){
 
 	m_fLifeRotate = 0.0f;
 
+	m_fpTouchFunc = NULL;
+
 }
 pbCharacter::~pbCharacter(){
 
@@ -53,7 +55,7 @@ void pbCharacter::Create(){
 
 void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 	TouchLayer::GetInstance().RegistedObserver(this);
-
+	m_fpTouchFunc = NULL;
 	m_RegistSceneTag.clear();
 	m_RegistSceneTag.append(RegistSceneTag);
 
@@ -64,13 +66,10 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 
 	m_fLifePosX = 104*0.43f;
 
-	m_pMarionette->AddLineMoveState(APPEARED, 200, 0);
-	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 15);
-	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -15);
-	m_pMarionette->AddLineMoveState(WALKOUT, 600, 0);
-
-	m_pMarionette->SetPosX(-200);
-	m_pMarionette->SetPosY(240);
+	m_pMarionette->AddLineMoveState(APPEARED, 200, 0, &(pbCharacter::AppearedCondition));
+	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 15, &(pbCharacter::WeavingUpCondition));
+	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -15, &(pbCharacter::WeavingDownCondition));
+	m_pMarionette->AddLineMoveState(WALKOUT, 600, 0, &(pbCharacter::WalkOutCondition));
 
 	m_pMarionette->SelectMoveState(NONE);
 	m_pMarionette->SetMovePause(false);
@@ -81,6 +80,7 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 void pbCharacter::PreSettingDraw() {
 	glColor4f(1.0f, 1.0f,1.0f, m_Color.A);
 	glPushMatrix();
+		LOGE("Debug pbCharacter::PreSettingDraw()");
 		m_pMarionette->Translate();
 }
 void pbCharacter::DrawThis() {
@@ -176,28 +176,23 @@ void pbCharacter::Update(float fTime){
 	int m_MarionetteState = m_pMarionette->GetState();
 
 	if( m_MarionetteState == APPEARED) {
-		if(m_pMarionette->GetV2Pos()[0] > 72) {
-			m_pMarionette->SetPosX(72);
+		if( m_pMarionette->GetActionCondition() )
 			m_pMarionette->SelectMoveState(WEAVING_UP);
-		}
-
 	}
 	else if( m_MarionetteState == WEAVING_UP) {
-		if(m_pMarionette->GetV2Pos()[1] > 260) {
+		if( m_pMarionette->GetActionCondition() )
 			m_pMarionette->SelectMoveState(WEAVING_DOWN);
-		}
 	}
 	else if( m_MarionetteState == WEAVING_DOWN) {
-		if(m_pMarionette->GetV2Pos()[1] < 220) {
+		if( m_pMarionette->GetActionCondition() )
 			m_pMarionette->SelectMoveState(WEAVING_UP);
-		}
 	}
 	else if( m_MarionetteState == WALKOUT) {
-		if(m_pMarionette->GetV2Pos()[0] > 1000) {
+		if( m_pMarionette->GetActionCondition() ) {
 			m_pMarionette->SelectMoveState(NONE);
 			m_pMarionette->SetMovePause(true);
 
-			pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_BACKWARD);
+			pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
 		}
 	}
 
@@ -209,8 +204,8 @@ void pbCharacter::SetPos(float X, float Y){
 	m_pMarionette->SetPosY(Y);
 }
 
-float pbCharacter::GetPosX() { return m_pMarionette->GetV2Pos()[0]; }
-float pbCharacter::GetPosY() { return m_pMarionette->GetV2Pos()[1]; }
+inline float pbCharacter::GetPosX() { return m_pMarionette->GetV2Pos()[0]; }
+inline float pbCharacter::GetPosY() { return m_pMarionette->GetV2Pos()[1]; }
 
 void pbCharacter::Appeared() {
 	GetInstance()->m_pMarionette->SelectMoveState(APPEARED);
@@ -287,6 +282,17 @@ void pbCharacter::Release(){
 
 }
 
+void pbCharacter::PlayGame_TouchFunc() {
+	pbComboManager::GetInstance()->IncreaseCombo(10);
+	if( pbComboManager::GetInstance()->FeverOn() ) {
+		pbCharacter::GetInstance()->FeverEffectCancle();
+		pbCharacter::GetInstance()->FeverEffectOn();
+	}
+}
+void pbCharacter::Result_TouchFunc() {
+	pbSceneManager::getInstance().GetCurrentScene()->GetStageTrigger()->ActivateIDState(pbCharacter::WALKOUT);
+}
+
 void pbCharacter::notify(){
 	if(TouchLayer::GetInstance().touchFlag == TOUCHFLAGS::TAPDOWN) {
 	//		LOGE("[DEBUG]pbCharacter:: TAPDOWN");
@@ -307,15 +313,43 @@ void pbCharacter::notify(){
 
 			if (x >= left && x <= right) {
 				if (y >= bottom && y <= top) {
-					pbComboManager::GetInstance()->IncreaseCombo(10);
-					if( pbComboManager::GetInstance()->FeverOn() ) {
-						FeverEffectCancle();
-						FeverEffectOn();
-					}
+					if( m_fpTouchFunc != NULL )
+						(*m_fpTouchFunc)();
 					LOGE("[DEBUG]pbCharacter:: Touched");
 				}
 			}
 		}
+}
+///---------------마리오네트 컨디션------------------------------//
+
+bool pbCharacter::AppearedCondition(float* pV2Pos) {
+	if(pV2Pos[0] > GetInstance()->m_vConditionPos[0]) {
+		GetMarionette()->SetPosX(GetInstance()->m_vConditionPos[0]);
+		return true;
+	}
+
+	return false;
+}
+bool pbCharacter::WeavingUpCondition(float* pV2Pos) {
+	if(pV2Pos[1] > GetInstance()->m_vConditionPos[1] + 10) {
+		GetMarionette()->SetPosY(GetInstance()->m_vConditionPos[1] + 10);
+		return true;
+	}
+	return false;
+}
+bool pbCharacter::WeavingDownCondition(float* pV2Pos) {
+	if(pV2Pos[1] < GetInstance()->m_vConditionPos[1] - 10) {
+		GetMarionette()->SetPosY(GetInstance()->m_vConditionPos[1] - 10);
+		return true;
+	}
+	return false;
+}
+bool pbCharacter::WalkOutCondition(float* pV2Pos) {
+	if(pV2Pos[0] > 1000) {
+		GetMarionette()->SetPosX(1000);
+		return true;
+	}
+	return false;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------//

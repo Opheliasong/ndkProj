@@ -30,6 +30,14 @@ public:
 	inline bool IsBattlePhase() { return m_bBattlePhase;}
 
 
+	/////---------------마리오네트 컨디션------------------------------//
+	void SetConditionPos(float X, float Y) { m_vConditionPos[0] = X; m_vConditionPos[1] = Y;}
+	static bool ApproachingCondition(float* pV2Pos);
+	static bool WeavingUpCondition(float* pV2Pos);
+	static bool WeavingDownCondition(float* pV2Pos);
+	static bool WalkOutCondition(float* pV2Pos);
+
+
 	inline static pbBoss* GetInstance() { return SingleObject; }
 	inline static pbMarionette* GetMarionette() { return GetInstance()->m_pMarionette;}
 
@@ -44,6 +52,8 @@ private:
 	bool m_bBattlePhase;
 	bool m_bBossAlive;
 
+	 /////---------------마리오네트 컨디션------------------------------//
+	 npV2Vector m_vConditionPos;
 };
 
 

@@ -21,9 +21,10 @@ public:
 
 	void Update(float fTime);
 
-	inline void SetPos(float X, float Y);
+	void SetPos(float X, float Y);
 	inline float GetPosX();
 	inline float GetPosY();
+	void SetTouchFunction(void(Func)()) { m_fpTouchFunc = Func; }
 
 	void DecreaseLife();
 	void FeverEffectOn();
@@ -31,18 +32,29 @@ public:
 	void FeverEffectCancle();
 	bool GetFeverReady() { return m_bFeverReady;}
 
-	void ClearDataStore();
-	static void Release();
+	virtual void notify();
+	/////---------------마리오네트 컨디션------------------------------//
+	void SetConditionPos(float X, float Y) { m_vConditionPos[0] = X; m_vConditionPos[1] = Y;}
+	static bool AppearedCondition(float* pV2Pos);
+	static bool WeavingUpCondition(float* pV2Pos);
+	static bool WeavingDownCondition(float* pV2Pos);
+	static bool WalkOutCondition(float* pV2Pos);
 
-	//상태 관련
+	//상태 관련 함수
 	static void Appeared();
 	static void WalkOut();
 
-	virtual void notify();
+	// 터치 갈아끼기용 함수
+	static void PlayGame_TouchFunc();
+	static void Result_TouchFunc();
+
+	void ClearDataStore();
+	static void Release();
+
+	static pbMarionette* GetMarionette() {return SingleObject->m_pMarionette;}
+	static pbCharacter* GetInstance() { return SingleObject;}
 
 	enum {NONE = -1, APPEARED = 0, WEAVING_UP, WEAVING_DOWN, WALKOUT, DIE };
-
-	static pbCharacter* GetInstance() { return SingleObject;}
 private:
 	static pbCharacter* SingleObject;
 
@@ -71,6 +83,10 @@ private:
 	float m_fFeverTargetTime;
 	float m_fEffectScale;
 
+
+	 void (*m_fpTouchFunc)();
+	 /////---------------마리오네트 컨디션------------------------------//
+	 npV2Vector m_vConditionPos;
 };
 
 

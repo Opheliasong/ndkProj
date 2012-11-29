@@ -60,6 +60,7 @@ npNativeEvent.cpp\
 /nitroFrame/TouchLayer/TouchObserver.cpp\
 /nitroFrame/TouchLayer/TouchLayer.cpp\
 /ProjectBean/pbDrawUnit.cpp\
+/ProjectBean/pbResultViewer.cpp\
 /ProjectBean/pbMainFrame.cpp\
 /ProjectBean/pbMarionette.cpp\
 /ProjectBean/pbSceneWrapper.cpp\

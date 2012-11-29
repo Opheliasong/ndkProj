@@ -15,9 +15,9 @@
 // ������ġ���� ������ ������ �̵� ������ ����ð����� ����Ͽ� ��ġ�� ��ȯ�Ѵ�.
 class pbObjectMover {
 protected:
-	pbObjectMover():m_ID(-1) { m_vDir[0] = 0;  m_vDir[1] = 0; m_vPos[0] = 0;  m_vPos[1] = 0; LOGE("CREATE MOVER");}
+	pbObjectMover():m_ID(-1) { m_vDir[0] = 0;  m_vDir[1] = 0; m_vPos[0] = 0;  m_vPos[1] = 0; LOGE("CREATE MOVER"); m_fpActionFunc = NULL;  }
 public:
-	pbObjectMover(int ID, float dirX, float dirY){ m_ID = ID; m_vDir[0] = dirX; m_vDir[1] = dirY; m_vPos[0] = 0;  m_vPos[1] = 0;}
+	pbObjectMover(int ID, float dirX, float dirY, bool(ActionFunc)(float*)){ m_ID = ID; m_vDir[0] = dirX; m_vDir[1] = dirY; m_vPos[0] = 0;  m_vPos[1] = 0; m_fpActionFunc = ActionFunc; }
 	virtual ~pbObjectMover() {};
 
 	virtual inline void SetID(int ID) { m_ID = ID;}
@@ -25,8 +25,11 @@ public:
 
 	virtual inline void SetDir(float dirX, float dirY) { m_vDir[0] = dirX; m_vDir[1] = dirY;}
 	virtual inline void SetStartPos(float PosX, float PosY) { m_vStartPos[0] = PosX; m_vStartPos[1] = PosY;}
-/*	virtual inline float GetDirX() { return m_vDir[0];}
-	virtual inline float GetDirY() { return m_vDir[1];}*/
+
+	virtual inline void SetActionFunc(bool(ActionFunc)(float*)) { m_fpActionFunc = ActionFunc;}
+	virtual inline bool CallActionFunc(float* pV2Pos) {
+		return (*m_fpActionFunc)(pV2Pos);
+	}
 
 	virtual float* GetV2PosByTime(float fAccumulateTime) = 0;
 
@@ -35,6 +38,8 @@ protected:
 	npV2Vector m_vDir;
 	npV2Vector m_vPos;
 	npV2Vector m_vStartPos;
+
+	bool (*m_fpActionFunc)(float* pV2Pos);
 };
 
 
@@ -43,7 +48,7 @@ class pbLineMover : public pbObjectMover {
 private:
 	pbLineMover() { }
 public:
-	pbLineMover(int ID, float dirX, float dirY){ SetID(ID); SetDir(dirX, dirY); }
+	pbLineMover(int ID, float dirX, float dirY, bool(ActionFunc)(float*)){ SetID(ID); SetDir(dirX, dirY); SetActionFunc(ActionFunc);}
 	virtual ~pbLineMover() {};
 
 	virtual float* GetV2PosByTime(float fAccumulateTime);
@@ -54,8 +59,8 @@ class pbZigZagMover : public pbObjectMover {
 private:
 	pbZigZagMover() { m_fCycle = 0.0f;	m_fAmplitudeX = 0.0f;	m_fAmplitudeY = 0.0f;}
 public:
-	pbZigZagMover(int ID, float dirX, float dirY, float fAmplitude, float fCycle){
-		SetID(ID); SetDir(dirX, dirY);
+	pbZigZagMover(int ID, float dirX, float dirY, float fAmplitude, float fCycle, bool(ActionFunc)(float*) ){
+		SetID(ID); SetDir(dirX, dirY); SetActionFunc(ActionFunc);
 
 		// �븻 ���͸� ������ �־��ش�. ������⿡ ���� ���� ����
 		float vectorsize = sqrt(dirX*dirX + dirY*dirY);
@@ -88,8 +93,8 @@ public:
 	pbMarionette();
 	~pbMarionette();
 
-	void AddLineMoveState(int ID, float dirX, float dirY);
-	void AddZigZagMoveState(int ID, float dirX, float dirY, float fAmplitude, float fCycle);
+	void AddLineMoveState(int ID, float dirX, float dirY, bool(ActionFunc)(float*));
+	void AddZigZagMoveState(int ID, float dirX, float dirY, float fAmplitude, float fCycle, bool(ActionFunc)(float*));
 
 	void DeleteMoveState(int ID);
 
@@ -109,6 +114,7 @@ public:
 	inline void SetPosX(float PosX) {m_vPos[0] =PosX;}
 	inline void SetPosY(float PosY) {m_vPos[1] =PosY;}
 
+	inline bool GetActionCondition() { return m_bActionComplete; }
 private:
 	npV2Vector m_vPos;
 
@@ -120,6 +126,7 @@ private:
 	float m_fAccumulateTime;
 
 	bool m_bUpdatePause;
+	bool m_bActionComplete;
 };
 
 

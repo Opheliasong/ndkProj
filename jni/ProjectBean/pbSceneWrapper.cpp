@@ -246,11 +246,6 @@ void pbSceneWrapper::ClearToRenderList() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------pbPlaySceneWrapper------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-pbPlaySceneWrapper::pbPlaySceneWrapper() {
-	//SetTag("PLAYSCENE");	//이 씬의 기본 태그를 지정
-	BackWardUI = NULL;
-	helpUI = NULL;
-}
 pbPlaySceneWrapper::pbPlaySceneWrapper(const char* SceneTag) {
 	SetTag(SceneTag);	//이 씬의 기본 태그를 지정
 	BackWardUI =NULL;
@@ -296,14 +291,19 @@ void pbPlaySceneWrapper::InitializeScene() {
 
 	// 캐릭터
 	pbCharacter::GetInstance()->LoadData(GetTag());
+	pbCharacter::GetInstance()->SetPos(-200, 240);
+	pbCharacter::GetInstance()->SetConditionPos(72.f, 240.f);
+	pbCharacter::GetInstance()->SetTouchFunction(&(pbCharacter::PlayGame_TouchFunc));
 	RegistToRenderList(pbCharacter::GetInstance());
 	GetStageTrigger()->AddPosState(0, &(pbCharacter::Appeared));
 	GetStageTrigger()->AddIDState(pbCharacter::WALKOUT, &(pbCharacter::WalkOut));
 
 	// 보스
 	pbBoss::GetInstance()->LoadData();
+	pbBoss::GetMarionette()->SetPosX(1400);pbBoss::GetMarionette()->SetPosY(240);
+	pbBoss::GetInstance()->SetConditionPos(800.0f, 240.0f);
 	RegistToRenderList(pbBoss::GetInstance());
-	GetStageTrigger()->AddPosState(1400, &(pbBoss::Approaching));
+	GetStageTrigger()->AddPosState(400, &(pbBoss::Approaching));
 
 	LOGI("pbPlaySceneWrapper InitializeScene Complete");
 }
@@ -369,10 +369,6 @@ void pbPlaySceneWrapper::ClearScene() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------pbIntroSceneWrapper------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-pbIntroSceneWrapper::pbIntroSceneWrapper() {
-	m_IntroBG = NULL;
-	//SetTag("PLAYSCENE");	//이 씬의 기본 태그를 지정
-}
 pbIntroSceneWrapper::pbIntroSceneWrapper(const char* SceneTag) {
 	m_IntroBG = NULL;
 	SetTag(SceneTag);	//이 씬의 기본 태그를 지정
@@ -390,18 +386,7 @@ void pbIntroSceneWrapper::InitializeScene() {
 }
 
 void pbIntroSceneWrapper::UpdateScene(float fTime) {
-//	static float plusTime = 0;
-
 	pbBackgroundProcessor::GetInstance().Update(fTime);
-
-/*	plusTime += fTime;
-
-	if (plusTime > 3.0f) {
-		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(
-				SCENESTATE::ACTION_FOWARD);
-		plusTime = 0;
-		LOGI("PLUSCHANGE");
-	}*/
 
 	if( m_IntroBG != NULL ) {
 		if( m_IntroBG->IsTouched() ) {
@@ -419,6 +404,52 @@ void pbIntroSceneWrapper::ClearScene() {
 	pbBackgroundProcessor::GetInstance().ClearDataStore();
 	m_IntroBG = NULL;
 	LOGI("pbIntroSceneWrapper ClearScene Complete");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////-----------------------------------------------------pbScoreSceneWrapper------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+pbScoreSceneWrapper::pbScoreSceneWrapper(const char* SceneTag) {
+	SetTag(SceneTag);	//이 씬의 기본 태그를 지정
+	m_ResultViewer = new pbResultViewer();
+}
+
+pbScoreSceneWrapper::~pbScoreSceneWrapper() {
+	delete m_ResultViewer;
+}
+
+void pbScoreSceneWrapper::InitializeScene() {
+	GetStageTrigger()->Initialize();
+	RegistToRenderList(m_ResultViewer);
+
+	m_ResultViewer->SetPos(200, 0);
+	m_ResultViewer->PushBackScoreView(0, 430, "ci", 150, 50, "run", 50, 50, pbStageValue::m_TotalScore);
+	m_ResultViewer->PushBackScoreView(0, 330, "ci", 150, 50, "run", 50, 50, pbStageValue::m_iNumLife);
+
+	// 캐릭터
+	pbCharacter::GetInstance()->LoadData(GetTag());
+	pbCharacter::GetInstance()->SetTouchFunction(&(pbCharacter::Result_TouchFunc));
+	pbCharacter::GetInstance()->SetPos(600.0f, 100.0f);
+	pbCharacter::GetInstance()->SetConditionPos(600.f, 100.f);
+	pbCharacter::GetMarionette()->SelectMoveState(pbCharacter::WEAVING_UP);
+	GetStageTrigger()->AddIDState(pbCharacter::WALKOUT, &(pbCharacter::WalkOut));
+	RegistToRenderList(pbCharacter::GetInstance());
+
+	LOGI("pbScoreSceneWrapper InitializeScene Complete");
+}
+
+void pbScoreSceneWrapper::UpdateScene(float fTime) {
+	m_ResultViewer->Update(fTime);
+	pbCharacter::GetInstance()->Update(fTime);
+}
+
+void pbScoreSceneWrapper::ClearScene() {
+	ClearToRenderList();
+	pbCharacter::GetInstance()->ClearDataStore();
+	m_ResultViewer->ClearDataStore();
+	TouchLayer::GetInstance().ClearRegistedList();
+	//pbBackgroundProcessor::GetInstance().ClearDataStore();
+	LOGI("pbScoreSceneWrapper ClearScene Complete");
 }
 
 

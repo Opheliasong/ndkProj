@@ -53,21 +53,20 @@ void pbStageTrigger::ActivateIDState(int ID) {
 
 	if( PairResult.first != PairResult.second ) {
 		(*(PairResult.first->m_fpFunc))();
-		LOGE("DEBUG pbIDStageTrriger Activate");
+		LOGE("DEBUG pbIDStageTrigger Activate");
 	}
 }
 
 void pbStageTrigger::Update(float fTime) {
 	if(!m_bGamePause)	{
 		pbStageValue::m_fStageMoveX += pbStageValue::m_fStageMoveSpeed*fTime;
-
 		if(m_Stateindex <  m_PosStateVector.size() ) {
 			pbStagePosState* pState = &(m_PosStateVector[m_Stateindex]);
 
 			if( pbStageValue::m_fStageMoveX > pState->m_fStartStatePosX){
 				(*pState->m_fpFunc)();
 				m_Stateindex++;
-				LOGE("DEBUG pbPosStageTrriger On");
+				LOGE("DEBUG pbPosStageTrigger On");
 			}
 
 		}

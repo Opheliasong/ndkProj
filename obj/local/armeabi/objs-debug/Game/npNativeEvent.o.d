@@ -250,8 +250,8 @@ obj/local/armeabi/objs-debug/Game/npNativeEvent.o: jni/npNativeEvent.cpp \
  jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h \
  jni/./ProjectBean/pbTypes.h jni/./ProjectBean/pbDrawUnit.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
- jni/./ProjectBean/pbMarionette.h jni/./ProjectBean/pbStageTrigger.h \
- jni/./ProjectBean/pbSceneWrapper.h \
+ jni/./ProjectBean/pbMarionette.h jni/./ProjectBean/pbResultViewer.h \
+ jni/./ProjectBean/pbStageTrigger.h jni/./ProjectBean/pbSceneWrapper.h \
  jni/./ProjectBean/../nitroFrame/npTimer.h \
  jni/./ProjectBean/../nitroFrame/npSubject.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
@@ -767,6 +767,8 @@ jni/./ProjectBean/pbDrawUnit.h:
 jni/./ProjectBean/../nitroFrame/npObserver.h:
 
 jni/./ProjectBean/pbMarionette.h:
+
+jni/./ProjectBean/pbResultViewer.h:
 
 jni/./ProjectBean/pbStageTrigger.h:
 

@@ -13,6 +13,7 @@
 #include "../nitroFrame/npObserver.h"
 #include "pbMarionette.h"
 
+#include "pbResultViewer.h"
 #include "pbStageTrigger.h"
 //#include "pbGlobalVariable.h"
 #include "pbSceneWrapper.h"

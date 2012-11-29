@@ -26,16 +26,13 @@ void pbBoss::Create() {
 }
 
 void pbBoss::LoadData() {
-	m_pMarionette->AddLineMoveState(APPROACHING, -200, 0);
-	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 30);
-	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -30);
-	m_pMarionette->AddZigZagMoveState(WALKOUT, 0, -200, 10, 80);
+	m_pMarionette->AddLineMoveState(APPROACHING, -200, 0, &(pbBoss::ApproachingCondition));
+	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 30, &(pbBoss::WeavingUpCondition));
+	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -30, &(pbBoss::WeavingDownCondition));
+	m_pMarionette->AddZigZagMoveState(WALKOUT, 0, -200, 10, 80, &(pbBoss::WalkOutCondition));
 
 	m_pBodyDrawUnit->SetTextureTAG("run");
 	m_pBodyDrawUnit->SetSize(400, 400);
-
-	m_pMarionette->SetPosX(1400);
-	m_pMarionette->SetPosY(240);
 
 	m_pMarionette->SelectMoveState(NONE);
 	m_pMarionette->SetMovePause(false);
@@ -46,35 +43,24 @@ void pbBoss::LoadData() {
 }
 
 void pbBoss::Update(float fTime) {
-	int m_BossState = m_pMarionette->GetState();
+	int m_MarionetteState = m_pMarionette->GetState();
 
-	if( m_BossState == APPROACHING) {
-		if(m_pMarionette->GetV2Pos()[0] < 800) {
-			m_pMarionette->SetPosX(800);
+	if( m_MarionetteState == APPROACHING) {
+		if( m_pMarionette->GetActionCondition() ) {
 			m_pMarionette->SelectMoveState(WEAVING_UP);
-//			LOGE("CHANGE TO WEAVING_UP");
-
 			m_bBattlePhase = true;
-			//pbNoteProcessor::GetNoteDropper()->SetGenerateNote(true);
 		}
-
 	}
-	else if( m_BossState == WEAVING_UP) {
-		if(m_pMarionette->GetV2Pos()[1] > 280) {
-
+	else if( m_MarionetteState == WEAVING_UP) {
+		if( m_pMarionette->GetActionCondition() )
 			m_pMarionette->SelectMoveState(WEAVING_DOWN);
-//			LOGE("CHANGE TO WEAVING_DOWN");
-		}
 	}
-	else if( m_BossState == WEAVING_DOWN) {
-		if(m_pMarionette->GetV2Pos()[1] < 200) {
+	else if( m_MarionetteState == WEAVING_DOWN) {
+		if( m_pMarionette->GetActionCondition() )
 			m_pMarionette->SelectMoveState(WEAVING_UP);
-
-//			LOGE("CHANGE TO WEAVING_UP");
-		}
 	}
-	else if( m_BossState == WALKOUT) {
-		if(m_pMarionette->GetV2Pos()[1] < -300) {
+	else if( m_MarionetteState == WALKOUT) {
+		if( m_pMarionette->GetActionCondition() ) {
 			m_pMarionette->SelectMoveState(DIE);
 
 			m_pMarionette->SetMovePause(true);
@@ -90,6 +76,40 @@ void pbBoss::Update(float fTime) {
 	m_pMarionette->MoveUpdate(fTime);
 
 }
+
+///---------------마리오네트 컨디션------------------------------//
+
+bool pbBoss::ApproachingCondition(float* pV2Pos) {
+	if(pV2Pos[0] < GetInstance()->m_vConditionPos[0]) {
+		GetMarionette()->SetPosX(GetInstance()->m_vConditionPos[0]);
+		return true;
+	}
+
+	return false;
+}
+bool pbBoss::WeavingUpCondition(float* pV2Pos) {
+	if(pV2Pos[1] > GetInstance()->m_vConditionPos[1] + 40) {
+		GetMarionette()->SetPosY(GetInstance()->m_vConditionPos[1] + 40);
+		return true;
+	}
+	return false;
+}
+bool pbBoss::WeavingDownCondition(float* pV2Pos) {
+	if(pV2Pos[1] < GetInstance()->m_vConditionPos[1] - 40) {
+		GetMarionette()->SetPosY(GetInstance()->m_vConditionPos[1] - 40);
+		return true;
+	}
+	return false;
+}
+bool pbBoss::WalkOutCondition(float* pV2Pos) {
+	if(pV2Pos[1] < -300) {
+		GetMarionette()->SetPosX(-300);
+		return true;
+	}
+	return false;
+}
+
+
 
 void pbBoss::PreSettingDraw() {
 	glPushMatrix();
@@ -107,7 +127,7 @@ void pbBoss::DrawThis() {
 void pbBoss::Approaching() {
 	GetInstance()->m_pMarionette->SelectMoveState(APPROACHING);
 	GetInstance()->m_pMarionette->SetMovePause(false);
-	LOGE("CHANGE TO APPROACHING");
+	LOGE("pbBoss::Approaching() CHANGE TO APPROACHING");
 }
 
 void pbBoss::DecreaseHP(float fDamage){
