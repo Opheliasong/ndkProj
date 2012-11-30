@@ -24,12 +24,12 @@ public:
 	void SetPos(float X, float Y);
 	inline float GetPosX();
 	inline float GetPosY();
+	float GetHeight();
 	void SetTouchFunction(void(Func)()) { m_fpTouchFunc = Func; }
 
-	void DecreaseLife();
 	void FeverEffectOn();
-	void FeverEffectReady();
-	void FeverEffectCancle();
+/*	void FeverEffectReady();
+	void FeverEffectCancle();*/
 	bool GetFeverReady() { return m_bFeverReady;}
 
 	virtual void notify();

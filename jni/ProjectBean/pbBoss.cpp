@@ -32,7 +32,7 @@ void pbBoss::LoadData() {
 	m_pMarionette->AddZigZagMoveState(WALKOUT, 0, -200, 10, 80, &(pbBoss::WalkOutCondition));
 
 	m_pBodyDrawUnit->SetTextureTAG("run");
-	m_pBodyDrawUnit->SetSize(400, 400);
+	m_pBodyDrawUnit->SetSize(200, 200);
 
 	m_pMarionette->SelectMoveState(NONE);
 	m_pMarionette->SetMovePause(false);
@@ -134,7 +134,7 @@ void pbBoss::DecreaseHP(float fDamage){
 	if( GetInstance() != NULL) {
 		GetInstance()->m_fHP -= fDamage;
 
-		if( GetInstance()->m_fHP < 0) {
+		if( GetInstance()->m_fHP <= 0) {
 			GetInstance()->m_pMarionette->SelectMoveState(WALKOUT);
 			LOGE("CHANGE TO WALKOUT");
 			GetInstance()->SetBattlePhase(false);

@@ -304,8 +304,6 @@ void pbSceneWrapper::ClearToRenderList() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pbPlaySceneWrapper::pbPlaySceneWrapper(const char* SceneTag) {
 	SetTag(SceneTag);	//이 씬의 기본 태그를 지정
-	BackWardUI =NULL;
-	helpUI = NULL;
 }
 
 pbPlaySceneWrapper::~pbPlaySceneWrapper() {
@@ -316,27 +314,31 @@ void pbPlaySceneWrapper::InitializeScene() {
 	pbEffectManager::GetInstance()->SetSceneTag(GetTag());
 	GetStageTrigger()->Initialize();
 	//background
-	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 480, 400, 240, 0.1f, "ci");
+/*	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 480, 400, 240, 0.1f, "ci");
 	RegistToRenderList(pCreateBG);
 
 	pCreateBG = pbBackgroundProcessor::GetInstance().AddMoveBackGround(400, 240, 0, 220, 0.5f, "ci");
 	RegistToRenderList(pCreateBG);
 
 	pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 100, 400, 50, 1.0f, "ci");
-	RegistToRenderList(pCreateBG);
+	RegistToRenderList(pCreateBG);*/
 
 
 	//----------------UI------------------------------//
-	//pbUIProcessor::GetInstance()->LoadData("UI_Placement.xml");
 	pbUI* createUI = pbUIProcessor::GetInstance()->AddBackPanelUI(400, 450, "ci", 800, 50);
 	this->RegistToRenderList(createUI);
-	createUI = pbUIProcessor::GetInstance()->AddButtonUI(25, 450, "run", 36, 36, &(pbPlaySceneWrapper::MenuTouch));
+	//라이프 UI 추가
+	createUI = pbUIProcessor::GetInstance()->AddNumberUI(100, 450, "ci", 90,  30, "run", 25, 35, 1, &(pbStageValue::GetLifeData));
 	this->RegistToRenderList(createUI);
-	createUI = pbUIProcessor::GetInstance()->AddButtonUI(777, 450, "ci", 40, 38, &(pbPlaySceneWrapper::HelpTouch));
+	//스코어 UI 추가
+	createUI = pbUIProcessor::GetInstance()->AddNumberUI(125 + 110, 450, "ci", 100, 30, "run", 25, 35, 9, &(pbStageValue::GetScoreData));
 	this->RegistToRenderList(createUI);
-	createUI = pbUIProcessor::GetInstance()->AddAbillityPointUI(585, 447, "ci", 82, 23, "ci", 310, 17);
+	// 메뉴버튼
+	createUI = pbUIProcessor::GetInstance()->AddButtonUI(760, 450, "ci", 70, 40, &(pbPlaySceneWrapper::MenuTouch));
 	this->RegistToRenderList(createUI);
-	createUI = pbUIProcessor::GetInstance()->AddScoreUI(195, 450, "ci", 119, 25, "run", 20, 35);
+	// 맵 네비게이트
+	pbStageValue::m_fMaxStageLength = 40000;
+	createUI = pbUIProcessor::GetInstance()->AddGaugeUI(590, 450, "run", "ci", 250, 25, pbStageValue::m_fMaxStageLength, &(pbStageValue::GetStageX));
 	this->RegistToRenderList(createUI);
 
 /*
@@ -355,6 +357,10 @@ void pbPlaySceneWrapper::InitializeScene() {
 	GetStageTrigger()->AddPosState(0, &(pbCharacter::Appeared));
 	GetStageTrigger()->AddIDState(pbCharacter::WALKOUT, &(pbCharacter::WalkOut));
 
+	// Fever게이지
+	createUI = pbUIProcessor::GetInstance()->AddGaugeUI_RelativePos(pbCharacter::GetMarionette()->GetV2Pos(), 0, -((pbCharacter::GetInstance()->GetHeight()/2) + 15), "run", "ci", 150, 20, pbStageValue::MAX_FEVERGAUGE, &(pbStageValue::GetFeverGauge));
+	this->RegistToRenderList(createUI);
+
 	// 보스
 	pbBoss::GetInstance()->LoadData();
 	pbBoss::GetMarionette()->SetPosX(1400);pbBoss::GetMarionette()->SetPosY(240);
@@ -370,10 +376,7 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 	if(!GetStageTrigger()->IsPaused())
 	{
 		GetStageTrigger()->Update(fTime);
-		//pbGlobalInGameVariable::fWorldMoveX = pbGlobalInGameVariable::fWorldMoveDir*pbGlobalInGameVariable::fWorldMoveSpeed*fTime;
-		//pbGlobalInGameVariable::fWorldX += pbGlobalInGameVariable::fWorldMoveX;
 
-		//float mesc = 1000.f * fTime;
 		pbBackgroundProcessor::GetInstance().Update(fTime);
 		pbUIProcessor::GetInstance()->Update(fTime);
 		pbCharacter::GetInstance()->Update(fTime);
@@ -385,29 +388,13 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 		pbGuideLineGenerator::GetInstance()->Update(fTime);
 		*/
 
-/*		if( BackWardUI != NULL ) {
-			if( BackWardUI->IsTouched() ) {
-
-				BackWardUI->ResetTouched();
-			 }
-		}
-
-		if( helpUI != NULL ) {
-			if( helpUI->IsTouched() ) {
-
-				helpUI->ResetTouched();
-			 }
-		}*/
-
-
 	}
 }
 
 void pbPlaySceneWrapper::MenuTouch() {
-	pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_BACKWARD);
-}
-void pbPlaySceneWrapper::HelpTouch() {
-	pbEffectManager::GetInstance()->AddMissEffect();
+/*	pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_BACKWARD);*/
+	//pbEffectManager::GetInstance()->AddMissEffect();
+	pbStageValue::IncreaseFeverGauge(20);
 }
 
 void pbPlaySceneWrapper::ClearScene() {
@@ -421,9 +408,6 @@ void pbPlaySceneWrapper::ClearScene() {
 	pbEffectManager::GetInstance()->ClearDataStore();
 //	pbGlobalInGameVariable::ResetGlobalVariable();
 	pbComboManager::GetInstance()->ClearDataStore();
-
-	BackWardUI = NULL;
-	helpUI = NULL;
 
 /*	pbNoteProcessor::GetInstance()->ClearDataStore();
 

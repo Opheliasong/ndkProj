@@ -71,12 +71,28 @@ public:
 	pbStageValue();
 	virtual ~pbStageValue();
 
-	static float m_fGettingFeverGauge;
-	static float m_fStageMoveX;
-	static float m_fStageMoveSpeed;
-	static int m_iNumLife;
+	static int GetScoreData();
 	static int m_TotalScore;
 	static int m_GettingScore;
+
+	static int GetLifeData();
+	static bool m_bChangedLife;
+	static int m_iNumLife;
+
+	static void ResetFeverGauge();
+	static void IncreaseFeverGauge(float Point);
+	static float GetFeverGauge();
+	static bool IsMaximumGauge();
+	static float m_fTotalFeverGauge;
+	static bool m_bChangeFeverGauge;
+
+
+	static float GetStageX();
+	static float m_fStageMoveX;
+	static float m_fStageMoveSpeed;
+	static float m_fMaxStageLength;
+
+	enum {MAX_FEVERGAUGE = 100 };
 };
 /*
  * 스테이지 매니저의 정체

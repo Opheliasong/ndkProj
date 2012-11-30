@@ -104,7 +104,18 @@ void pbCharacter::DrawThis() {
 	glPopMatrix();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
+///////---------------------------------------------------------------------Get&Set-----------------------------------------------------------------------------------------------//
+void pbCharacter::SetPos(float X, float Y){
+	m_pMarionette->SetPosX(X);
+	m_pMarionette->SetPosY(Y);
+}
 
+inline float pbCharacter::GetPosX() { return m_pMarionette->GetV2Pos()[0]; }
+inline float pbCharacter::GetPosY() { return m_pMarionette->GetV2Pos()[1]; }
+
+float pbCharacter::GetHeight() {return m_pBodyDrawUnit->getHeight(); }
+
+///////---------------------------------------------------------------------Update-----------------------------------------------------------------------------------------------//
 void pbCharacter::Update(float fTime){
 	static float fPartOfLine, fWholeOfLine = 0.0f;
 
@@ -198,14 +209,7 @@ void pbCharacter::Update(float fTime){
 	m_pMarionette->MoveUpdate(fTime);
 }
 
-void pbCharacter::SetPos(float X, float Y){
-	m_pMarionette->SetPosX(X);
-	m_pMarionette->SetPosY(Y);
-}
-
-inline float pbCharacter::GetPosX() { return m_pMarionette->GetV2Pos()[0]; }
-inline float pbCharacter::GetPosY() { return m_pMarionette->GetV2Pos()[1]; }
-
+///////---------------------------------------------------------------------StageTrigger-----------------------------------------------------------------------------------------------//
 void pbCharacter::Appeared() {
 	GetInstance()->m_pMarionette->SelectMoveState(APPEARED);
 	GetInstance()->m_pMarionette->SetMovePause(false);
@@ -218,11 +222,7 @@ void pbCharacter::WalkOut() {
 	LOGE("pbCharacter::Appeared() WalkOut");
 }
 
-void pbCharacter::DecreaseLife(){
-	if( pbStageValue::m_iNumLife> 0)
-		pbStageValue::m_iNumLife--;
-}
-
+///////---------------------------------------------------------------------Fever-----------------------------------------------------------------------------------------------//
 void pbCharacter::FeverEffectOn() {
 	m_iFeverEffectMode = FEVER_EXPAND;
 	m_fFeverEffectDistance = 0.0f;
@@ -230,10 +230,10 @@ void pbCharacter::FeverEffectOn() {
 
 	if( pbBoss::GetInstance()->IsBattlePhase() )
 		pbEffectManager::GetInstance()->AddHomingMissileEffect(m_pMarionette->GetV2Pos()[0], m_pMarionette->GetV2Pos()[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], "run", 40, 40, 2.0f ,
-				pbComboManager::GetInstance()->GetFever()*20.0f, &(pbBoss::DecreaseHP));
+				25.0f, &(pbBoss::DecreaseHP));
 }
 
-void pbCharacter::FeverEffectReady() {
+/*void pbCharacter::FeverEffectReady() {
 	m_iFeverEffectMode = FEVER_EXPAND;
 	m_fFeverEffectDistance = 0.0f;
 	m_fFeverDestDistance = FEVER_DISTANCE_READY;
@@ -244,9 +244,9 @@ void pbCharacter::FeverEffectReady() {
 	m_fEffectScale = 3.0f;
 
 	LOGE("FEVER READY");
-}
+}*/
 
-void pbCharacter::FeverEffectCancle() {
+/*void pbCharacter::FeverEffectCancle() {
 	m_iFeverEffectMode = FEVER_NONE;
 	m_fFeverEffectDistance = 0.0f;
 	m_fFeverDestDistance = 0.0f;
@@ -255,35 +255,11 @@ void pbCharacter::FeverEffectCancle() {
 	m_Color.B = m_Color.G;
 
 	m_bFeverReady = false;
-}
-
-void pbCharacter::ClearDataStore() {
-	m_pMarionette->ClearDataStore();
-	TouchLayer::GetInstance().RemovedObserver(this);
-
-	LOGI("pbCharacter::ClearDataStore");
-}
-
-void pbCharacter::Release(){
-	if( SingleObject != NULL) {
-		SingleObject->ClearDataStore();
-
-		delete SingleObject->m_pBodyDrawUnit;
-		delete SingleObject->m_pSatelliteDrawUnit;
-		delete SingleObject->m_pMarionette;
-
-		delete SingleObject;
-		SingleObject = NULL;
-
-		LOGI("pbCharacter::Release");
-	}
-
-}
-
+}*/
+///////---------------------------------------------------------------------Touch---------------------------------------------------------------------------------------------//
 void pbCharacter::PlayGame_TouchFunc() {
-	pbComboManager::GetInstance()->IncreaseCombo(10);
 	if( pbComboManager::GetInstance()->FeverOn() ) {
-		pbCharacter::GetInstance()->FeverEffectCancle();
+	//	pbCharacter::GetInstance()->FeverEffectCancle();
 		pbCharacter::GetInstance()->FeverEffectOn();
 	}
 }
@@ -318,8 +294,8 @@ void pbCharacter::notify(){
 			}
 		}
 }
-///---------------마리오네트 컨디션------------------------------//
 
+///////---------------------------------------------------------------------Touch---------------------------------------------------------------------------------------------//
 bool pbCharacter::AppearedCondition(float* pV2Pos) {
 	if(pV2Pos[0] > GetInstance()->m_vConditionPos[0]) {
 		GetMarionette()->SetPosX(GetInstance()->m_vConditionPos[0]);
@@ -354,6 +330,30 @@ bool pbCharacter::WalkOutCondition(float* pV2Pos) {
 		}
 	}
 	return false;
+}
+
+///////---------------------------------------------------------------------Base---------------------------------------------------------------------------------------------//
+void pbCharacter::ClearDataStore() {
+	m_pMarionette->ClearDataStore();
+	TouchLayer::GetInstance().RemovedObserver(this);
+
+	LOGI("pbCharacter::ClearDataStore");
+}
+
+void pbCharacter::Release(){
+	if( SingleObject != NULL) {
+		SingleObject->ClearDataStore();
+
+		delete SingleObject->m_pBodyDrawUnit;
+		delete SingleObject->m_pSatelliteDrawUnit;
+		delete SingleObject->m_pMarionette;
+
+		delete SingleObject;
+		SingleObject = NULL;
+
+		LOGI("pbCharacter::Release");
+	}
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------//
@@ -400,9 +400,9 @@ void pbComboManager::Create() {
 void pbComboManager::LoadData() {
 	DataReset();
 
-	SetTextTag("ci", "ci", 213, 43);
-	SetNumberTag("run", "run", 40, 43);
-	SetPos(400, 400);
+	SetTextTag("ci", "ci", 150, 35);
+	SetNumberTag("run", "run", 25, 35);
+	SetPos(440, 410);
 }
 
 
@@ -531,13 +531,15 @@ void pbComboManager::IncreaseCombo(int Score) {
 
 	m_CurrentDigits = count;
 
-	if( (m_iCombo >= m_iNextFeverCombo) && !pbCharacter::GetInstance()->GetFeverReady() )  {
+/*	if( (m_iCombo >= m_iNextFeverCombo) && !pbCharacter::GetInstance()->GetFeverReady() )  {
 		pbCharacter::GetInstance()->FeverEffectReady();
-	}
+	}*/
 }
 
 bool pbComboManager::FeverOn() {
-	if( m_iCombo >= m_iNextFeverCombo) {
+	if( pbStageValue::IsMaximumGauge() ) {
+		pbStageValue::ResetFeverGauge();
+/*	if( m_iCombo >= m_iNextFeverCombo) {
 		if( m_iNextFeverCombo < 32) {
 			m_iNextFeverCombo = m_iNextFeverCombo*2;
 			//�ǹ� �ӵ�
@@ -569,6 +571,7 @@ bool pbComboManager::FeverOn() {
 //		npAudioSystem::playEffect(3);
 //		pbUserData::GetInstance().UsingAbilityPoint(-100*m_iFever);
 		pbEffectManager::GetInstance()->AddStepUpEffect(400, 220, "ci", 800, 184, "run", 131, 36, "ci", 800, 36, "run", 164, 45);
+		*/
 		return true;
 	}
 	else {
@@ -587,7 +590,7 @@ void pbComboManager::ResetCombo() {
 //	npAudioSystem::playEffect(4);
 	DataReset();
 
-	pbCharacter::GetInstance()->FeverEffectCancle();
+//	pbCharacter::GetInstance()->FeverEffectCancle();
 
 	pbEffectManager::GetInstance()->AddMissEffect();
 }
@@ -595,7 +598,7 @@ void pbComboManager::ResetCombo() {
 void pbComboManager::ClearDataStore() {
 	pbStageValue::m_fStageMoveSpeed  = WORLD_MOVESPEED;
 	DataReset();
-	pbCharacter::GetInstance()->FeverEffectCancle();
+//	pbCharacter::GetInstance()->FeverEffectCancle();
 
 	//	npAudioSystem::playEffect(4);
 	LOGI("pbComboManager ClearDataStore");

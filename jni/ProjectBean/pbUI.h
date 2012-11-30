@@ -66,38 +66,48 @@ protected:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------ pbAbilityPower_Indicator------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class pbAbilityPower_Indicator : public pbBasicUI {
+class pbGauge_Indicator : public pbBasicUI {
 public:
-	pbAbilityPower_Indicator();
-	virtual ~pbAbilityPower_Indicator();
+	pbGauge_Indicator();
+	virtual ~pbGauge_Indicator();
 
 	virtual void SetPos(float PosX, float PosY);
 	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height);
 	virtual void SetGaugeSprite(screenplayTag Tag, float Width, float Height);
+
+	void SetGaugeReturnFunc(float(Func)() ) { m_fpGaugeReturnFunc = Func;}
+	void SetMaxGaugePoint(float fMaxGauge) { m_fMaxGaugePoint = fMaxGauge;}
+
+	void SetRelativePos(float* pV2Pos);
 
 	virtual void PreSettingDraw();
 	virtual void DrawThis();
 	virtual void Update(float fTime);
 
 private:
-	float m_fMaxAbilityPoint;
-	float m_fGaugePercent;
-	float m_fGaugePosX;
-	float m_fMinusPercent;
+	float m_fMaxGaugePoint;
+
 	float m_fAniTime;
-	float m_fDecreasePercent;
-	float m_fDecreasePosX;
+
+	float m_fDestPercent;
+	float m_fStartPercent;
+	float m_fDrawPercent;
+	float m_fDrawPosX;
 
 	float m_fGaugeHalfWidth;
 	float m_fGaugeHalfHeight;
 
-	bool m_bNoHaveGauge;
+	bool m_bGaugeChangeStart;
 
 	GLfloat m_GaugeUV[8];
 	GLfloat m_GaugeVertex[12];
 	GLuint m_GaugeUVBindID;
 
 	float m_GaugeUV_WidthPercent;
+
+	float (*m_fpGaugeReturnFunc)();
+
+	float* m_pV2RelativePos;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,13 +150,16 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------pbScore_Indicator------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class pbScore_Indicator : public pbBasicUI {
+class pbNumber_Indicator : public pbBasicUI {
 public:
-	pbScore_Indicator();
-	virtual ~pbScore_Indicator();
+	pbNumber_Indicator();
+	virtual ~pbNumber_Indicator();
 
 	virtual void SetBaseSprite(screenplayTag Tag, float Width, float Height);
 	virtual void SetScoreSprite(screenplayTag FirstSpriteTag, float Width, float Height);
+
+	void SetShowDigits(int ShowDigits);
+	void SetNumberReturnFunc(int(Func)());
 
 	virtual void PreSettingDraw();
 	virtual void DrawThis();
@@ -162,8 +175,9 @@ private:
 	float m_ScoreWidth;
 	UVPacket* m_ScoreUV[NUMBERING];
 	GLuint m_DigitsNumber[MAX_DIGITS];
+	int m_CurrentDigits;
 
-
+	int(*m_fpNumberReturnFunc)();	// 넘버리턴 함수는 숫자 갱신 필요가 없을때 -1을 리턴하도록 한다
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,8 +214,9 @@ public:
 
 	pbBasicUI* AddBackPanelUI(float X, float Y, screenplayTag Tag, float Width, float Height);
 	pbTouchUI* AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height, void(Func)());
-	pbBasicUI* AddAbillityPointUI(float X, float Y,screenplayTag TextTag, float TextWidth, float TextHeight,  screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight);
-	pbBasicUI* AddScoreUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight, screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight);
+	pbBasicUI* AddGaugeUI(float X, float Y, screenplayTag GaugePanelTag, screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight, float MaxGauge, float(GaugeReturnFunc)());
+	pbBasicUI* AddGaugeUI_RelativePos(float* pV2RelativePos, float X, float Y, screenplayTag GaugePanelTag, screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight, float MaxGauge, float(GaugeReturnFunc)());//위치따라가는 UI
+	pbBasicUI* AddNumberUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight, screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight, int MaxDigits, int(NumberRetunFunc)());
 
 
 	void Update(float time);

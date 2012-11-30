@@ -3,21 +3,19 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------ �ֹ��� UI------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-pbAbilityPower_Indicator::pbAbilityPower_Indicator(){
-	m_fMaxAbilityPoint = pbStageValue::m_fGettingFeverGauge;
-
-	m_bNoHaveGauge = false;
+pbGauge_Indicator::pbGauge_Indicator(){
+	m_fMaxGaugePoint = 0;
+	m_bGaugeChangeStart = false;
 
 	 m_vPos[0] = 0.0f;
 	 m_vPos[1] = 0.0f;
 
-	m_fGaugePercent = 1.0f;
-	m_fGaugePosX = 0.0f;
-	m_fDecreasePercent = 1.0f;
-	m_fDecreasePosX = 0.0f;
+	m_fDestPercent = 0;
+	m_fStartPercent = 0;
+	m_fDrawPercent = 0.0f;
+	m_fDrawPosX = 0.0f;
 
 	m_fAniTime = 0.0f;
-	m_fMinusPercent = 0.0f;
 
 	m_fGaugeHalfWidth = 0;
 	m_fGaugeHalfHeight = 0;
@@ -27,27 +25,30 @@ pbAbilityPower_Indicator::pbAbilityPower_Indicator(){
 	m_GaugeUVBindID = 0;
 
 	m_pBaseDrawUnit = new pbBasicDrawUnit();
+
+	m_fpGaugeReturnFunc = NULL;
+	m_pV2RelativePos = NULL;
 }
 
-pbAbilityPower_Indicator::~pbAbilityPower_Indicator()
+pbGauge_Indicator::~pbGauge_Indicator()
 {
 	delete m_pBaseDrawUnit;
 
 }
 
 
-void pbAbilityPower_Indicator::SetPos(float PosX, float PosY)
-{
+void pbGauge_Indicator::SetPos(float PosX, float PosY){
 	m_vPos[0] = PosX;
 	m_vPos[1] = PosY;
 
-	m_fGaugePosX = m_fGaugeHalfWidth*(1.0f - m_fGaugePercent );
-	m_fDecreasePosX = m_fGaugeHalfWidth*(1.0f - m_fDecreasePercent );//m_fGaugePosX + m_fGaugeHalfWidth*m_fGaugePercent + m_fGaugeHalfWidth*m_fDecreasePercent;
-
-
+	//m_fDrawPosX = m_fGaugeHalfWidth*(1.0f - m_fDrawPercent );
 }
 
-void pbAbilityPower_Indicator::SetBaseSprite(screenplayTag Tag, float Width, float Height)
+void pbGauge_Indicator::SetRelativePos(float* pV2Pos){
+	m_pV2RelativePos = pV2Pos;
+}
+
+void pbGauge_Indicator::SetBaseSprite(screenplayTag Tag, float Width, float Height)
 {
 	m_pBaseDrawUnit->SetTextureTAG(Tag);
 	m_pBaseDrawUnit->SetSize(Width, Height);
@@ -55,7 +56,7 @@ void pbAbilityPower_Indicator::SetBaseSprite(screenplayTag Tag, float Width, flo
 	//SetPos(0,0);
 }
 
-void pbAbilityPower_Indicator::SetGaugeSprite(screenplayTag Tag, float Width, float Height){
+void pbGauge_Indicator::SetGaugeSprite(screenplayTag Tag, float Width, float Height){
 	//크기 설정
 	SetVertexByCenter(m_GaugeVertex, Width, Height);
 	m_fGaugeHalfWidth =  Width/2;
@@ -73,17 +74,20 @@ void pbAbilityPower_Indicator::SetGaugeSprite(screenplayTag Tag, float Width, fl
 
 	m_GaugeUV_WidthPercent = m_GaugeUV[4] - m_GaugeUV[0];
 }
-void pbAbilityPower_Indicator::PreSettingDraw(){
+void pbGauge_Indicator::PreSettingDraw(){
 	glPushMatrix();
-	glTranslatef(m_vPos[0], m_vPos[1],  0);
-	///------------Power Text--------------------
-	glPushMatrix();
-	m_pBaseDrawUnit->PreSettingDraw();
-	m_pBaseDrawUnit->DrawThis();
-	glPopMatrix();
+	if( m_pV2RelativePos != NULL)
+		glTranslatef(m_pV2RelativePos[0], m_pV2RelativePos[1],  0);
+		glTranslatef(m_vPos[0], m_vPos[1],  0);
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void pbAbilityPower_Indicator::DrawThis() {
+void pbGauge_Indicator::DrawThis() {
+		///------------Power Text--------------------
+		glPushMatrix();
+		m_pBaseDrawUnit->PreSettingDraw();
+		m_pBaseDrawUnit->DrawThis();
+		glPopMatrix();
 		///------------게이지 텍스쳐 바인드--------------------
 		glBindTexture(GL_TEXTURE_2D,  m_GaugeUVBindID );
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -91,86 +95,45 @@ void pbAbilityPower_Indicator::DrawThis() {
 		glVertexPointer(3, GL_FLOAT, 0, m_GaugeVertex);
 		glTexCoordPointer(2,GL_FLOAT, 0,  m_GaugeUV);	//�ؽ�ó��ǥ(UV) �迭 �Ѱ��ֱ�
 
-		///------------�پ��� ������--------------------
-			glPushMatrix();
-			glColor4f(1.0f, 1.0f, 1.0f, 0.4f);
-
-			m_GaugeUV[4] = m_GaugeUV[0] + m_GaugeUV_WidthPercent*m_fDecreasePercent;
-			m_GaugeUV[6] = m_GaugeUV[2] + m_GaugeUV_WidthPercent*m_fDecreasePercent;
-
-			glTranslatef( m_fDecreasePosX, -m_fGaugeHalfHeight ,  0);
-			glScalef(m_fDecreasePercent, 1.0f, 1.0f);
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-
-			glPopMatrix();
-			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		///------------���� ������--------------------
-		m_GaugeUV[4] = m_GaugeUV[0] + m_GaugeUV_WidthPercent*m_fGaugePercent;
-		m_GaugeUV[6] = m_GaugeUV[2] + m_GaugeUV_WidthPercent*m_fGaugePercent;
-
 		glPushMatrix();
-		glTranslatef( m_fGaugePosX,  -m_fGaugeHalfHeight ,  0);
-		glScalef(m_fGaugePercent, 1.0f, 1.0f);
+		m_GaugeUV[4] = m_GaugeUV[0] + m_GaugeUV_WidthPercent*m_fDrawPercent;
+		m_GaugeUV[6] = m_GaugeUV[2] + m_GaugeUV_WidthPercent*m_fDrawPercent;
+		glTranslatef( m_fDrawPosX, 0 ,  0);
+		glScalef(m_fDrawPercent, 1.0f, 1.0f);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glPopMatrix();
-
 
 	glPopMatrix();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 
-void pbAbilityPower_Indicator::Update(float fTime)
+void pbGauge_Indicator::Update(float fTime)
 {
-	///
-	if(!m_bNoHaveGauge)
+	if( m_fpGaugeReturnFunc != NULL)
 	{
-		float UseAP = pbStageValue::m_fGettingFeverGauge;
-		if( UseAP != 0.0f)
+		float NowGaugePoint = (*m_fpGaugeReturnFunc)();
+		if( NowGaugePoint != -1.0f)
 		{
-			m_fMinusPercent = UseAP/m_fMaxAbilityPoint;
-			pbStageValue::m_fGettingFeverGauge = 0.0f;
-
-			if( m_fMinusPercent > 0.0f) {
-				m_fGaugePercent -= m_fMinusPercent;
-				m_fGaugePosX = - m_fGaugeHalfWidth*(1.0f - m_fGaugePercent );
-			}
-			else if( m_fMinusPercent < 0.0f) {
-				m_fDecreasePercent = m_fGaugePercent - m_fMinusPercent;
-				m_fDecreasePosX = - m_fGaugeHalfWidth*(1.0f - m_fDecreasePercent);
-			}
-
-
-			if( m_fGaugePercent < 0.0f)
-			{
-				m_bNoHaveGauge = true;
-				m_fGaugePercent = 0.0f;
-			}
-
-		}
-
-	}
-	if( m_fMinusPercent > 0.0f) {
-		if( m_fDecreasePercent > m_fGaugePercent)
-		{
-			m_fDecreasePercent = npLerp(m_fDecreasePercent, m_fGaugePercent, 0.05f);
-			m_fDecreasePosX = - m_fGaugeHalfWidth*(1.0f - m_fDecreasePercent);
-		}
-	}
-	else if( m_fMinusPercent < 0.0f) {
-		m_fAniTime += fTime;
-
-		m_fGaugePercent = npLerp(m_fDecreasePercent + m_fMinusPercent, m_fDecreasePercent, m_fAniTime);
-		m_fGaugePosX = - m_fGaugeHalfWidth*(1.0f - m_fGaugePercent );
-
-		if( m_fAniTime > 1.0f) {
+			m_fDestPercent = NowGaugePoint/m_fMaxGaugePoint;
+			m_fStartPercent = m_fDrawPercent;
+			m_bGaugeChangeStart = true;
 			m_fAniTime = 0.0f;
-			m_fGaugePercent = m_fDecreasePercent;
-
-			m_fMinusPercent = 0.0f;
 		}
+	}
 
+
+	if(m_bGaugeChangeStart) {
+			m_fAniTime += fTime;
+
+			m_fDrawPercent = npLerp(m_fStartPercent, m_fDestPercent, m_fAniTime);
+			m_fDrawPosX = - m_fGaugeHalfWidth*(1.0f - m_fDrawPercent);
+			if(m_fAniTime > 1.0f) {
+				m_fAniTime = 0.0f;
+				m_fDrawPercent = m_fDestPercent;
+
+				m_bGaugeChangeStart = false;
+			}
 	}
 
 }
@@ -291,34 +254,34 @@ void pbButtonUI::notify() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////----------------------------------------------------- ���ھ� ���------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-pbScore_Indicator::pbScore_Indicator(){
+pbNumber_Indicator::pbNumber_Indicator(){
 	m_pBaseDrawUnit = new pbBasicDrawUnit();
 
 	m_ScoreWidth = 0;
 
 	m_fTextHalfWidth = 0;
 
+	m_CurrentDigits = 1;
+
+	m_fpNumberReturnFunc = NULL;
 }
 
-pbScore_Indicator::~pbScore_Indicator(){
+pbNumber_Indicator::~pbNumber_Indicator(){
 	delete m_pBaseDrawUnit;
 }
 
-void pbScore_Indicator::DataReset(){
+void pbNumber_Indicator::DataReset(){
 	for(int i = 0; i < MAX_DIGITS; i++)
 		m_DigitsNumber[i] = 0;
-
-	pbStageValue::m_TotalScore = 0;
-	pbStageValue::m_GettingScore = 0;
 }
 
-void pbScore_Indicator::SetBaseSprite(screenplayTag Tag, float Width, float Height) {
+void pbNumber_Indicator::SetBaseSprite(screenplayTag Tag, float Width, float Height) {
 	m_pBaseDrawUnit->SetTextureTAG(Tag);
 	m_pBaseDrawUnit->SetSize(Width, Height);
 	m_fTextHalfWidth =   Width/2;
 }
 
-void pbScore_Indicator::SetScoreSprite(screenplayTag ZeroSpriteTag, float Width, float Height) {
+void pbNumber_Indicator::SetScoreSprite(screenplayTag ZeroSpriteTag, float Width, float Height) {
 	//크기 설정
 	SetVertexByCenter(m_ScoreVertex, Width, Height);
 	m_ScoreWidth = Width;
@@ -339,7 +302,20 @@ void pbScore_Indicator::SetScoreSprite(screenplayTag ZeroSpriteTag, float Width,
 	}
 }
 
-void pbScore_Indicator::PreSettingDraw() {
+void pbNumber_Indicator::SetShowDigits(int ShowDigits) {
+	if( ShowDigits < MAX_DIGITS )
+		m_CurrentDigits = ShowDigits;
+	else {
+		m_CurrentDigits = MAX_DIGITS;
+		LOGE("pbScore_Indicator:: Value Range Over : MAX_DIGITS");
+	}
+}
+
+void pbNumber_Indicator::SetNumberReturnFunc(int(Func)() ) {
+	m_fpNumberReturnFunc = Func;
+}
+
+void pbNumber_Indicator::PreSettingDraw() {
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
@@ -347,7 +323,7 @@ void pbScore_Indicator::PreSettingDraw() {
 	glTranslatef(m_vPos[0], m_vPos[1], 0);
 }
 
-void pbScore_Indicator::DrawThis() {
+void pbNumber_Indicator::DrawThis() {
 		glPushMatrix();
 		///---------text----------------//
 		m_pBaseDrawUnit->PreSettingDraw();
@@ -358,7 +334,7 @@ void pbScore_Indicator::DrawThis() {
 		glVertexPointer(3, GL_FLOAT, 0, m_ScoreVertex);
 
 		///----------score------------------//
-		for (int i = 0; i < MAX_DIGITS; i++) {
+		for (int i = 0; i < m_CurrentDigits; i++) {
 			glPushMatrix();
 			UVPacket* UV = m_ScoreUV[m_DigitsNumber[i]];
 			glBindTexture(GL_TEXTURE_2D,   UV->bindTextureID);
@@ -372,15 +348,13 @@ void pbScore_Indicator::DrawThis() {
 
 
 
-void pbScore_Indicator::Update(float fTime)
+void pbNumber_Indicator::Update(float fTime)
 {
-	if( pbStageValue::m_GettingScore != 0)
+	int ReturnNumber = (*m_fpNumberReturnFunc)();
+	if( ReturnNumber != -1 )
 	{
-		pbStageValue::m_TotalScore += pbStageValue::m_GettingScore;
-		pbStageValue::m_GettingScore = 0;
-
-		int TempScore = pbStageValue::m_TotalScore;
-		for( int i = MAX_DIGITS - 1; i > 0; --i)
+		int TempScore = ReturnNumber;
+		for( int i = m_CurrentDigits - 1; i > 0; --i)
 		{
 			m_DigitsNumber[i] = TempScore%10;
 			TempScore /= 10;
@@ -568,28 +542,49 @@ pbTouchUI* pbUIProcessor::AddButtonUI(float X, float Y,  screenplayTag Tag, floa
 }
 
 //----------------------------Score-------------------------------------//
-pbBasicUI* pbUIProcessor::AddScoreUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight,screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight) {
-	pbScore_Indicator* newUI = new pbScore_Indicator();
+pbBasicUI* pbUIProcessor::AddNumberUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight,
+																				screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight,
+																				int MaxDigits, int(NumberRetunFunc)())
+{
+	pbNumber_Indicator* newUI = new pbNumber_Indicator();
 	newUI->SetPos(X, Y);
 	newUI->SetBaseSprite(TextTag, TextWidth, TextHeight);
 	newUI->SetScoreSprite(ZeroNumberTag, NumberWidth, NumberHeight);
 	newUI->DataReset();
+	newUI->SetShowDigits(MaxDigits);
+	newUI->SetNumberReturnFunc(NumberRetunFunc);
 
 	registControled(newUI );
 	return newUI;
 
 }
 //----------------------------APGauge-------------------------------------//
-pbBasicUI* pbUIProcessor::AddAbillityPointUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight,screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight) {
-	pbAbilityPower_Indicator* newUI = new pbAbilityPower_Indicator();
-	newUI->SetPos(X, Y);
-	newUI->SetBaseSprite(TextTag, TextWidth, TextHeight);
+pbBasicUI* pbUIProcessor::AddGaugeUI(float X, float Y, screenplayTag GaugePanelTag,  screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight,  float MaxGauge, float(GaugeReturnFunc)()) {
+	pbGauge_Indicator* newUI = new pbGauge_Indicator();
+	newUI->SetBaseSprite(GaugePanelTag, GaugeWidth, GaugeHeight);
 	newUI->SetGaugeSprite(GaugeTag, GaugeWidth, GaugeHeight);
+	newUI->SetGaugeReturnFunc(GaugeReturnFunc);
+	newUI->SetMaxGaugePoint(MaxGauge);
+	newUI->SetPos(X, Y);
 
 	registControled(newUI );
 
 	return newUI;
 }
+pbBasicUI* pbUIProcessor::AddGaugeUI_RelativePos(float* pV2RelativePos, float X, float Y, screenplayTag GaugePanelTag,  screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight,  float MaxGauge, float(GaugeReturnFunc)()) {
+	pbGauge_Indicator* newUI = new pbGauge_Indicator();
+	newUI->SetBaseSprite(GaugePanelTag, GaugeWidth, GaugeHeight);
+	newUI->SetGaugeSprite(GaugeTag, GaugeWidth, GaugeHeight);
+	newUI->SetGaugeReturnFunc(GaugeReturnFunc);
+	newUI->SetMaxGaugePoint(MaxGauge);
+	newUI->SetPos(X, Y);
+	newUI->SetRelativePos(pV2RelativePos);
+
+	registControled(newUI );
+
+	return newUI;
+}
+
 
 void pbUIProcessor::Update(float time){
 	UIList* iterator;
