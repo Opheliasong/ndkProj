@@ -102,7 +102,17 @@ public:
 	void RemoveToRenderList(npDrawable* pDrawable);
 	void ClearToRenderList();
 
+	void ResetFadeValues();
+	void StartFadeIn(float fFadeTime);
+	void StartFadeOut(float fFadeTime);
+	void FadeUpdate(float fTime);
+
 	pbStageTrigger* GetStageTrigger() {return m_StageTrigger;}
+	bool IsFadeInStart() { return m_FadeControl < 0;}
+	bool IsFadeInEnd() { return (m_FadeValue == 0.0f && m_FadeControl == 0.0f );}
+	bool IsFadeOutStart() { return m_FadeControl > 0;}
+	bool IsFadeOutEnd() { return (m_FadeValue == 1.0f && m_FadeControl == 0.0f );}
+
 
 	virtual void InitializeScene() = 0;
 	virtual void UpdateScene(float fTime) = 0;
@@ -111,6 +121,11 @@ private:
 	RenderList* m_RenderListHeader;
 	sceneTag m_Tag;
 	pbStageTrigger* m_StageTrigger;
+
+	static GLfloat m_FadeVertex[12];
+	float m_FadeControl;
+	float m_FadeValue;
+	bool m_FadeOn;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

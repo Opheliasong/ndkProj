@@ -54,6 +54,7 @@ public:
 	static pbMarionette* GetMarionette() {return SingleObject->m_pMarionette;}
 	static pbCharacter* GetInstance() { return SingleObject;}
 
+	enum {WALKOUT_SPEED = 600,  WALKOUT_DEST_POS = 1000};
 	enum {NONE = -1, APPEARED = 0, WEAVING_UP, WEAVING_DOWN, WALKOUT, DIE };
 private:
 	static pbCharacter* SingleObject;

@@ -195,12 +195,20 @@ void pbSceneNavigator::ClearSceneState() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------pbSceneWrapper  Base Class------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+GLfloat pbSceneWrapper::m_FadeVertex[12] = {0,};
+
 pbSceneWrapper::pbSceneWrapper() {
 	m_RenderListHeader =new RenderList;
 	m_RenderListHeader->setHeader();
 
 	m_StageTrigger = new pbStageTrigger();
+
+	SetVertexByCenter(m_FadeVertex, 800, 480);
+	m_FadeValue = 0.0f;
+	m_FadeControl = 0.0f;
+	m_FadeOn = false;
 }
+
 pbSceneWrapper::~pbSceneWrapper() {
 	RenderList::destroyList(m_RenderListHeader);
 	delete m_StageTrigger;
@@ -216,6 +224,18 @@ void pbSceneWrapper::DrawScene() {
 
 		npRenderprocess::getInstance().DoDraw((*pkernel));
 
+	}
+
+	if(m_FadeOn ) {
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glPushMatrix();
+		glTranslatef(400, 240, 0);
+		glColor4f(0.0f, 0.0f, 0.0f, m_FadeValue);
+		glVertexPointer(3, GL_FLOAT, 0, m_FadeVertex);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glPopMatrix();
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
 //	LOGE("DEBUG pbSceneWrapper : DrawScene complete");
 }
@@ -238,6 +258,42 @@ void pbSceneWrapper::RemoveToRenderList(npDrawable* pDrawable) {
 		LOGE("pbSceneWrapper::RemoveToRenderList Drawble is NULL");
 }
 
+void pbSceneWrapper::ResetFadeValues() {
+	m_FadeValue = 1.0f;
+	m_FadeControl = 0.0f;
+}
+
+void pbSceneWrapper::StartFadeIn(float fFadeTime) {
+	m_FadeOn = true;
+	m_FadeValue = 1.0f;
+	m_FadeControl = -(1/fFadeTime);
+
+	LOGI(" pbSceneWrapper::StartFadeIn");
+}
+void pbSceneWrapper::StartFadeOut(float fFadeTime) {
+	m_FadeOn = true;
+	m_FadeValue = 0.0f;
+	m_FadeControl = 1/fFadeTime;
+	LOGI(" pbSceneWrapper::StartFadeOut");
+}
+
+void pbSceneWrapper::FadeUpdate(float fTime) {
+	if( m_FadeControl != 0.0f) {
+		m_FadeValue += m_FadeControl*fTime;
+
+		if( m_FadeValue < 0.0f ) {
+			m_FadeValue =  0.0f;
+			m_FadeControl =  0.0f;
+			m_FadeOn = false;
+		}
+		else 	if( m_FadeValue > 1.0f ) {
+			m_FadeValue = 1.0;
+			m_FadeControl =  0.0f;
+		}
+	}
+
+}
+
 void pbSceneWrapper::ClearToRenderList() {
 	RenderList::clearList(m_RenderListHeader);
 	LOGI("pbSceneWrapper::ClearToRenderList");
@@ -256,6 +312,7 @@ pbPlaySceneWrapper::~pbPlaySceneWrapper() {
 }
 
 void pbPlaySceneWrapper::InitializeScene() {
+	StartFadeIn(0.5f);
 	pbEffectManager::GetInstance()->SetSceneTag(GetTag());
 	GetStageTrigger()->Initialize();
 	//background
@@ -309,6 +366,7 @@ void pbPlaySceneWrapper::InitializeScene() {
 }
 
 void pbPlaySceneWrapper::UpdateScene(float fTime) {
+	FadeUpdate(fTime);
 	if(!GetStageTrigger()->IsPaused())
 	{
 		GetStageTrigger()->Update(fTime);
@@ -353,6 +411,7 @@ void pbPlaySceneWrapper::HelpTouch() {
 }
 
 void pbPlaySceneWrapper::ClearScene() {
+	ResetFadeValues();
 	ClearToRenderList();
 	TouchLayer::GetInstance().ClearRegistedList();
 	pbBackgroundProcessor::GetInstance().ClearDataStore();
@@ -386,6 +445,7 @@ pbIntroSceneWrapper::~pbIntroSceneWrapper() {
 }
 
 void pbIntroSceneWrapper::InitializeScene() {
+	StartFadeIn(0.5f);
 	m_IntroBG = pbBackgroundProcessor::GetInstance().AddTouchableBackGround(800, 480, 400, 240, "run");
 	RegistToRenderList(m_IntroBG);
 
@@ -393,13 +453,19 @@ void pbIntroSceneWrapper::InitializeScene() {
 }
 
 void pbIntroSceneWrapper::UpdateScene(float fTime) {
+	FadeUpdate(fTime);
 	pbBackgroundProcessor::GetInstance().Update(fTime);
 
 	if( m_IntroBG != NULL ) {
 		if( m_IntroBG->IsTouched() ) {
-			pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+			StartFadeOut(0.5f);
 			m_IntroBG->ResetTouched();
 		 }
+	}
+
+	if( IsFadeOutEnd()) {
+		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+		ResetFadeValues();
 	}
 
 
@@ -426,6 +492,7 @@ pbScoreSceneWrapper::~pbScoreSceneWrapper() {
 }
 
 void pbScoreSceneWrapper::InitializeScene() {
+	StartFadeIn(0.3f);
 	GetStageTrigger()->Initialize();
 	RegistToRenderList(m_ResultViewer);
 
@@ -446,11 +513,14 @@ void pbScoreSceneWrapper::InitializeScene() {
 }
 
 void pbScoreSceneWrapper::UpdateScene(float fTime) {
+	FadeUpdate(fTime);
+
 	m_ResultViewer->Update(fTime);
 	pbCharacter::GetInstance()->Update(fTime);
 }
 
 void pbScoreSceneWrapper::ClearScene() {
+	ResetFadeValues();
 	ClearToRenderList();
 	pbCharacter::GetInstance()->ClearDataStore();
 	m_ResultViewer->ClearDataStore();

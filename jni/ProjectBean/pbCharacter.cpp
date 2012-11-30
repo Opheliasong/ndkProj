@@ -69,7 +69,7 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 	m_pMarionette->AddLineMoveState(APPEARED, 200, 0, &(pbCharacter::AppearedCondition));
 	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 15, &(pbCharacter::WeavingUpCondition));
 	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -15, &(pbCharacter::WeavingDownCondition));
-	m_pMarionette->AddLineMoveState(WALKOUT, 600, 0, &(pbCharacter::WalkOutCondition));
+	m_pMarionette->AddLineMoveState(WALKOUT, WALKOUT_SPEED, 0, &(pbCharacter::WalkOutCondition));
 
 	m_pMarionette->SelectMoveState(NONE);
 	m_pMarionette->SetMovePause(false);
@@ -215,7 +215,6 @@ void pbCharacter::Appeared() {
 
 void pbCharacter::WalkOut() {
 	GetInstance()->m_pMarionette->SelectMoveState(WALKOUT);
-
 	LOGE("pbCharacter::Appeared() WalkOut");
 }
 
@@ -344,9 +343,15 @@ bool pbCharacter::WeavingDownCondition(float* pV2Pos) {
 	return false;
 }
 bool pbCharacter::WalkOutCondition(float* pV2Pos) {
-	if(pV2Pos[0] > 1000) {
-		GetMarionette()->SetPosX(1000);
+	if(pV2Pos[0] > (float)WALKOUT_DEST_POS) {
+		GetMarionette()->SetPosX((float)WALKOUT_DEST_POS);
 		return true;
+	}
+	else 	if(pV2Pos[0] > (float)WALKOUT_DEST_POS - 200) {
+		if( !pbSceneManager::getInstance().GetCurrentScene()->IsFadeOutStart() ) {
+			float Time = ((float)WALKOUT_DEST_POS  - GetMarionette()->GetV2Pos()[0])/(float)WALKOUT_SPEED;
+			pbSceneManager::getInstance().GetCurrentScene()->StartFadeOut(Time);
+		}
 	}
 	return false;
 }
