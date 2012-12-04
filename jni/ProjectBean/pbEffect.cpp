@@ -504,15 +504,15 @@ void pbHomingMissileEffect::DrawThis() {
 void pbHomingMissileEffect::Update(float fTime){
 	if( m_bAlive)
 	{
-		if( !m_bInfinite)
-			m_fLifeTime -= fTime;
+//		if( !m_bInfinite)
+//			m_fLifeTime -= fTime;
 
 		m_fBezierLerp += (1/m_fLifeTime)*fTime;
 
-		if(m_fLifeTime < 0.0f)
+		if(m_fBezierLerp > 1.0f)
 		{
 			m_bAlive = false;
-			m_fBezierLerp = 0.0f;
+			m_fBezierLerp = 1.0f;
 			pbSceneManager::getInstance().RemoveRenderToScene(m_RegistedScene, this);
 			pbEffectManager::GetInstance()->RemoveEffectAndReturningMemory(this);
 

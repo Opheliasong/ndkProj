@@ -363,10 +363,11 @@ void pbPlaySceneWrapper::InitializeScene() {
 
 	// 보스
 	pbBoss::GetInstance()->LoadData();
-	pbBoss::GetMarionette()->SetPosX(1400);pbBoss::GetMarionette()->SetPosY(240);
-	pbBoss::GetInstance()->SetConditionPos(800.0f, 240.0f);
+	pbBoss::GetMarionette()->SetPosX(1200);pbBoss::GetMarionette()->SetPosY(240);
+	pbBoss::GetInstance()->SetConditionPos(690.0f, 240.0f);
 	RegistToRenderList(pbBoss::GetInstance());
 	GetStageTrigger()->AddPosState(400, &(pbBoss::Approaching));
+	GetStageTrigger()->AddIDState(pbBoss::DIE, &(pbBoss::PostDieProcess));
 
 	LOGI("pbPlaySceneWrapper InitializeScene Complete");
 }
@@ -394,7 +395,7 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 void pbPlaySceneWrapper::MenuTouch() {
 /*	pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_BACKWARD);*/
 	//pbEffectManager::GetInstance()->AddMissEffect();
-	pbStageValue::IncreaseFeverGauge(20);
+	pbStageValue::IncreaseFeverGauge(100);
 }
 
 void pbPlaySceneWrapper::ClearScene() {

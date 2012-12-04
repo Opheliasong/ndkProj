@@ -229,8 +229,8 @@ void pbCharacter::FeverEffectOn() {
 	m_fFeverDestDistance = FEVER_DISTANCE_EXPLOSION;
 
 	if( pbBoss::GetInstance()->IsBattlePhase() )
-		pbEffectManager::GetInstance()->AddHomingMissileEffect(m_pMarionette->GetV2Pos()[0], m_pMarionette->GetV2Pos()[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], "run", 40, 40, 2.0f ,
-				25.0f, &(pbBoss::DecreaseHP));
+		pbEffectManager::GetInstance()->AddHomingMissileEffect(m_pMarionette->GetV2Pos()[0], m_pMarionette->GetV2Pos()[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], "run", 40, 40, 0.5f ,
+				15.0f, &(pbBoss::DecreaseHP));
 }
 
 /*void pbCharacter::FeverEffectReady() {
@@ -257,12 +257,14 @@ void pbCharacter::FeverEffectOn() {
 	m_bFeverReady = false;
 }*/
 ///////---------------------------------------------------------------------Touch---------------------------------------------------------------------------------------------//
+
 void pbCharacter::PlayGame_TouchFunc() {
 	if( pbComboManager::GetInstance()->FeverOn() ) {
 	//	pbCharacter::GetInstance()->FeverEffectCancle();
 		pbCharacter::GetInstance()->FeverEffectOn();
 	}
 }
+//결과 화면 터치 함수
 void pbCharacter::Result_TouchFunc() {
 	pbSceneManager::getInstance().GetCurrentScene()->GetStageTrigger()->ActivateIDState(pbCharacter::WALKOUT);
 }
