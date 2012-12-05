@@ -1,7 +1,7 @@
 #include <string.h>
 #include <jni.h>
 #include <iostream>
-#include "./ProjectBean/pbMainFrame.h"
+#include "./ProjectBean/Scene/pbMainFrame.h"
 #include "npNativeEvent.h"
 //#include "nitroFrame/NitroFrame.h"
 #include "./nitroFrame/npDebugUtill.h"

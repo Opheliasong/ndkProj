@@ -164,7 +164,7 @@ void pbComboManager::IncreaseCombo(int Score) {
 	m_iCombo++;
 //	pbEffectProcess::pEffectProcessor->AddEffect(EFFECTTYPE::COMBO, 400, 240, 1.0f, m_iCombo);
 
-	pbStageValue::m_GettingScore += Score * (m_iFever+1);
+	pbStageValue::IncreaseScore(Score * (m_iFever+1) );
 
 	int count = 0;
 	int DigitsNumber = m_iCombo;
@@ -189,8 +189,8 @@ void pbComboManager::IncreaseCombo(int Score) {
 }
 
 bool pbComboManager::FeverOn() {
-	if( pbStageValue::IsMaximumGauge() ) {
-		pbStageValue::ResetFeverGauge();
+	if( pbStageValue::IsFeverGaugeMaximum() ) {
+		pbStageValue::FeverGaugeReset();
 /*	if( m_iCombo >= m_iNextFeverCombo) {
 		if( m_iNextFeverCombo < 32) {
 			m_iNextFeverCombo = m_iNextFeverCombo*2;
@@ -237,7 +237,7 @@ bool pbComboManager::FeverOn() {
 }
 
 void pbComboManager::ResetCombo() {
-	pbStageValue::m_fStageMoveSpeed  = WORLD_MOVESPEED;
+	pbStageValue::SetStageMoveSpeed(WORLD_MOVESPEED);
 
 //	npAudioSystem::playEffect(4);
 	DataReset();
@@ -248,7 +248,7 @@ void pbComboManager::ResetCombo() {
 }
 
 void pbComboManager::ClearDataStore() {
-	pbStageValue::m_fStageMoveSpeed  = WORLD_MOVESPEED;
+	pbStageValue::SetStageMoveSpeed(WORLD_MOVESPEED);
 	DataReset();
 //	pbCharacter::GetInstance()->FeverEffectCancle();
 

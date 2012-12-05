@@ -56,49 +56,7 @@ public:
 
 };
 
-/*
-class StageIDState_FindLess : public std::binary_function<int, pbStageIDState, bool>{
-public:
-	bool operator()(const int ID, const pbStageIDState& rhs) const{
-			return ID > rhs.m_ID;
-		}
-};
-*/
-
-
-class pbStageValue {
-public:
-	pbStageValue();
-	virtual ~pbStageValue();
-
-	static int GetScoreData();
-	static int m_TotalScore;
-	static int m_GettingScore;
-
-	static int GetLifeData();
-	static bool m_bChangedLife;
-	static int m_iNumLife;
-
-	static void ResetFeverGauge();
-	static void IncreaseFeverGauge(float Point);
-	static float GetFeverGauge();
-	static bool IsMaximumGauge();
-	static float m_fTotalFeverGauge;
-	static bool m_bChangeFeverGauge;
-
-
-	static float GetStageX();
-	static float m_fStageMoveX;
-	static float m_fStageMoveSpeed;
-	static float m_fMaxStageLength;
-
-	enum {MAX_FEVERGAUGE = 100 };
-};
-/*
- * 스테이지 매니저의 정체
- * 보스의 등장, 스코어 계산, 다음스테이지로 이동
- * 각 스테이트의 시기를 체크, 작동 하게 함
- */
+/////----------------------------------------------------------pbStageTrigger------------------------------------------------------------////
 class pbStageTrigger{
 public:
 	typedef enum { STATE_PLAY, STATE_BOSS_BATTLE, STATE_SCORE_RESULT, STATE_STAGE_CHANGE} StageState;

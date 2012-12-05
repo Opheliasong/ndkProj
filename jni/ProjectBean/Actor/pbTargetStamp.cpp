@@ -11,6 +11,7 @@
 pbTargetStamp::pbTargetStamp() {
 	m_bOnDraw = false;
 	m_bTargetOn = false;
+	m_bStop = false;
 	m_iPhase = TARGET_NONE;
 
 	m_fRotate = 0.0f;
@@ -39,6 +40,7 @@ void pbTargetStamp::SetTag(screenplayTag Tag, float fWidth, float fHeight ) {
 }
 
 void pbTargetStamp::SetTarget() {
+	m_bStop = false;
 	m_bOnDraw = true;
 	m_bTargetOn = true;
 	m_iPhase = TARGET_START;
@@ -59,6 +61,13 @@ void pbTargetStamp::SetLimitTime(float LimitTime) {
 	m_fLimitTime = LimitTime;
 }
 
+void pbTargetStamp::Stop() {
+	m_bStop = true;
+	m_bOnDraw = false;
+	m_bTargetOn = false;
+	m_iPhase = TARGET_NONE;
+}
+
 void pbTargetStamp::Draw() {
 	if( m_bOnDraw ) {
 		glPushMatrix();
@@ -73,27 +82,28 @@ void pbTargetStamp::Draw() {
 }
 
 void pbTargetStamp::Update(float fTime) {
-	m_fRotate += 360.0f*(1/m_fRotateDir)*fTime;
+	if( !m_bStop) {
+		m_fRotate += 360.0f*(1/m_fRotateDir)*fTime;
 
-	if( m_iPhase == TARGET_NONE) {
-		m_pTrigger->Update(fTime);
-		if( m_pTrigger->IsCompleteCondition() ) {
-			SetTarget();
+		if( m_iPhase == TARGET_NONE) {
+			m_pTrigger->Update(fTime);
+			if( m_pTrigger->IsCompleteCondition() ) {
+				SetTarget();
+			}
+		}
+		else if( m_iPhase == TARGET_START ) {
+			Animaition_Start(fTime);
+		}
+		else if( m_iPhase == TARGET_ING ) {
+			Animaition_Limit(fTime);
+		}
+		else if( m_iPhase == TARGET_TOUCH_END ) {
+			Animaition_TouchEnd(fTime);
+		}
+		else if( m_iPhase == TARGET_LIMIT_END ) {
+			Animaition_LimitEnd(fTime);
 		}
 	}
-	else if( m_iPhase == TARGET_START ) {
-		Animaition_Start(fTime);
-	}
-	else if( m_iPhase == TARGET_ING ) {
-		Animaition_Limit(fTime);
-	}
-	else if( m_iPhase == TARGET_TOUCH_END ) {
-		Animaition_TouchEnd(fTime);
-	}
-	else if( m_iPhase == TARGET_LIMIT_END ) {
-		Animaition_LimitEnd(fTime);
-	}
-
 }
 
 ////--------------------------------------------------------------------애니메이션 루프 함수-----------------------------------------------------------------------//
@@ -139,16 +149,16 @@ void pbTargetStamp::Animaition_TouchEnd(float fTime){
 	if( m_fAniTime >= 1.0f) {
 		m_fAniTime = 0.0f;
 	}*/
-	m_fAniTime = 0.0f;
 	m_pTrigger->TriggerStart();
+	m_fAniTime = 0.0f;
 	m_iPhase = TARGET_NONE;
 	m_bOnDraw  = false;
 }
 
 void pbTargetStamp::Animaition_LimitEnd(float fTime){
-	m_fAniTime += 2*fTime;
+	m_fAniTime += fTime/2;
 
-	m_fScale = npLerp(m_fScale, 3.0f, m_fAniTime);
+	m_fScale = npLerp(m_fScale, 0.0f, m_fAniTime);
 
 	m_fAlpha = npLerp(m_fAlpha, 0.0f, m_fAniTime);
 

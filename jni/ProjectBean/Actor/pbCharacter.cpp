@@ -91,7 +91,7 @@ void pbCharacter::DrawThis() {
 
 		glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
 		m_pSatelliteDrawUnit->PreSettingDraw();
-		for(int i = 0; i < pbStageValue::m_iNumLife; i++)
+		for(int i = 0; i < pbStageValue::GetLifeTotal(); i++)
 		{
 			glPushMatrix();
 			glRotatef((float(i)*120.0f) + m_fLifeRotate*360.0f, 0.0f, 0.0f, 1.0f);

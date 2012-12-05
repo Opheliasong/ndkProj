@@ -137,7 +137,8 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_istream.c \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.c \
- jni/./ProjectBean/pbMainFrame.h jni/./ProjectBean/stdafx.h \
+ jni/./ProjectBean/Scene/pbMainFrame.h \
+ jni/./ProjectBean/Scene/../stdafx.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/string \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_hash.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_hash_fun.h \
@@ -152,120 +153,129 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_vector.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_vector.c \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_bvector.h \
- jni/./ProjectBean/../nitroFrame/npDebugUtill.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npDebugUtill.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/assert.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/assert.h \
- jni/./ProjectBean/../nitroFrame/log.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/log.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/gl.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glplatform.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/KHR/khrplatform.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glext.h \
- jni/./ProjectBean/../nitroFrame/NitroFrame.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/NitroFrame.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h. \
- jni/./ProjectBean/../nitroFrame/npDefTypes.h \
- jni/./ProjectBean/../nitroFrame/npDebugUtill.h \
- jni/./ProjectBean/../nitroFrame/npMath.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npDefTypes.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npDebugUtill.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npMath.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/cmath \
- jni/./ProjectBean/../nitroFrame/npLinkNode.h \
- jni/./ProjectBean/../nitroFrame/npRentalMemory.h \
- jni/./ProjectBean/../nitroFrame/NitroFrame.h \
- jni/./ProjectBean/../nitroFrame/gluLookAt.h \
- jni/./ProjectBean/../nitroFrame/npEngineFrames.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npLinkNode.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npRentalMemory.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/NitroFrame.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/gluLookAt.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npEngineFrames.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager_jni.h \
- jni/./ProjectBean/../nitroFrame/npNitroFrameMacro.h \
- jni/./ProjectBean/../nitroFrame/Render/npContainerDAO.h \
- jni/./ProjectBean/../nitroFrame/Render/npRenderTypedef.h \
- jni/./ProjectBean/../nitroFrame/Render/../npLinkNode.h \
- jni/./ProjectBean/../nitroFrame/Render/DAOInsert.h \
- jni/./ProjectBean/../nitroFrame/Render/TextureAtlas.h \
- jni/./ProjectBean/../nitroFrame/Render/../npDebugUtill.h \
- jni/./ProjectBean/../nitroFrame/Render/ScreenplayStore.h \
- jni/./ProjectBean/../nitroFrame/Render/../NitroFrame.h \
- jni/./ProjectBean/../nitroFrame/Render/TextureRawPacket.h \
- jni/./ProjectBean/../nitroFrame/Render/DAOBinder.h \
- jni/./ProjectBean/../nitroFrame/Render/Sprite.h \
- jni/./ProjectBean/../nitroFrame/Render/DAODeleter.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npDeleterParser.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npXMLParser.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinyxml.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npNitroFrameMacro.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/npContainerDAO.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/npRenderTypedef.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../npLinkNode.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOInsert.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/TextureAtlas.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../npDebugUtill.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/ScreenplayStore.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../NitroFrame.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/TextureRawPacket.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOBinder.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/Sprite.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/DAODeleter.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/npDeleterParser.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/npXMLParser.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/tinyxml.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/ctype.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinystr.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../npDebugUtill.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../npNitroFrameMacro.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/zipint.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/tinystr.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../npDebugUtill.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../npNitroFrameMacro.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/zipint.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/zlib.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/zconf.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/zip.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/config.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/zip.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../Render/npContainerDAO.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../Render/npRenderTypedef.h \
- jni/./ProjectBean/../nitroFrame/Render/DAOFactory.h \
- jni/./ProjectBean/../nitroFrame/Render/npTextureGenerator.h \
- jni/./ProjectBean/../nitroFrame/Render/../npNitroFrameMacro.h \
- jni/./ProjectBean/../nitroFrame/Render/../include/zipint.h \
- jni/./ProjectBean/../nitroFrame/Render/../include/png.h \
- jni/./ProjectBean/../nitroFrame/Render/../include/pngconf.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/zip.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/config.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/zip.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../Render/npContainerDAO.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../Render/npRenderTypedef.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOFactory.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/npTextureGenerator.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../npNitroFrameMacro.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/zipint.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/png.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/pngconf.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/setjmp.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/setjmp.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/machine/setjmp.h \
- jni/./ProjectBean/../nitroFrame/Render/../include/pngconf.h \
- jni/./ProjectBean/../nitroFrame/Render/../include/pngpriv.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npInsertParser.h \
- jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinystr.h \
- jni/./ProjectBean/../nitroFrame/Render/../include/zip.h \
- jni/./ProjectBean/../nitroFrame/npAudioSystem.h \
- jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h \
- jni/./ProjectBean/../nitroFrame/xmlParser/npInsertParser.h \
- jni/./ProjectBean/../nitroFrame/xmlParser/npDeleterParser.h \
- jni/./ProjectBean/../nitroFrame/Render/npRenderTypedef.h \
- jni/./ProjectBean/../nitroFrame/Render/npTextureGenerator.h \
- jni/./ProjectBean/../nitroFrame/Render/TextureAtlas.h \
- jni/./ProjectBean/../nitroFrame/Render/ScreenplayStore.h \
- jni/./ProjectBean/../nitroFrame/Render/DAOInsert.h \
- jni/./ProjectBean/../nitroFrame/Render/Sprite.h \
- jni/./ProjectBean/../nitroFrame/Render/DAOFactory.h \
- jni/./ProjectBean/../nitroFrame/Render/DAOBinder.h \
- jni/./ProjectBean/../nitroFrame/Render/DAODeleter.h \
- jni/./ProjectBean/../nitroFrame/Render/TextureRawPacket.h \
- jni/./ProjectBean/../nitroFrame/Render/npRenderProcess.h \
- jni/./ProjectBean/../nitroFrame/Render/../gluLookAt.h \
- jni/./ProjectBean/../nitroFrame/Render/../Drawable/npDrawable.h \
- jni/./ProjectBean/../nitroFrame/Render/../Render/npTextureGenerator.h \
- jni/./ProjectBean/../nitroFrame/Drawable/npDrawable.h \
- jni/./ProjectBean/../nitroFrame/Drawable/npTextureRect.h \
- jni/./ProjectBean/../nitroFrame/Drawable/../npNitroFrameMacro.h \
- jni/./ProjectBean/../nitroFrame/Drawable/npDrawable.h \
- jni/./ProjectBean/../nitroFrame/Drawable/../Render/npRenderTypedef.h \
- jni/./ProjectBean/../nitroFrame/Drawable/../Render/Sprite.h \
- jni/./ProjectBean/../nitroFrame/Drawable/../Render/npContainerDAO.h \
- jni/./ProjectBean/../nitroFrame/TouchLayer/TouchObserver.h \
- jni/./ProjectBean/../nitroFrame/TouchLayer/TouchLayer.h \
- jni/./ProjectBean/../nitroFrame/TouchLayer/../Render/npRenderProcess.h \
- jni/./ProjectBean/../nitroFrame/TouchLayer/../npLinkNode.h \
- jni/./ProjectBean/../nitroFrame/TouchLayer/TouchObserver.h \
- jni/./ProjectBean/../nitroFrame/npLinkNode.h \
- jni/./ProjectBean/../nitroFrame/npMath.h \
- jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h \
- jni/./ProjectBean/pbTypes.h jni/./ProjectBean/pbDrawUnit.h \
- jni/./ProjectBean/../nitroFrame/npObserver.h \
- jni/./ProjectBean/../nitroFrame/npTimer.h \
- jni/./ProjectBean/../nitroFrame/npSubject.h \
- jni/./ProjectBean/../nitroFrame/npObserver.h \
- jni/./ProjectBean/Trigger/pbStageTrigger.h \
- jni/./ProjectBean/Trigger/../stdafx.h \
- jni/./ProjectBean/Trigger/pbTimeTrigger.h \
- jni/./ProjectBean/pbResultViewer.h jni/./ProjectBean/pbSceneWrapper.h \
- jni/./ProjectBean/pbBackground.h jni/./ProjectBean/pbUI.h \
- jni/./ProjectBean/pbEffect.h jni/./ProjectBean/Actor/pbMarionette.h \
- jni/./ProjectBean/Actor/../stdafx.h jni/./ProjectBean/Actor/pbHPMeter.h \
- jni/./ProjectBean/Actor/pbTargetStamp.h \
- jni/./ProjectBean/Actor/pbComboManager.h \
- jni/./ProjectBean/Actor/pbCharacter.h jni/./ProjectBean/Actor/pbBoss.h \
- jni/npNativeEvent.h jni/nitroFrame/NitroFrame.h \
- jni/./nitroFrame/npDebugUtill.h
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/pngconf.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/pngpriv.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/npInsertParser.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/tinystr.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/zip.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npAudioSystem.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npXMLParser.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npInsertParser.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npDeleterParser.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/npRenderTypedef.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/npTextureGenerator.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/TextureAtlas.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/ScreenplayStore.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOInsert.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/Sprite.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOFactory.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOBinder.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/DAODeleter.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/TextureRawPacket.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/npRenderProcess.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../gluLookAt.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../Drawable/npDrawable.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/../Render/npTextureGenerator.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Drawable/npDrawable.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Drawable/npTextureRect.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Drawable/../npNitroFrameMacro.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Drawable/npDrawable.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Drawable/../Render/npRenderTypedef.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Drawable/../Render/Sprite.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Drawable/../Render/npContainerDAO.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchObserver.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchLayer.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/../Render/npRenderProcess.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/../npLinkNode.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchObserver.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npLinkNode.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npMath.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npXMLParser.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npTimer.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npSubject.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h \
+ jni/./ProjectBean/Scene/../pbTypes.h \
+ jni/./ProjectBean/Scene/../pbStageValue.h \
+ jni/./ProjectBean/Scene/../stdafx.h \
+ jni/./ProjectBean/Scene/../Trigger/pbStageTrigger.h \
+ jni/./ProjectBean/Scene/../Trigger/../stdafx.h \
+ jni/./ProjectBean/Scene/../Trigger/pbTimeTrigger.h \
+ jni/./ProjectBean/Scene/../Scene/pbDrawUnit.h \
+ jni/./ProjectBean/Scene/../Scene/../stdafx.h \
+ jni/./ProjectBean/Scene/../Scene/pbResultViewer.h \
+ jni/./ProjectBean/Scene/../Scene/pbSceneNavigator.h \
+ jni/./ProjectBean/Scene/../Scene/pbSceneWrapper.h \
+ jni/./ProjectBean/Scene/../Scene/pbBackground.h \
+ jni/./ProjectBean/Scene/../Scene/pbUI.h \
+ jni/./ProjectBean/Scene/../Scene/pbEffect.h \
+ jni/./ProjectBean/Scene/../Actor/pbMarionette.h \
+ jni/./ProjectBean/Scene/../Actor/../stdafx.h \
+ jni/./ProjectBean/Scene/../Actor/pbHPMeter.h \
+ jni/./ProjectBean/Scene/../Actor/pbTargetStamp.h \
+ jni/./ProjectBean/Scene/../Actor/pbComboManager.h \
+ jni/./ProjectBean/Scene/../Actor/pbCharacter.h \
+ jni/./ProjectBean/Scene/../Actor/pbBoss.h jni/npNativeEvent.h \
+ jni/nitroFrame/NitroFrame.h jni/./nitroFrame/npDebugUtill.h
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/string.h:
 
@@ -541,9 +551,9 @@ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_num_get.c:
 
-jni/./ProjectBean/pbMainFrame.h:
+jni/./ProjectBean/Scene/pbMainFrame.h:
 
-jni/./ProjectBean/stdafx.h:
+jni/./ProjectBean/Scene/../stdafx.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/string:
 
@@ -573,13 +583,13 @@ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_vector.c:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_bvector.h:
 
-jni/./ProjectBean/../nitroFrame/npDebugUtill.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npDebugUtill.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/assert.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/assert.h:
 
-jni/./ProjectBean/../nitroFrame/log.h:
+jni/./ProjectBean/Scene/../../nitroFrame/log.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/gl.h:
 
@@ -589,101 +599,101 @@ D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/KHR/khrplatform.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glext.h:
 
-jni/./ProjectBean/../nitroFrame/NitroFrame.h:
+jni/./ProjectBean/Scene/../../nitroFrame/NitroFrame.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h.:
 
-jni/./ProjectBean/../nitroFrame/npDefTypes.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npDefTypes.h:
 
-jni/./ProjectBean/../nitroFrame/npDebugUtill.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npDebugUtill.h:
 
-jni/./ProjectBean/../nitroFrame/npMath.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npMath.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/cmath:
 
-jni/./ProjectBean/../nitroFrame/npLinkNode.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npLinkNode.h:
 
-jni/./ProjectBean/../nitroFrame/npRentalMemory.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npRentalMemory.h:
 
-jni/./ProjectBean/../nitroFrame/NitroFrame.h:
+jni/./ProjectBean/Scene/../../nitroFrame/NitroFrame.h:
 
-jni/./ProjectBean/../nitroFrame/gluLookAt.h:
+jni/./ProjectBean/Scene/../../nitroFrame/gluLookAt.h:
 
-jni/./ProjectBean/../nitroFrame/npEngineFrames.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npEngineFrames.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager_jni.h:
 
-jni/./ProjectBean/../nitroFrame/npNitroFrameMacro.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npNitroFrameMacro.h:
 
-jni/./ProjectBean/../nitroFrame/Render/npContainerDAO.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/npContainerDAO.h:
 
-jni/./ProjectBean/../nitroFrame/Render/npRenderTypedef.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/npRenderTypedef.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../npLinkNode.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../npLinkNode.h:
 
-jni/./ProjectBean/../nitroFrame/Render/DAOInsert.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOInsert.h:
 
-jni/./ProjectBean/../nitroFrame/Render/TextureAtlas.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/TextureAtlas.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../npDebugUtill.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../npDebugUtill.h:
 
-jni/./ProjectBean/../nitroFrame/Render/ScreenplayStore.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/ScreenplayStore.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../NitroFrame.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../NitroFrame.h:
 
-jni/./ProjectBean/../nitroFrame/Render/TextureRawPacket.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/TextureRawPacket.h:
 
-jni/./ProjectBean/../nitroFrame/Render/DAOBinder.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOBinder.h:
 
-jni/./ProjectBean/../nitroFrame/Render/Sprite.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/Sprite.h:
 
-jni/./ProjectBean/../nitroFrame/Render/DAODeleter.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/DAODeleter.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npDeleterParser.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/npDeleterParser.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npXMLParser.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/npXMLParser.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinyxml.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/tinyxml.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/ctype.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/ctype.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinystr.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/tinystr.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../npDebugUtill.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../npDebugUtill.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../npNitroFrameMacro.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../npNitroFrameMacro.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/zipint.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/zipint.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/zlib.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/zconf.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/zip.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/zip.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/config.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/config.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/zip.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/zip.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../Render/npContainerDAO.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../Render/npContainerDAO.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../Render/npRenderTypedef.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../Render/npRenderTypedef.h:
 
-jni/./ProjectBean/../nitroFrame/Render/DAOFactory.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOFactory.h:
 
-jni/./ProjectBean/../nitroFrame/Render/npTextureGenerator.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/npTextureGenerator.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../npNitroFrameMacro.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../npNitroFrameMacro.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../include/zipint.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/zipint.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../include/png.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/png.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../include/pngconf.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/pngconf.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/setjmp.h:
 
@@ -691,123 +701,131 @@ D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/setjmp.h
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/machine/setjmp.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../include/pngconf.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/pngconf.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../include/pngpriv.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/pngpriv.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/npInsertParser.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/npInsertParser.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../xmlParser/../include/tinystr.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../xmlParser/../include/tinystr.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../include/zip.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../include/zip.h:
 
-jni/./ProjectBean/../nitroFrame/npAudioSystem.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npAudioSystem.h:
 
-jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h:
+jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npXMLParser.h:
 
-jni/./ProjectBean/../nitroFrame/xmlParser/npInsertParser.h:
+jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npInsertParser.h:
 
-jni/./ProjectBean/../nitroFrame/xmlParser/npDeleterParser.h:
+jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npDeleterParser.h:
 
-jni/./ProjectBean/../nitroFrame/Render/npRenderTypedef.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/npRenderTypedef.h:
 
-jni/./ProjectBean/../nitroFrame/Render/npTextureGenerator.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/npTextureGenerator.h:
 
-jni/./ProjectBean/../nitroFrame/Render/TextureAtlas.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/TextureAtlas.h:
 
-jni/./ProjectBean/../nitroFrame/Render/ScreenplayStore.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/ScreenplayStore.h:
 
-jni/./ProjectBean/../nitroFrame/Render/DAOInsert.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOInsert.h:
 
-jni/./ProjectBean/../nitroFrame/Render/Sprite.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/Sprite.h:
 
-jni/./ProjectBean/../nitroFrame/Render/DAOFactory.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOFactory.h:
 
-jni/./ProjectBean/../nitroFrame/Render/DAOBinder.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/DAOBinder.h:
 
-jni/./ProjectBean/../nitroFrame/Render/DAODeleter.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/DAODeleter.h:
 
-jni/./ProjectBean/../nitroFrame/Render/TextureRawPacket.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/TextureRawPacket.h:
 
-jni/./ProjectBean/../nitroFrame/Render/npRenderProcess.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/npRenderProcess.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../gluLookAt.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../gluLookAt.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../Drawable/npDrawable.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../Drawable/npDrawable.h:
 
-jni/./ProjectBean/../nitroFrame/Render/../Render/npTextureGenerator.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/../Render/npTextureGenerator.h:
 
-jni/./ProjectBean/../nitroFrame/Drawable/npDrawable.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Drawable/npDrawable.h:
 
-jni/./ProjectBean/../nitroFrame/Drawable/npTextureRect.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Drawable/npTextureRect.h:
 
-jni/./ProjectBean/../nitroFrame/Drawable/../npNitroFrameMacro.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Drawable/../npNitroFrameMacro.h:
 
-jni/./ProjectBean/../nitroFrame/Drawable/npDrawable.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Drawable/npDrawable.h:
 
-jni/./ProjectBean/../nitroFrame/Drawable/../Render/npRenderTypedef.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Drawable/../Render/npRenderTypedef.h:
 
-jni/./ProjectBean/../nitroFrame/Drawable/../Render/Sprite.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Drawable/../Render/Sprite.h:
 
-jni/./ProjectBean/../nitroFrame/Drawable/../Render/npContainerDAO.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Drawable/../Render/npContainerDAO.h:
 
-jni/./ProjectBean/../nitroFrame/TouchLayer/TouchObserver.h:
+jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchObserver.h:
 
-jni/./ProjectBean/../nitroFrame/TouchLayer/TouchLayer.h:
+jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchLayer.h:
 
-jni/./ProjectBean/../nitroFrame/TouchLayer/../Render/npRenderProcess.h:
+jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/../Render/npRenderProcess.h:
 
-jni/./ProjectBean/../nitroFrame/TouchLayer/../npLinkNode.h:
+jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/../npLinkNode.h:
 
-jni/./ProjectBean/../nitroFrame/TouchLayer/TouchObserver.h:
+jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchObserver.h:
 
-jni/./ProjectBean/../nitroFrame/npLinkNode.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npLinkNode.h:
 
-jni/./ProjectBean/../nitroFrame/npMath.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npMath.h:
 
-jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h:
+jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npXMLParser.h:
 
-jni/./ProjectBean/pbTypes.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h:
 
-jni/./ProjectBean/pbDrawUnit.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npTimer.h:
 
-jni/./ProjectBean/../nitroFrame/npObserver.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npSubject.h:
 
-jni/./ProjectBean/../nitroFrame/npTimer.h:
+jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h:
 
-jni/./ProjectBean/../nitroFrame/npSubject.h:
+jni/./ProjectBean/Scene/../pbTypes.h:
 
-jni/./ProjectBean/../nitroFrame/npObserver.h:
+jni/./ProjectBean/Scene/../pbStageValue.h:
 
-jni/./ProjectBean/Trigger/pbStageTrigger.h:
+jni/./ProjectBean/Scene/../stdafx.h:
 
-jni/./ProjectBean/Trigger/../stdafx.h:
+jni/./ProjectBean/Scene/../Trigger/pbStageTrigger.h:
 
-jni/./ProjectBean/Trigger/pbTimeTrigger.h:
+jni/./ProjectBean/Scene/../Trigger/../stdafx.h:
 
-jni/./ProjectBean/pbResultViewer.h:
+jni/./ProjectBean/Scene/../Trigger/pbTimeTrigger.h:
 
-jni/./ProjectBean/pbSceneWrapper.h:
+jni/./ProjectBean/Scene/../Scene/pbDrawUnit.h:
 
-jni/./ProjectBean/pbBackground.h:
+jni/./ProjectBean/Scene/../Scene/../stdafx.h:
 
-jni/./ProjectBean/pbUI.h:
+jni/./ProjectBean/Scene/../Scene/pbResultViewer.h:
 
-jni/./ProjectBean/pbEffect.h:
+jni/./ProjectBean/Scene/../Scene/pbSceneNavigator.h:
 
-jni/./ProjectBean/Actor/pbMarionette.h:
+jni/./ProjectBean/Scene/../Scene/pbSceneWrapper.h:
 
-jni/./ProjectBean/Actor/../stdafx.h:
+jni/./ProjectBean/Scene/../Scene/pbBackground.h:
 
-jni/./ProjectBean/Actor/pbHPMeter.h:
+jni/./ProjectBean/Scene/../Scene/pbUI.h:
 
-jni/./ProjectBean/Actor/pbTargetStamp.h:
+jni/./ProjectBean/Scene/../Scene/pbEffect.h:
 
-jni/./ProjectBean/Actor/pbComboManager.h:
+jni/./ProjectBean/Scene/../Actor/pbMarionette.h:
 
-jni/./ProjectBean/Actor/pbCharacter.h:
+jni/./ProjectBean/Scene/../Actor/../stdafx.h:
 
-jni/./ProjectBean/Actor/pbBoss.h:
+jni/./ProjectBean/Scene/../Actor/pbHPMeter.h:
+
+jni/./ProjectBean/Scene/../Actor/pbTargetStamp.h:
+
+jni/./ProjectBean/Scene/../Actor/pbComboManager.h:
+
+jni/./ProjectBean/Scene/../Actor/pbCharacter.h:
+
+jni/./ProjectBean/Scene/../Actor/pbBoss.h:
 
 jni/npNativeEvent.h:
 

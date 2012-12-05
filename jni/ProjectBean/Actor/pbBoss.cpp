@@ -124,7 +124,7 @@ void pbBoss::Update(float fTime) {
 
 void pbBoss::ClearDataStore() {
 	m_pMarionette->ClearDataStore();
-	pbSceneManager::getInstance().RemoveRenderToCurrentScene(this);
+	//pbSceneManager::getInstance().RemoveRenderToCurrentScene(this);
 	TouchLayer::GetInstance().RemovedObserver(this);
 
 	LOGI("pbBoss::ClearDataStore");
@@ -179,8 +179,10 @@ void pbBoss::notify() {
 void pbBoss::Game_TouchFunc() {
 	if( GetTargetStamp()->IsTargetOn() ){
 		GetTargetStamp()->ReleaseTarget();
-		if( pbBoss::GetInstance()->IsBattlePhase() )
-			pbBoss::GetInstance()->DecreaseHP(5.0f);
+		if( pbBoss::GetInstance()->IsBattlePhase() ) {
+			pbBoss::GetInstance()->DecreaseHP(50.0f);
+			pbStageValue::IncreaseScore(1234);
+		}
 /*				pbEffectManager::GetInstance()->AddHomingMissileEffect(m_pMarionette->GetV2Pos()[0], m_pMarionette->GetV2Pos()[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], "run", 40, 40, 0.5f ,
 						5.0f, &(pbBoss::DecreaseHP));*/
 	}
@@ -241,7 +243,7 @@ void pbBoss::DecreaseHP(float fDamage){
 			GetMarionette()->SelectMoveState(WALKOUT);
 			LOGE("CHANGE TO WALKOUT");
 			GetInstance()->SetBattlePhase(false);
-			GetTargetStamp()->ReleaseTarget();
+			GetTargetStamp()->Stop();
 		}
 
 		LOGfloatString("CurrentHP :", GetHPMeter()->GetTotalHP());

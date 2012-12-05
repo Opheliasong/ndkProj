@@ -26,6 +26,8 @@ public:
 	void SetTarget();
 	void ReleaseTarget();
 
+	void Stop();
+
 	void Draw();
 	void Update(float fTime);
 
@@ -46,6 +48,7 @@ private:
 	pbBasicDrawUnit* m_pDrawUnit;
 	bool m_bOnDraw;
 	bool m_bTargetOn;
+	bool m_bStop;
 	int m_iPhase;
 
 	float m_fAniTime;
