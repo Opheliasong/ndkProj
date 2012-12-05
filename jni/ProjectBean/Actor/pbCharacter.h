@@ -1,7 +1,7 @@
 #ifndef _CHARACTER_H
 #define _CHARACTER_H
 
-#include "stdafx.h"
+#include "../stdafx.h"
 
 using namespace projectBean;
 
@@ -22,8 +22,9 @@ public:
 	void Update(float fTime);
 
 	void SetPos(float X, float Y);
-	inline float GetPosX();
-	inline float GetPosY();
+	float* GetPos();
+/*	float GetPosX();
+	float GetPosY();*/
 	float GetHeight();
 	void SetTouchFunction(void(Func)()) { m_fpTouchFunc = Func; }
 
@@ -55,7 +56,7 @@ public:
 	static pbCharacter* GetInstance() { return SingleObject;}
 
 	enum {WALKOUT_SPEED = 600,  WALKOUT_DEST_POS = 1000};
-	enum {NONE = -1, APPEARED = 0, WEAVING_UP, WEAVING_DOWN, WALKOUT, DIE };
+	enum {NONE = -1, APPEARED = 0, WEAVING_UP, WEAVING_DOWN, WALKOUT, DIE, NEXT_SCENE };
 private:
 	static pbCharacter* SingleObject;
 
@@ -89,66 +90,6 @@ private:
 	 /////---------------마리오네트 컨디션------------------------------//
 	 npV2Vector m_vConditionPos;
 };
-
-
-//------------------------------------------�޺� �Ŵ���------------------------------------------------------//
-
-class pbComboManager : public npDrawable {
-public:
-	pbComboManager();
-	~pbComboManager();
-
-	static void Create();
-	void LoadData();
-
-	virtual void PreSettingDraw();
-	virtual void DrawThis();
-
-	void IncreaseCombo(int Score);
-
-	void ResetCombo();
-
-	bool FeverOn();
-
-	void ClearDataStore();
-	static void Release();
-
-	void SetTextTag(screenplayTag NormalTextTag, screenplayTag FeverTextTag, float fWidth, float fHeight);
-	void SetNumberTag(screenplayTag NormalNumberTag, screenplayTag FeverNumberTag, float fWidth, float fHeight);
-
-	void DataReset();
-
-	void SetPos(float fPosX, float fPosY) { m_vPos[0] = fPosX; m_vPos[1] = fPosY; }
-
-	inline int GetFever() { return m_iFever;}
-
-	static pbComboManager* GetInstance() {return SingleObject; }
-
-	enum{ MAX_DIGITS = 3, NUMBERING = 10 };
-private:
-	static pbComboManager* SingleObject;
-
-	npV2Vector m_vPos;
-
-	screenplayTag m_NormalTextTag;
-	screenplayTag m_FeverTextTag;
-	pbBasicDrawUnit* m_pTextDrawUnit;
-	pbBasicDrawUnit* m_pFeverTextDrawUnit;
-
-	GLfloat m_NumberVertex[12];
-
-	float m_PlacementWidth;
-	float m_fTextPlacementWidth;
-	UVPacket* m_NumberUVPacket[NUMBERING];	//0~9�� UVIndex
-	UVPacket* m_FeverNumberUVPacket[NUMBERING];	//0~9�� UVIndex
-	GLuint m_DigitsNumber[MAX_DIGITS];
-	GLuint m_CurrentDigits;
-
-	GLuint m_iCombo;
-	GLuint m_iFever;
-	GLuint m_iNextFeverCombo;
-};
-
 
 
 #endif

@@ -250,15 +250,21 @@ obj/local/armeabi/objs-debug/Game/npNativeEvent.o: jni/npNativeEvent.cpp \
  jni/./ProjectBean/../nitroFrame/xmlParser/npXMLParser.h \
  jni/./ProjectBean/pbTypes.h jni/./ProjectBean/pbDrawUnit.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
- jni/./ProjectBean/pbMarionette.h jni/./ProjectBean/pbResultViewer.h \
- jni/./ProjectBean/pbStageTrigger.h jni/./ProjectBean/pbSceneWrapper.h \
  jni/./ProjectBean/../nitroFrame/npTimer.h \
  jni/./ProjectBean/../nitroFrame/npSubject.h \
  jni/./ProjectBean/../nitroFrame/npObserver.h \
+ jni/./ProjectBean/Trigger/pbStageTrigger.h \
+ jni/./ProjectBean/Trigger/../stdafx.h \
+ jni/./ProjectBean/Trigger/pbTimeTrigger.h \
+ jni/./ProjectBean/pbResultViewer.h jni/./ProjectBean/pbSceneWrapper.h \
  jni/./ProjectBean/pbBackground.h jni/./ProjectBean/pbUI.h \
- jni/./ProjectBean/pbCharacter.h jni/./ProjectBean/pbBoss.h \
- jni/./ProjectBean/pbEffect.h jni/npNativeEvent.h \
- jni/nitroFrame/NitroFrame.h jni/./nitroFrame/npDebugUtill.h
+ jni/./ProjectBean/pbEffect.h jni/./ProjectBean/Actor/pbMarionette.h \
+ jni/./ProjectBean/Actor/../stdafx.h jni/./ProjectBean/Actor/pbHPMeter.h \
+ jni/./ProjectBean/Actor/pbTargetStamp.h \
+ jni/./ProjectBean/Actor/pbComboManager.h \
+ jni/./ProjectBean/Actor/pbCharacter.h jni/./ProjectBean/Actor/pbBoss.h \
+ jni/npNativeEvent.h jni/nitroFrame/NitroFrame.h \
+ jni/./nitroFrame/npDebugUtill.h
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/string.h:
 
@@ -766,29 +772,41 @@ jni/./ProjectBean/pbDrawUnit.h:
 
 jni/./ProjectBean/../nitroFrame/npObserver.h:
 
-jni/./ProjectBean/pbMarionette.h:
-
-jni/./ProjectBean/pbResultViewer.h:
-
-jni/./ProjectBean/pbStageTrigger.h:
-
-jni/./ProjectBean/pbSceneWrapper.h:
-
 jni/./ProjectBean/../nitroFrame/npTimer.h:
 
 jni/./ProjectBean/../nitroFrame/npSubject.h:
 
 jni/./ProjectBean/../nitroFrame/npObserver.h:
 
+jni/./ProjectBean/Trigger/pbStageTrigger.h:
+
+jni/./ProjectBean/Trigger/../stdafx.h:
+
+jni/./ProjectBean/Trigger/pbTimeTrigger.h:
+
+jni/./ProjectBean/pbResultViewer.h:
+
+jni/./ProjectBean/pbSceneWrapper.h:
+
 jni/./ProjectBean/pbBackground.h:
 
 jni/./ProjectBean/pbUI.h:
 
-jni/./ProjectBean/pbCharacter.h:
-
-jni/./ProjectBean/pbBoss.h:
-
 jni/./ProjectBean/pbEffect.h:
+
+jni/./ProjectBean/Actor/pbMarionette.h:
+
+jni/./ProjectBean/Actor/../stdafx.h:
+
+jni/./ProjectBean/Actor/pbHPMeter.h:
+
+jni/./ProjectBean/Actor/pbTargetStamp.h:
+
+jni/./ProjectBean/Actor/pbComboManager.h:
+
+jni/./ProjectBean/Actor/pbCharacter.h:
+
+jni/./ProjectBean/Actor/pbBoss.h:
 
 jni/npNativeEvent.h:
 

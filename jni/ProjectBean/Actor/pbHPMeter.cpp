@@ -1,5 +1,13 @@
+/*
+ * pbHPMeter.cpp
+ *
+ *  Created on: 2012. 12. 4.
+ *      Author: NitroSoft
+ */
 
-#include "pbBoss.h"
+#include "pbHPMeter.h"
+
+
 
 //---------------------------------------------- pbBossHpMeter------------------------------------------------------------------------------------//
 pbHPMeter::pbHPMeter() {
@@ -124,7 +132,11 @@ void pbHPMeter::AnimationGauge(float fTime) {
 		m_bGaugeChangeStart = true;
 		float fWholeOfDistance = m_fStartPercent - m_fDestPercent;
 		float fPartOfDistance = m_fStartPercent - m_fDrawPercent;
-		m_fAniTime = (fPartOfDistance/fWholeOfDistance);  // distance 0.5 -> 0.8 time == 0.4 percent      distance 1.0  ->    ? time == 0.6 percent
+		if( fPartOfDistance == 0.0f )
+			m_fAniTime = 0.0f;
+		else
+			m_fAniTime = (fPartOfDistance/fWholeOfDistance);  // distance 0.5 -> 0.8 time == 0.4 percent      distance 1.0  ->    ? time == 0.6 percent
+
 		m_fAniSpeed = (fWholeOfDistance)*2;	//곱해지는 양은 걸리는 시간과 같다
 
 		m_bGaugeSetting = false;
@@ -171,9 +183,6 @@ void pbHPMeter::CloseMeter() {
 	m_fAniTime = 0.0f;
 	m_fHorizonScale = 1.0f;
 	m_fVerticalScale = 1.0f;
-
-	pbSceneManager::getInstance().GetCurrentScene()->GetStageTrigger()->ActivateIDState(pbCharacter::WALKOUT);
-	pbSceneManager::getInstance().GetCurrentScene()->GetStageTrigger()->ActivateIDState(pbBoss::DIE);
 }
 
 void pbHPMeter::BindLineColor(int Line) {
@@ -210,7 +219,7 @@ void pbHPMeter::Draw() {
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glVertexPointer(3, GL_FLOAT, 0, m_GaugeVertex);
 		///-------------중복 라인 그리기
-		glTexCoordPointer(2,GL_FLOAT, 0,  m_pUVPacket->texture);	//�ؽ�ó��ǥ(UV) �迭 �Ѱ��ֱ�
+		glTexCoordPointer(2,GL_FLOAT, 0,  m_pUVPacket->texture);
 
 		for(int i = 0; i < m_iLineCount ; i++) {
 			BindLineColor(i);
@@ -218,7 +227,7 @@ void pbHPMeter::Draw() {
 		}
 		BindLineColor(m_iLineCount);
 		///------------게이지 텍스쳐 그리기--------------------
-		glTexCoordPointer(2,GL_FLOAT, 0,  m_GaugeUV);	//�ؽ�ó��ǥ(UV) �迭 �Ѱ��ֱ�
+		glTexCoordPointer(2,GL_FLOAT, 0,  m_GaugeUV);
 		glPushMatrix();
 		m_GaugeUV[4] = m_GaugeUV[0] + m_GaugeUV_WidthPercent*m_fDrawPercent;
 		m_GaugeUV[6] = m_GaugeUV[2] + m_GaugeUV_WidthPercent*m_fDrawPercent;
@@ -269,184 +278,4 @@ void pbHPMeter::Update(float fTime) {
 		}
 	}
 
-}
-
-//---------------------------------------------- pbBoss------------------------------------------------------------------------------------//
-pbBoss* pbBoss::SingleObject = NULL;
-
-pbBoss::pbBoss() {
-	m_bBattlePhase = false;
-	m_bBossAlive = true;
-
-	m_pMarionette = NULL;
-	m_pBodyDrawUnit = NULL;
-	m_pHPMeter = NULL;
-}
-
-pbBoss::~pbBoss() {
-
-}
-
-void pbBoss::Create() {
-	if( SingleObject == NULL ) {
-		SingleObject = new pbBoss();
-
-		SingleObject->m_pMarionette = new pbMarionette();
-		SingleObject->m_pBodyDrawUnit = new pbBasicDrawUnit();
-		SingleObject->m_pHPMeter = new pbHPMeter();
-	}
-}
-
-void pbBoss::LoadData() {
-	m_pMarionette->AddLineMoveState(APPROACHING, -200, 0, &(pbBoss::ApproachingCondition));
-	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 30, &(pbBoss::WeavingUpCondition));
-	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -30, &(pbBoss::WeavingDownCondition));
-	m_pMarionette->AddZigZagMoveState(WALKOUT, 0, -200, 10, 80, &(pbBoss::WalkOutCondition));
-
-	m_pBodyDrawUnit->SetTextureTAG("run");
-	m_pBodyDrawUnit->SetSize(200, 200);
-
-	m_pMarionette->SelectMoveState(NONE);
-	m_pMarionette->SetMovePause(false);
-
-	m_bBattlePhase = false;
-	m_bBossAlive = true;
-
-	m_pHPMeter->Initialize(100, 20);
-	m_pHPMeter->SetTag("run", "run", 600, 30);
-	m_pHPMeter->SetPos(400, 30);
-}
-
-void pbBoss::Update(float fTime) {
-	int m_MarionetteState = m_pMarionette->GetState();
-
-	if( m_MarionetteState == APPROACHING) {
-		if( m_pMarionette->GetActionCondition() ) {
-			m_pMarionette->SelectMoveState(WEAVING_UP);
-			/*m_bBattlePhase = true;*/
-			GetHPMeter()->OpenMeter();
-		}
-	}
-	else if( m_MarionetteState == WEAVING_UP) {
-		if( m_pMarionette->GetActionCondition() )
-			m_pMarionette->SelectMoveState(WEAVING_DOWN);
-	}
-	else if( m_MarionetteState == WEAVING_DOWN) {
-		if( m_pMarionette->GetActionCondition() )
-			m_pMarionette->SelectMoveState(WEAVING_UP);
-	}
-	else if( m_MarionetteState == WALKOUT) {
-		if( m_pMarionette->GetActionCondition() ) {
-			m_pMarionette->SelectMoveState(DIE);
-			m_bBossAlive = false;
-
-			LOGE("CHANGE TO DIE");
-		}
-	}
-
-	m_pMarionette->MoveUpdate(fTime);
-
-	m_pHPMeter->Update(fTime);
-}
-
-///---------------마리오네트 컨디션------------------------------//
-
-bool pbBoss::ApproachingCondition(float* pV2Pos) {
-	if(pV2Pos[0] < GetInstance()->m_vConditionPos[0]) {
-		GetMarionette()->SetPosX(GetInstance()->m_vConditionPos[0]);
-		return true;
-	}
-
-	return false;
-}
-bool pbBoss::WeavingUpCondition(float* pV2Pos) {
-	if(pV2Pos[1] > GetInstance()->m_vConditionPos[1] + 40) {
-		GetMarionette()->SetPosY(GetInstance()->m_vConditionPos[1] + 40);
-		return true;
-	}
-	return false;
-}
-bool pbBoss::WeavingDownCondition(float* pV2Pos) {
-	if(pV2Pos[1] < GetInstance()->m_vConditionPos[1] - 40) {
-		GetMarionette()->SetPosY(GetInstance()->m_vConditionPos[1] - 40);
-		return true;
-	}
-	return false;
-}
-bool pbBoss::WalkOutCondition(float* pV2Pos) {
-	if(pV2Pos[1] < -300) {
-		GetMarionette()->SetPosX(-300);
-		return true;
-	}
-	return false;
-}
-
-
-
-void pbBoss::PreSettingDraw() {
-	glPushMatrix();
-		m_pMarionette->Translate();
-}
-
-void pbBoss::DrawThis() {
-		m_pBodyDrawUnit->PreSettingDraw();
-		glColor4f(1.0f , 0.0f, 0.0f, 1.0f);	//임시
-		m_pBodyDrawUnit->DrawThis();
-		glColor4f(1.0f , 1.0f, 1.0f, 1.0f);
-	glPopMatrix();
-
-	m_pHPMeter->Draw();
-}
-
-void pbBoss::Approaching() {
-	GetMarionette()->SelectMoveState(APPROACHING);
-	GetMarionette()->SetMovePause(false);
-
-	LOGE("pbBoss::Approaching() CHANGE TO APPROACHING");
-}
-
-void pbBoss::PostDieProcess() {
-	GetMarionette()->SetMovePause(true);
-	pbSceneManager::getInstance().RemoveRenderToCurrentScene(GetInstance());
-}
-
-void pbBoss::DecreaseHP(float fDamage){
-	if( GetInstance() != NULL) {
-		GetHPMeter()->DecreaseHP(fDamage);
-
-		if( GetHPMeter()->IsDied()) {
-			GetMarionette()->SelectMoveState(WALKOUT);
-//			LOGE("CHANGE TO WALKOUT");
-			GetInstance()->SetBattlePhase(false);
-		}
-
-//		LOGE("DAMAGE :");
-		LOGfloatString("CurrentHP :", GetHPMeter()->GetTotalHP());
-	}
-}
-
-void pbBoss::ClearDataStore() {
-	m_pMarionette->ClearDataStore();
-	pbSceneManager::getInstance().RemoveRenderToCurrentScene(this);
-
-	LOGI("pbBoss::ClearDataStore");
-}
-
-void pbBoss::SetState(int State) {
-	m_pMarionette->SelectMoveState(State);
-}
-
-void pbBoss::Release() {
-	if( SingleObject != NULL ) {
-		delete SingleObject->m_pMarionette;
-		SingleObject->m_pMarionette = NULL;
-
-		delete SingleObject->m_pBodyDrawUnit;
-		SingleObject->m_pBodyDrawUnit = NULL;
-
-		delete SingleObject->m_pHPMeter;
-
-		delete SingleObject;
-		SingleObject = NULL;
-	}
 }

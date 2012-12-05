@@ -8,7 +8,7 @@
 #ifndef PBSTAGETRIGGER_H_
 #define PBSTAGETRIGGER_H_
 
-#include "stdafx.h"
+#include "../stdafx.h"
 
 
 class pbStagePosState {
