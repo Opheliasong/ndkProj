@@ -23,7 +23,7 @@ pbTargetStamp::pbTargetStamp() {
 	m_fLimitTime  = 0.0f;
 	m_fAniTime = 0.0f;
 
-	m_fLimitShow = -LIMIT_ALPHA_DIFF_VALUE;
+	m_fLimitFadeSpeed = -LIMIT_ALPHA_DIFF_VALUE;
 
 	m_pDrawUnit = new pbBasicDrawUnit();
 	m_pTrigger = new pbRandomTimeTrigger();
@@ -40,7 +40,6 @@ void pbTargetStamp::SetTag(screenplayTag Tag, float fWidth, float fHeight ) {
 }
 
 void pbTargetStamp::SetTarget() {
-	m_bStop = false;
 	m_bOnDraw = true;
 	m_bTargetOn = true;
 	m_iPhase = TARGET_START;
@@ -61,7 +60,13 @@ void pbTargetStamp::SetLimitTime(float LimitTime) {
 	m_fLimitTime = LimitTime;
 }
 
-void pbTargetStamp::Stop() {
+void pbTargetStamp::StampingStart() {
+	m_bStop = false;
+	m_fAniTime = 0.0f;
+	m_iPhase = TARGET_NONE;
+	GetTrigger()->TriggerStart();
+}
+void pbTargetStamp::StampingStop() {
 	m_bStop = true;
 	m_bOnDraw = false;
 	m_bTargetOn = false;
@@ -127,12 +132,12 @@ void pbTargetStamp::Animaition_Limit(float fTime) {
 	m_fAniTime += fTime;
 
 	if( m_fAniTime > m_fLimitTime*0.4f) {
-		m_fAlpha += m_fLimitShow*fTime;
+		m_fAlpha += m_fLimitFadeSpeed*fTime;
 
 		if( m_fAlpha <= 0.1f)
-			m_fLimitShow = LIMIT_ALPHA_DIFF_VALUE;
+			m_fLimitFadeSpeed = LIMIT_ALPHA_DIFF_VALUE;
 		else if( m_fAlpha >= 1.0f)
-			m_fLimitShow = -LIMIT_ALPHA_DIFF_VALUE;
+			m_fLimitFadeSpeed = -LIMIT_ALPHA_DIFF_VALUE;
 	}
 
 	if( m_fAniTime > m_fLimitTime) {

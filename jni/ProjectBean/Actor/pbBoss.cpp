@@ -94,7 +94,7 @@ void pbBoss::Update(float fTime) {
 			m_pMarionette->SelectMoveState(WEAVING_UP);
 			m_bBattlePhase = true;
 			GetHPMeter()->OpenMeter();
-			m_pTargetStamp->GetTrigger()->TriggerStart();
+			m_pTargetStamp->StampingStart();
 		}
 	}
 	else if( m_MarionetteState == WEAVING_UP) {
@@ -243,7 +243,7 @@ void pbBoss::DecreaseHP(float fDamage){
 			GetMarionette()->SelectMoveState(WALKOUT);
 			LOGE("CHANGE TO WALKOUT");
 			GetInstance()->SetBattlePhase(false);
-			GetTargetStamp()->Stop();
+			GetTargetStamp()->StampingStop();
 		}
 
 		LOGfloatString("CurrentHP :", GetHPMeter()->GetTotalHP());

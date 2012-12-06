@@ -257,7 +257,7 @@ void pbButtonUI::notify() {
 pbNumber_Indicator::pbNumber_Indicator(){
 	m_pBaseDrawUnit = new pbBasicDrawUnit();
 
-	m_ScoreWidth = 0;
+	m_NumberWidth = 0;
 
 	m_fTextHalfWidth = 0;
 
@@ -283,8 +283,8 @@ void pbNumber_Indicator::SetBaseSprite(screenplayTag Tag, float Width, float Hei
 
 void pbNumber_Indicator::SetScoreSprite(screenplayTag ZeroSpriteTag, float Width, float Height) {
 	//크기 설정
-	SetVertexByCenter(m_ScoreVertex, Width, Height);
-	m_ScoreWidth = Width;
+	SetVertexByCenter(m_NumberVertex, Width, Height);
+	m_NumberWidth = Width;
 
 	//UV 추출
 	sprite* pSprite = npContainerDAO::GetInstance().getSpriteByTAG(ZeroSpriteTag);
@@ -296,7 +296,7 @@ void pbNumber_Indicator::SetScoreSprite(screenplayTag ZeroSpriteTag, float Width
 		TextureAtlasIter textureAtlasIterator =  npAtlasMap::getInstance().FrameContainer.find(index);
 		UVPacket* uvPacket = &textureAtlasIterator->second;
 
-		m_ScoreUV[i] = uvPacket;
+		m_NumberUV[i] = uvPacket;
 
 		pSprite->ReadyForNextScreenplay();
 	}
@@ -331,15 +331,15 @@ void pbNumber_Indicator::DrawThis() {
 		m_pBaseDrawUnit->DrawThis();
 		glPopMatrix();
 
-		glVertexPointer(3, GL_FLOAT, 0, m_ScoreVertex);
+		glVertexPointer(3, GL_FLOAT, 0, m_NumberVertex);
 
 		///----------score------------------//
 		for (int i = 0; i < m_CurrentDigits; i++) {
 			glPushMatrix();
-			UVPacket* UV = m_ScoreUV[m_DigitsNumber[i]];
+			UVPacket* UV = m_NumberUV[m_DigitsNumber[i]];
 			glBindTexture(GL_TEXTURE_2D,   UV->bindTextureID);
 			glTexCoordPointer(2,GL_FLOAT, 0,  UV->texture);
-			glTranslatef(8 + ((float) i) * m_ScoreWidth, 0, 0);
+			glTranslatef(8 + ((float) i) * m_NumberWidth, 0, 0);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 			glPopMatrix();
 		}
@@ -351,23 +351,26 @@ void pbNumber_Indicator::DrawThis() {
 void pbNumber_Indicator::Update(float fTime)
 {
 	int ReturnNumber = (*m_fpNumberReturnFunc)();
-	if( ReturnNumber != -1 )
+	if( ReturnNumber != -1 )	{
+		SetNumber(ReturnNumber);
+	}
+}
+
+void pbNumber_Indicator::SetNumber(int Number) {
+	int TempScore = Number;
+	for( int i = m_CurrentDigits - 1; i > 0; --i)
 	{
-		int TempScore = ReturnNumber;
-		for( int i = m_CurrentDigits - 1; i > 0; --i)
-		{
-			m_DigitsNumber[i] = TempScore%10;
-			TempScore /= 10;
-		}
+		m_DigitsNumber[i] = TempScore%10;
+		TempScore /= 10;
+	}
 
 /*		LOGfloatString("Real", m_NumberData);
-		LOGfloatString("1", m_DigitsNumber[0]);
-		LOGfloatString("10", m_DigitsNumber[1]);
-		LOGfloatString("100", m_DigitsNumber[2]);
-		LOGfloatString("1000", m_DigitsNumber[3]);
-		LOGfloatString("10000", m_DigitsNumber[4]);
-		LOGfloatString("100000", m_DigitsNumber[5]);*/
-	}
+	LOGfloatString("1", m_DigitsNumber[0]);
+	LOGfloatString("10", m_DigitsNumber[1]);
+	LOGfloatString("100", m_DigitsNumber[2]);
+	LOGfloatString("1000", m_DigitsNumber[3]);
+	LOGfloatString("10000", m_DigitsNumber[4]);
+	LOGfloatString("100000", m_DigitsNumber[5]);*/
 }
 
 
@@ -542,7 +545,7 @@ pbTouchUI* pbUIProcessor::AddButtonUI(float X, float Y,  screenplayTag Tag, floa
 }
 
 //----------------------------Score-------------------------------------//
-pbBasicUI* pbUIProcessor::AddNumberUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight,
+pbNumber_Indicator* pbUIProcessor::AddNumberUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight,
 																				screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight,
 																				int MaxDigits, int(NumberRetunFunc)())
 {

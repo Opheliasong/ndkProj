@@ -6,7 +6,46 @@
  */
 
 #include "pbResultViewer.h"
+pbNumberRoulette::pbNumberRoulette() {
+	m_RealNumber = 0;
+	m_RouletteNumber = 0;
+	m_LoopCount = 0;
+	m_bRouletteStop = true;
+}
+pbNumberRoulette::~pbNumberRoulette() {
 
+}
+void pbNumberRoulette::InitRoulette(int RealNumber, int LoopCount) {
+	m_RealNumber = RealNumber;
+	m_RouletteNumber = RealNumber;
+	IncreaseRouletteNumber();
+	m_LoopCount = LoopCount;
+	m_bRouletteStop = false;
+}
+
+void pbNumberRoulette::IncreaseRouletteNumber() {
+	m_RouletteNumber++;
+	if( m_RouletteNumber > 9)
+		m_RouletteNumber = 0;
+
+}
+
+int pbNumberRoulette::ReturnRouletteNumber() {
+	if( !m_bRouletteStop ) {
+		IncreaseRouletteNumber();
+		if( m_RouletteNumber == m_RealNumber) {
+			m_LoopCount--;
+			if(m_LoopCount == 0) {
+				m_bRouletteStop = true;
+			}
+		}
+	}
+
+	//LOGfloatString("RouletteNumber", m_RouletteNumber);
+	return m_RouletteNumber;
+}
+
+////------------------------------------------------------------------pbScoreView--------------------------------------------------------------------//
 
 pbScoreView::pbScoreView(screenplayTag NameTag, float fNameWidth, float fNameHeight,
 											screenplayTag NumberZeroTag,	float fNumberWidth, float fNumberHeight, int Score)
@@ -16,14 +55,15 @@ pbScoreView::pbScoreView(screenplayTag NameTag, float fNameWidth, float fNameHei
 	m_pNameDrawUnit->SetSize(fNameWidth, fNameHeight);
 
 	m_State =STATE_NONE;
-	m_CurrentDigits = 1;
+	m_CurrentDigits = 0;
+	m_TotalDigits = 1;
 	for(int i = 0; i < MAX_DIGITS; i++)
 		m_DigitsNumber[i] = 0;
 
 	m_fTextPlacementWidth = fNameWidth/2;
 	m_PlacementWidth = fNumberWidth;
 
-	UpdateScore(Score);
+	SetScore(Score);
 
 	//Number Setting
 	SetVertexByCenter(m_ScoreVertex, fNumberWidth, fNumberHeight);
@@ -40,6 +80,11 @@ pbScoreView::pbScoreView(screenplayTag NameTag, float fNameWidth, float fNameHei
 		pSprite->ReadyForNextScreenplay();
 	}
 
+
+	///----------------룰렛--------------------//
+	m_pRoulette = new pbNumberRoulette();
+	m_bViewEnd = false;
+	m_fAniTime = 0.0f;
 }
 pbScoreView::~pbScoreView() {
 	delete m_pNameDrawUnit;
@@ -59,24 +104,24 @@ void pbScoreView::Draw() {
 		//number
 		glVertexPointer(3, GL_FLOAT, 0, m_ScoreVertex);
 		glTranslatef( m_PlacementWidth, 0,  0);
-		int count = m_CurrentDigits - 1;
+		int reversePlaceCount = m_TotalDigits-1;
 		for(int i = 0 ; i < m_CurrentDigits; ++i)		{
 			glPushMatrix();
-			UVPacket* UV = m_ScoreUVPacket[m_DigitsNumber[count]];
+			UVPacket* UV = m_ScoreUVPacket[m_DigitsNumber[i]];
 			glBindTexture(GL_TEXTURE_2D,  UV->bindTextureID );
 			glTexCoordPointer(2,GL_FLOAT, 0,  UV->texture);
 
-			glTranslatef( ((float)i)*m_PlacementWidth, 0,  0);
+			glTranslatef( ((float)reversePlaceCount)*m_PlacementWidth, 0,  0);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 			glPopMatrix();
 
-			count--;
+			reversePlaceCount--;
 		}
 
 	glPopMatrix();
 }
 
-void pbScoreView::UpdateScore(int Score) {
+void pbScoreView::SetScore(int Score) {
 	m_iScore = Score;
 	int count = 0;
 	int DigitsNumber = Score;
@@ -93,17 +138,42 @@ void pbScoreView::UpdateScore(int Score) {
 			break;
 	}
 
-	m_CurrentDigits = count;
+	m_TotalDigits = count;
+	m_CurrentDigits = 0;
+	m_bViewEnd = false;
+	m_fAniTime = 0.0f;
 }
 
 void pbScoreView::Update(float fTime) {
+	if( !m_bViewEnd ) {
+		if( m_pRoulette->IsRouletteStop() ) {
+			if( m_CurrentDigits < m_TotalDigits  ) {
+				m_CurrentDigits++;
+				m_pRoulette->InitRoulette(m_DigitsNumber[m_CurrentDigits -1], 1);
+			}
+			else {
+				m_bViewEnd = true;
+			}
+		}
+		else {
 
+			m_fAniTime += fTime;
+			if( m_fAniTime >= 0.02f) {
+				m_fAniTime = m_fAniTime - 0.02f;
+				m_DigitsNumber[m_CurrentDigits -1] = m_pRoulette->ReturnRouletteNumber();
+			}
+		}
+	}
 }
 
 
+////------------------------------------------------------------------pbResultViewer--------------------------------------------------------------------//
 
 pbResultViewer::pbResultViewer() {
 	m_ScoreViewVector.reserve(5);
+	m_CurrentViewIndex = 0;
+	m_TotalViewCount = 0;
+	m_bUpdateEnd = false;
 }
 pbResultViewer::~pbResultViewer() {
 	ClearDataStore();
@@ -116,6 +186,7 @@ void pbResultViewer::PushBackScoreView(float X, float Y, screenplayTag NameTag, 
 	m_ScoreViewVector.push_back(pCreateView);
 //	ScoreViewVector::iterator Iter = m_ScoreViewVector.begin();
 //	m_ScoreViewVector.insert(Iter, CreateView);
+	m_TotalViewCount++;
 }
 
 void pbResultViewer::PreSettingDraw() {
@@ -124,21 +195,40 @@ void pbResultViewer::PreSettingDraw() {
 }
 
 void pbResultViewer::DrawThis() {
-	ScoreViewVector::iterator Iter = m_ScoreViewVector.begin();
-	for( ;Iter != m_ScoreViewVector.end(); Iter++ ) {
-		(*Iter)->Draw();
+	ScoreViewVector::iterator Iter;
+	for(int i = 0 ; i  <= m_CurrentViewIndex; i++ ) {
+		pbScoreView* View = m_ScoreViewVector[i];
+		View->Draw();
 	}
+
 	glPopMatrix();
 }
 
 void pbResultViewer::Update(float fTime) {
-	ScoreViewVector::iterator Iter = m_ScoreViewVector.begin();
+/*	ScoreViewVector::iterator Iter = m_ScoreViewVector.begin();
 	for( ;Iter != m_ScoreViewVector.end(); Iter++ ) {
 		(*Iter)->Update(fTime);
+		if( (*Iter)->IsScoreViewEnd() )
+	}*/
+	if( !m_bUpdateEnd ) {
+		pbScoreView* View = m_ScoreViewVector[m_CurrentViewIndex];
+		View->Update(fTime);
+		if( View->IsScoreViewEnd() ) {
+			m_CurrentViewIndex++;
+			if( m_CurrentViewIndex == m_TotalViewCount) {
+				m_bUpdateEnd = true;
+				m_CurrentViewIndex = m_TotalViewCount-1;
+			}
+		}
 	}
+
 }
 
 void pbResultViewer::ClearDataStore() {
+	m_CurrentViewIndex = 0;
+	m_TotalViewCount = 0;
+	m_bUpdateEnd = false;
+
 	ScoreViewVector::iterator Iter = m_ScoreViewVector.begin();
 	for( ;Iter != m_ScoreViewVector.end(); Iter++ ) {
 		ScoreViewVector::iterator NextIter = Iter+1;

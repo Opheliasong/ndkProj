@@ -9,7 +9,25 @@
 #define PBRESULTVIEWER_H_
 
 #include "../stdafx.h"
+////------------------------------------------------------------------pbScoreView--------------------------------------------------------------------//
+class pbNumberRoulette {
+public:
+	pbNumberRoulette();
+	~pbNumberRoulette();
 
+	void InitRoulette(int RealNumber, int LoopCount);
+	void IncreaseRouletteNumber();
+	int ReturnRouletteNumber();
+
+	bool IsRouletteStop() { return m_bRouletteStop; }
+private:
+	int m_RealNumber;
+	int m_RouletteNumber;
+	int m_LoopCount;
+	bool m_bRouletteStop;
+};
+
+////------------------------------------------------------------------pbScoreView--------------------------------------------------------------------//
 class pbBasicDrawUnit;
 class pbScoreView {
 	pbScoreView();
@@ -20,13 +38,15 @@ public:
 
 	void Draw();
 
-	void UpdateScore(int Score);
+	void SetScore(int Score);
 	void Update(float fTime);
 
 	void NextViewState() { if(m_State < STATE_END)  m_State++; }
 
 	void SetPos(float X, float Y) { m_vPos[0] = X; m_vPos[1] = Y; }
 	int GetViewState() { return m_State; }
+
+	bool IsScoreViewEnd() { return m_bViewEnd; }
 
 	enum {NUMBERING = 10, MAX_DIGITS = 10 };
 	enum {STATE_NONE = 0, STATE_START, STATE_APPEARED, STATE_ANI, STATE_END} ;
@@ -36,7 +56,10 @@ private:
 	GLfloat m_ScoreVertex[12];
 	UVPacket* m_ScoreUVPacket[NUMBERING];
 	GLuint m_DigitsNumber[MAX_DIGITS];
+	GLuint m_TotalDigits;
 	GLuint m_CurrentDigits;
+
+
 	float m_fTextPlacementWidth;
 	float m_PlacementWidth;
 
@@ -44,7 +67,14 @@ private:
 
 	int m_iScore;
 	int m_State;
+
+	bool m_bViewEnd;
+
+	pbNumberRoulette* m_pRoulette;
+	float m_fAniTime;
 };
+
+////------------------------------------------------------------------pbResultViewer--------------------------------------------------------------------//
 
 class pbResultViewer : public npDrawable{
 public:
@@ -68,6 +98,10 @@ private:
 	ScoreViewVector m_ScoreViewVector;
 
 	npV2Vector m_vPos;
+
+	int m_CurrentViewIndex;
+	int m_TotalViewCount;
+	bool m_bUpdateEnd;
 };
 
 

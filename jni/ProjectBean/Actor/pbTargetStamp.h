@@ -26,7 +26,8 @@ public:
 	void SetTarget();
 	void ReleaseTarget();
 
-	void Stop();
+	void StampingStart();
+	void StampingStop();
 
 	void Draw();
 	void Update(float fTime);
@@ -60,7 +61,7 @@ private:
 	float m_fAlpha;
 
 	float m_fLimitTime;
-	float m_fLimitShow;
+	float m_fLimitFadeSpeed;
 
 
 	pbRandomTimeTrigger* m_pTrigger;

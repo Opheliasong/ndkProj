@@ -167,13 +167,15 @@ public:
 
 	void DataReset();
 
+	void SetNumber(int Number);
+
 	enum{ MAX_DIGITS = 10, NUMBERING = 10 };
 private:
 	float m_fTextHalfWidth;
 
-	GLfloat m_ScoreVertex[12];
-	float m_ScoreWidth;
-	UVPacket* m_ScoreUV[NUMBERING];
+	GLfloat m_NumberVertex[12];
+	float m_NumberWidth;
+	UVPacket* m_NumberUV[NUMBERING];
 	GLuint m_DigitsNumber[MAX_DIGITS];
 	int m_CurrentDigits;
 
@@ -216,7 +218,7 @@ public:
 	pbTouchUI* AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height, void(Func)());
 	pbBasicUI* AddGaugeUI(float X, float Y, screenplayTag GaugePanelTag, screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight, float MaxGauge, float(GaugeReturnFunc)());
 	pbBasicUI* AddGaugeUI_RelativePos(float* pV2RelativePos, float X, float Y, screenplayTag GaugePanelTag, screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight, float MaxGauge, float(GaugeReturnFunc)());//위치따라가는 UI
-	pbBasicUI* AddNumberUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight, screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight, int MaxDigits, int(NumberRetunFunc)());
+	pbNumber_Indicator* AddNumberUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight, screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight, int MaxDigits, int(NumberRetunFunc)());
 
 
 	void Update(float time);

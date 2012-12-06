@@ -182,11 +182,13 @@ void pbPlaySceneWrapper::InitializeScene() {
 	pbUI* createUI = pbUIProcessor::GetInstance()->AddBackPanelUI(400, 450, "ci", 800, 50);
 	this->RegistToRenderList(createUI);
 	//라이프 UI 추가
-	createUI = pbUIProcessor::GetInstance()->AddNumberUI(100, 450, "ci", 90,  30, "run", 25, 35, 1, &(pbStageValue::CalcLifeData));
-	this->RegistToRenderList(createUI);
+	pbNumber_Indicator* LifeUI = pbUIProcessor::GetInstance()->AddNumberUI(100, 450, "ci", 90,  30, "run", 25, 35, 1, &(pbStageValue::CalcLifeData));
+	LifeUI->SetNumber(pbStageValue::GetLifeTotal());
+	this->RegistToRenderList(LifeUI);
 	//스코어 UI 추가
-	createUI = pbUIProcessor::GetInstance()->AddNumberUI(125 + 110, 450, "ci", 100, 30, "run", 25, 35, 9, &(pbStageValue::CalcScoreData));
-	this->RegistToRenderList(createUI);
+	pbNumber_Indicator* ScoreUI = pbUIProcessor::GetInstance()->AddNumberUI(125 + 110, 450, "ci", 100, 30, "run", 25, 35, 9, &(pbStageValue::CalcScoreData));
+	ScoreUI->SetNumber( pbStageValue::GetScoreTotal());
+	this->RegistToRenderList(ScoreUI);
 	// 메뉴버튼
 	createUI = pbUIProcessor::GetInstance()->AddButtonUI(760, 450, "ci", 70, 40, &(pbPlaySceneWrapper::MenuTouch));
 	this->RegistToRenderList(createUI);
@@ -278,7 +280,9 @@ void pbScoreSceneWrapper::InitializeScene() {
 
 	m_ResultViewer->SetPos(200, 0);
 	m_ResultViewer->PushBackScoreView(0, 430, "ci", 150, 50, "run", 50, 50, pbStageValue::GetScoreTotal());
-	m_ResultViewer->PushBackScoreView(0, 330, "ci", 150, 50, "run", 50, 50, pbStageValue::GetLifeTotal());
+	m_ResultViewer->PushBackScoreView(0, 330, "ci", 150, 50, "run", 50, 50, pbStageValue::GetScoreTotal());
+	m_ResultViewer->PushBackScoreView(0, 230, "ci", 150, 50, "run", 50, 50, pbStageValue::GetScoreTotal());
+	m_ResultViewer->PushBackScoreView(0, 130, "ci", 150, 50, "run", 50, 50, pbStageValue::GetScoreTotal());
 
 	// 캐릭터
 	pbCharacter::GetInstance()->LoadData(GetTag());
