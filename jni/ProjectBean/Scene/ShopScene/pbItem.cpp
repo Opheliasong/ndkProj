@@ -20,7 +20,7 @@ pbItem::pbItem() {
 	m_PurchaseState = ITEM_PURCHASE_AVAILABLE;
 	m_SelectState = ITEM_SELECT_NONE;
 	m_Price = 0;
-
+	m_ItemCode = 0;
 	TouchLayer::GetInstance().RegistedObserver(this);
 }
 pbItem::~pbItem() {
@@ -64,7 +64,7 @@ bool pbItem::IsTouched() {
 
 	if (x >= left && x <= right) {
 		if (y >= bottom && y <= top) {
-			LOGE("[DEBUG]pbItem_Potion:: Touched");
+//			LOGE("[DEBUG]pbItem_Potion:: Touched");
 			return true;
 		}
 	}
@@ -124,10 +124,22 @@ void pbItem_Potion::notify() {
 			}
 			else if( m_SelectState == ITEM_SELECT_ONE) {
 				if( m_PurchaseState == ITEM_PURCHASE_AVAILABLE ) {
-					// TODO:: 구매
-					//PriceCheck(10);	//테스트 코드
-					SetPurchaseState(ITEM_PURCHASE_LOCKED);
+					//구매 시도
+					if( pbGoldPouch::GetInstance().DecreaseGold(m_Price) ) {
+						// 성공
+						//SetPurchaseState(ITEM_PURCHASE_IMPOSIBLE);
+						PriceCheck(pbGoldPouch::GetInstance().GetGold());
+					}
+					else {
+						//실패
+						SetPurchaseState(ITEM_PURCHASE_LOCKED);
+					}
 				}// end if PURCHASE STATE
+/*				// 테스트 코드
+				else {
+					pbGoldPouch::GetInstance().IncreaseGold(500);
+					SetPurchaseState(ITEM_PURCHASE_AVAILABLE);
+				}*/
 			}//end if touchcount
 
 		}// end if isTouched

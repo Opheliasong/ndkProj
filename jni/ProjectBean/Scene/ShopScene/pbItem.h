@@ -23,9 +23,13 @@ public:
 	void SetDescriptionTag(screenplayTag Tag, float fWidth, float fHeight);
 
 	void SetPos(float X, float Y) { m_vPos[0] = X; m_vPos[1] = Y; }
+
 	void SetPurchaseState(int State) { m_PurchaseState = State; }
 	void SetSelectState(int State) { m_SelectState = State; }
 	void SetPrice(int Price) { m_Price = Price; }
+	void SetItemCode(int Code) { m_ItemCode = Code; }
+
+	int GetItemCode() {return m_ItemCode;}
 
 	void PriceCheck(int gold);
 	bool IsTouched();
@@ -48,6 +52,8 @@ protected:
 	npV2Vector m_vPos;
 	int m_PurchaseState;
 	int m_Price;
+
+	int m_ItemCode;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

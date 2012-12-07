@@ -324,6 +324,7 @@ void pbResultSceneWrapper::ClearScene() {
 pbShopSceneWrapper::pbShopSceneWrapper(const char* SceneTag) {
 	SetTag(SceneTag);	//이 씬의 기본 태그를 지정
 	m_pPotion1 = NULL;
+	m_GoldUI = NULL;
 }
 
 pbShopSceneWrapper::~pbShopSceneWrapper() {
@@ -332,6 +333,10 @@ pbShopSceneWrapper::~pbShopSceneWrapper() {
 void pbShopSceneWrapper::InitializeScene() {
 	StartFadeIn(0.3f);
 	GetStageTrigger()->Initialize();
+	//스코어 UI 추가
+	m_GoldUI = pbUIProcessor::GetInstance()->AddNumberUI(650, 450, "ci", 100, 30, "run", 25, 35, 5, &(pbGoldPouch::CalcGold));
+	m_GoldUI->SetNumber( pbGoldPouch::GetInstance().GetGold());
+	this->RegistToRenderList(m_GoldUI);
 
 	// 캐릭터
 	pbCharacter::GetInstance()->LoadData(GetTag());
@@ -347,9 +352,7 @@ void pbShopSceneWrapper::InitializeScene() {
 	m_pPotion1->SetItemTag("run", 80, 80);
 	m_pPotion1->SetDescriptionTag("ci", 150, 150);
 	m_pPotion1->SetPos(150, 240);
-	//m_pPotion1->SetPurchaseState(pbItem::ITEM_PURCHASE_LOCKED);
-	m_pPotion1->SetPrice(100);
-	m_pPotion1->PriceCheck(100);
+	m_pPotion1->SetPrice(110);
 	RegistToRenderList(m_pPotion1);
 	LOGI("pbScoreSceneWrapper InitializeScene Complete");
 }
@@ -357,6 +360,7 @@ void pbShopSceneWrapper::InitializeScene() {
 void pbShopSceneWrapper::UpdateScene(float fTime) {
 	FadeUpdate(fTime);
 
+	m_GoldUI->Update(fTime);
 	pbCharacter::GetInstance()->Update(fTime);
 }
 
@@ -365,6 +369,7 @@ void pbShopSceneWrapper::ClearScene() {
 	ClearToRenderList();
 
 	delete m_pPotion1;
+	delete m_GoldUI;
 
 	pbCharacter::GetInstance()->ClearDataStore();
 	LOGI("pbScoreSceneWrapper ClearScene Complete");
