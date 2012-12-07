@@ -92,34 +92,45 @@ void pbMainFrame::npShowIntro() {
 		pbIntroSceneWrapper* pIntroScene = new pbIntroSceneWrapper("INTRO_SCENE");
 		pbSceneManager::getInstance().AddScene(pIntroScene->GetTag(), pIntroScene);
 
-		pbScoreSceneWrapper* pScoreScene = new pbScoreSceneWrapper("SCORE_SCENE");
-		pbSceneManager::getInstance().AddScene(pScoreScene->GetTag(), pScoreScene);
+		pbResultSceneWrapper* pResultScene = new pbResultSceneWrapper("SCORE_SCENE");
+		pbSceneManager::getInstance().AddScene(pResultScene->GetTag(), pResultScene);
+
+		pbShopSceneWrapper* pShopScene = new pbShopSceneWrapper("SHOP_SCENE");
+		pbSceneManager::getInstance().AddScene(pShopScene->GetTag(), pShopScene);
 
 		//---------네비게이터 세팅-----------------//
 		//pbSceneNavigator::GetInstance().LoadSceneState();
 		pbSceneNavigator::GetInstance().SetCurrentState(SCENESTATE::GAME_CREATE);
 
-		//---------인트로 네비게이트 무버
+		//---------크리에이트 네비게이트 무버
 		pbSceneMover* newMover = new pbSceneMover(SCENESTATE::GAME_CREATE);
 		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
-		//---------플레이 네비게이트 무버
+		//---------인트로 네비게이트 무버
 		newMover = new pbSceneMover(SCENESTATE::GAME_INTRO);
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
-		//---------스코어 네비게이트 무버
-		newMover = new pbSceneMover(SCENESTATE::GAME_PLAY);
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_RESULT, pScoreScene->GetTag() );
+		//---------샵 네비게이트 무버
+		newMover = new pbSceneMover(SCENESTATE::GAME_SHOP);
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
 		newMover->AddStateElement(SCENESTATE::ACTION_BACKWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
-		//-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-//
-		//---------인트로 되돌리기
-		newMover = new pbSceneMover(SCENESTATE::GAME_RESULT);
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
+		//---------플레이 네비게이트 무버
+		newMover = new pbSceneMover(SCENESTATE::GAME_PLAY);
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_RESULT, pResultScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
+
+		//---------리절트 네비게이트 무버
+		newMover = new pbSceneMover(SCENESTATE::GAME_RESULT);
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_SELECT_1, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
+		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
+
+		//-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-//
+
 
 		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
 

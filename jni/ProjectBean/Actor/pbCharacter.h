@@ -31,7 +31,7 @@ public:
 	void FeverEffectOn();
 /*	void FeverEffectReady();
 	void FeverEffectCancle();*/
-	bool GetFeverReady() { return m_bFeverReady;}
+	//bool GetFeverReady() { return m_bFeverReady;}
 
 	virtual void notify();
 	/////---------------마리오네트 컨디션------------------------------//
@@ -60,16 +60,16 @@ public:
 private:
 	static pbCharacter* SingleObject;
 
-	pbMarionette* m_pMarionette;
-
 	sceneTag m_RegistSceneTag;
 
 	pbBasicDrawUnit* m_pBodyDrawUnit;
-	pbBasicDrawUnit* m_pSatelliteDrawUnit;
+	pbBasicDrawUnit* m_pVehicleDrawUnit;
+
+	float m_fVehiclePosY;
 
 	COLOR_RGBA m_Color;
 
-	float m_fLifeRotate;
+/*	float m_fLifeRotate;
 	float m_fLifePosX;
 
 	enum { FEVER_NONE = 0, FEVER_EXPAND, FEVER_RETURN , FEVER_DISTANCE_READY = 10, FEVER_DISTANCE_EXPLOSION = 100};
@@ -84,10 +84,12 @@ private:
 
 	float m_fFeverTargetTime;
 	float m_fEffectScale;
-
+*/
 
 	 void (*m_fpTouchFunc)();
 	 /////---------------마리오네트 컨디션------------------------------//
+	pbMarionette* m_pMarionette;
+
 	 npV2Vector m_vConditionPos;
 };
 

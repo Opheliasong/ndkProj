@@ -5,10 +5,10 @@ using namespace projectBean;
 
 pbCharacter* pbCharacter::SingleObject = NULL;
 
-pbCharacter::pbCharacter(): m_fLifeRotate(0.0f){
+pbCharacter::pbCharacter() {
 	m_Color.Init(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_fLifePosX = 0.0f;
+/*	m_fLifePosX = 0.0f;
 
 	m_iFeverEffectMode = FEVER_NONE;
 	m_fFeverEffectDistance = 0.0f;
@@ -20,15 +20,15 @@ pbCharacter::pbCharacter(): m_fLifeRotate(0.0f){
 
 	m_EffectVertexIndex = 0;
 	m_EffectUVIndex = 0; //����Ʈ
-
+	m_fLifeRotate = 0.0f;
+*/
 	m_RegistSceneTag.reserve(10);
 
 	m_pBodyDrawUnit = NULL;
-	m_pSatelliteDrawUnit = NULL;
+	m_pVehicleDrawUnit = NULL;
+	m_fVehiclePosY = 0.0f;
 
 	m_pMarionette = NULL;
-
-	m_fLifeRotate = 0.0f;
 
 	m_fpTouchFunc = NULL;
 
@@ -43,7 +43,7 @@ void pbCharacter::Create(){
 		SingleObject = new pbCharacter();
 
 		SingleObject->m_pBodyDrawUnit = new pbBasicDrawUnit();
-		SingleObject->m_pSatelliteDrawUnit = new pbBasicDrawUnit();
+		SingleObject->m_pVehicleDrawUnit = new pbBasicDrawUnit();
 		SingleObject->m_pMarionette = new pbMarionette();
 		LOGI("CHARACTER Create Complete");
 
@@ -61,10 +61,12 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 
 	m_pBodyDrawUnit->SetTextureTAG("run");
 	m_pBodyDrawUnit->SetSize(104, 110);
-	m_pSatelliteDrawUnit->SetTextureTAG("run");
-	m_pSatelliteDrawUnit->SetSize(28, 28);
+	m_pVehicleDrawUnit->SetTextureTAG("ci");
+	m_pVehicleDrawUnit->SetSize(130, 40);
 
-	m_fLifePosX = 104*0.43f;
+	m_fVehiclePosY = -(m_pBodyDrawUnit->getHeight()/4);
+
+	//m_fLifePosX = 104*0.43f;
 
 	m_pMarionette->AddLineMoveState(APPEARED, 200, 0, &(pbCharacter::AppearedCondition));
 	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 15, &(pbCharacter::WeavingUpCondition));
@@ -83,13 +85,20 @@ void pbCharacter::PreSettingDraw() {
 		m_pMarionette->Translate();
 }
 void pbCharacter::DrawThis() {
+		// 탈것
+		glPushMatrix();
+		glTranslatef(0.0f, m_fVehiclePosY , 0.0f);
+		m_pVehicleDrawUnit->PreSettingDraw();
+		m_pVehicleDrawUnit->DrawThis();
+		glPopMatrix();
+
+		//캐릭터 본체
 		glPushMatrix();
 		m_pBodyDrawUnit->PreSettingDraw();
 		m_pBodyDrawUnit->DrawThis();
 		glPopMatrix();
 
-
-		glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
+/*		glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
 		m_pSatelliteDrawUnit->PreSettingDraw();
 		for(int i = 0; i < pbStageValue::GetLifeTotal(); i++)
 		{
@@ -98,7 +107,7 @@ void pbCharacter::DrawThis() {
 			glTranslatef(m_fLifePosX + m_fFeverEffectDistance, 0.0f, 0.f);
 			m_pSatelliteDrawUnit->DrawThis();
 			glPopMatrix();
-		}
+		}*/
 
 
 	glPopMatrix();
@@ -118,7 +127,39 @@ float pbCharacter::GetHeight() {return m_pBodyDrawUnit->getHeight(); }
 
 ///////---------------------------------------------------------------------Update-----------------------------------------------------------------------------------------------//
 void pbCharacter::Update(float fTime){
-	static float fPartOfLine, fWholeOfLine = 0.0f;
+	//------------------------Marionette--------------------------------//
+	int m_MarionetteState = m_pMarionette->GetState();
+
+	if( m_MarionetteState == APPEARED) {
+		if( m_pMarionette->GetActionCondition() )
+			m_pMarionette->SelectMoveState(WEAVING_UP);
+	}
+	else if( m_MarionetteState == WEAVING_UP) {
+		if( m_pMarionette->GetActionCondition() )
+			m_pMarionette->SelectMoveState(WEAVING_DOWN);
+	}
+	else if( m_MarionetteState == WEAVING_DOWN) {
+		if( m_pMarionette->GetActionCondition() )
+			m_pMarionette->SelectMoveState(WEAVING_UP);
+	}
+	else if( m_MarionetteState == WALKOUT) {
+		if( m_pMarionette->GetActionCondition() ) {
+			m_pMarionette->SelectMoveState(NEXT_SCENE);
+			m_pMarionette->SetMovePause(true);
+		}
+	}
+	else if( m_MarionetteState == NEXT_SCENE) {
+		if( m_pMarionette->GetActionCondition() ) {
+			m_pMarionette->SelectMoveState(NONE);
+
+			pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+		}
+	}
+
+	m_pMarionette->MoveUpdate(fTime);
+
+
+/*	static float fPartOfLine, fWholeOfLine = 0.0f;
 
 	m_fLifeRotate += 360*fTime;
 
@@ -181,38 +222,32 @@ void pbCharacter::Update(float fTime){
 
 			}
 		}
+	}*/
+
+}
+
+///////---------------------------------------------------------------------Clear&Release---------------------------------------------------------------------------------------------//
+void pbCharacter::ClearDataStore() {
+	m_pMarionette->ClearDataStore();
+	TouchLayer::GetInstance().RemovedObserver(this);
+
+	LOGI("pbCharacter::ClearDataStore");
+}
+
+void pbCharacter::Release(){
+	if( SingleObject != NULL) {
+		SingleObject->ClearDataStore();
+
+		delete SingleObject->m_pBodyDrawUnit;
+		delete SingleObject->m_pVehicleDrawUnit;
+		delete SingleObject->m_pMarionette;
+
+		delete SingleObject;
+		SingleObject = NULL;
+
+		LOGI("pbCharacter::Release");
 	}
 
-	//------------------------Marionette--------------------------------//
-	int m_MarionetteState = m_pMarionette->GetState();
-
-	if( m_MarionetteState == APPEARED) {
-		if( m_pMarionette->GetActionCondition() )
-			m_pMarionette->SelectMoveState(WEAVING_UP);
-	}
-	else if( m_MarionetteState == WEAVING_UP) {
-		if( m_pMarionette->GetActionCondition() )
-			m_pMarionette->SelectMoveState(WEAVING_DOWN);
-	}
-	else if( m_MarionetteState == WEAVING_DOWN) {
-		if( m_pMarionette->GetActionCondition() )
-			m_pMarionette->SelectMoveState(WEAVING_UP);
-	}
-	else if( m_MarionetteState == WALKOUT) {
-		if( m_pMarionette->GetActionCondition() ) {
-			m_pMarionette->SelectMoveState(NEXT_SCENE);
-			m_pMarionette->SetMovePause(true);
-		}
-	}
-	else if( m_MarionetteState == NEXT_SCENE) {
-		if( m_pMarionette->GetActionCondition() ) {
-			m_pMarionette->SelectMoveState(NONE);
-
-			pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
-		}
-	}
-
-	m_pMarionette->MoveUpdate(fTime);
 }
 
 ///////---------------------------------------------------------------------StageTrigger-----------------------------------------------------------------------------------------------//
@@ -230,43 +265,21 @@ void pbCharacter::WalkOut() {
 
 ///////---------------------------------------------------------------------Fever-----------------------------------------------------------------------------------------------//
 void pbCharacter::FeverEffectOn() {
-	m_iFeverEffectMode = FEVER_EXPAND;
-	m_fFeverEffectDistance = 0.0f;
-	m_fFeverDestDistance = FEVER_DISTANCE_EXPLOSION;
+	/////TODO:: 피버시 동작
 
-	if( pbBoss::GetInstance()->IsBattlePhase() )
+/*	m_iFeverEffectMode = FEVER_EXPAND;
+	m_fFeverEffectDistance = 0.0f;
+	m_fFeverDestDistance = FEVER_DISTANCE_EXPLOSION;*/
+
+/*	if( pbBoss::GetInstance()->IsBattlePhase() )
 		pbEffectManager::GetInstance()->AddHomingMissileEffect(m_pMarionette->GetV2Pos()[0], m_pMarionette->GetV2Pos()[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], "run", 40, 40, 0.5f ,
-				5.0f, &(pbBoss::DecreaseHP));
+				5.0f, &(pbBoss::DecreaseHP));*/
 }
 
-/*void pbCharacter::FeverEffectReady() {
-	m_iFeverEffectMode = FEVER_EXPAND;
-	m_fFeverEffectDistance = 0.0f;
-	m_fFeverDestDistance = FEVER_DISTANCE_READY;
-
-	m_bFeverReady = true;
-
-	m_fFeverTargetTime = 0.0f;
-	m_fEffectScale = 3.0f;
-
-	LOGE("FEVER READY");
-}*/
-
-/*void pbCharacter::FeverEffectCancle() {
-	m_iFeverEffectMode = FEVER_NONE;
-	m_fFeverEffectDistance = 0.0f;
-	m_fFeverDestDistance = 0.0f;
-
-	m_Color.G = 1.0f;
-	m_Color.B = m_Color.G;
-
-	m_bFeverReady = false;
-}*/
 ///////---------------------------------------------------------------------Touch---------------------------------------------------------------------------------------------//
 
 void pbCharacter::PlayGame_TouchFunc() {
 	if( pbComboManager::GetInstance()->FeverOn() ) {
-	//	pbCharacter::GetInstance()->FeverEffectCancle();
 		pbCharacter::GetInstance()->FeverEffectOn();
 	}
 }
@@ -339,29 +352,4 @@ bool pbCharacter::WalkOutCondition(float* pV2Pos) {
 	}
 	return false;
 }
-
-///////---------------------------------------------------------------------Base---------------------------------------------------------------------------------------------//
-void pbCharacter::ClearDataStore() {
-	m_pMarionette->ClearDataStore();
-	TouchLayer::GetInstance().RemovedObserver(this);
-
-	LOGI("pbCharacter::ClearDataStore");
-}
-
-void pbCharacter::Release(){
-	if( SingleObject != NULL) {
-		SingleObject->ClearDataStore();
-
-		delete SingleObject->m_pBodyDrawUnit;
-		delete SingleObject->m_pSatelliteDrawUnit;
-		delete SingleObject->m_pMarionette;
-
-		delete SingleObject;
-		SingleObject = NULL;
-
-		LOGI("pbCharacter::Release");
-	}
-
-}
-
 

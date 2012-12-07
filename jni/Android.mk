@@ -61,13 +61,14 @@ npNativeEvent.cpp\
 /nitroFrame/TouchLayer/TouchLayer.cpp\
 /ProjectBean/pbStageValue.cpp\
 /ProjectBean/Scene/pbDrawUnit.cpp\
-/ProjectBean/Scene/pbResultViewer.cpp\
 /ProjectBean/Scene/pbMainFrame.cpp\
 /ProjectBean/Scene/pbSceneNavigator.cpp\
-/ProjectBean/Scene/pbSceneWrapper.cpp\
 /ProjectBean/Scene/pbBackground.cpp\
 /ProjectBean/Scene/pbUI.cpp\
 /ProjectBean/Scene/pbEffect.cpp\
+/ProjectBean/Scene/ResultScene/pbResultViewer.cpp\
+/ProjectBean/Scene/ShopScene/pbItem.cpp\
+/ProjectBean/Scene/pbSceneManager.cpp\
 /ProjectBean/Trigger/pbStageTrigger.cpp\
 /ProjectBean/Trigger/pbTimeTrigger.cpp\
 /ProjectBean/Actor/pbHPMeter.cpp\

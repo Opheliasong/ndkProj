@@ -17,12 +17,13 @@
 #include "Trigger/pbTimeTrigger.h"
 
 #include "Scene/pbDrawUnit.h"
-#include "Scene/pbResultViewer.h"
 #include "Scene/pbSceneNavigator.h"
-#include "Scene/pbSceneWrapper.h"
 #include "Scene/pbBackground.h"
 #include "Scene/pbUI.h"
 #include "Scene/pbEffect.h"
+#include "Scene/ResultScene/pbResultViewer.h"
+#include "Scene/ShopScene/pbItem.h"
+#include "Scene/pbSceneManager.h"
 
 #include "Actor/pbMarionette.h"
 #include "Actor/pbHPMeter.h"

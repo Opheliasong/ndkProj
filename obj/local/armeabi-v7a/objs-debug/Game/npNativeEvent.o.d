@@ -262,12 +262,15 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/Scene/../Trigger/pbTimeTrigger.h \
  jni/./ProjectBean/Scene/../Scene/pbDrawUnit.h \
  jni/./ProjectBean/Scene/../Scene/../stdafx.h \
- jni/./ProjectBean/Scene/../Scene/pbResultViewer.h \
  jni/./ProjectBean/Scene/../Scene/pbSceneNavigator.h \
- jni/./ProjectBean/Scene/../Scene/pbSceneWrapper.h \
  jni/./ProjectBean/Scene/../Scene/pbBackground.h \
  jni/./ProjectBean/Scene/../Scene/pbUI.h \
  jni/./ProjectBean/Scene/../Scene/pbEffect.h \
+ jni/./ProjectBean/Scene/../Scene/ResultScene/pbResultViewer.h \
+ jni/./ProjectBean/Scene/../Scene/ResultScene/../../stdafx.h \
+ jni/./ProjectBean/Scene/../Scene/ShopScene/pbItem.h \
+ jni/./ProjectBean/Scene/../Scene/ShopScene/../../stdafx.h \
+ jni/./ProjectBean/Scene/../Scene/pbSceneManager.h \
  jni/./ProjectBean/Scene/../Actor/pbMarionette.h \
  jni/./ProjectBean/Scene/../Actor/../stdafx.h \
  jni/./ProjectBean/Scene/../Actor/pbHPMeter.h \
@@ -801,17 +804,23 @@ jni/./ProjectBean/Scene/../Scene/pbDrawUnit.h:
 
 jni/./ProjectBean/Scene/../Scene/../stdafx.h:
 
-jni/./ProjectBean/Scene/../Scene/pbResultViewer.h:
-
 jni/./ProjectBean/Scene/../Scene/pbSceneNavigator.h:
-
-jni/./ProjectBean/Scene/../Scene/pbSceneWrapper.h:
 
 jni/./ProjectBean/Scene/../Scene/pbBackground.h:
 
 jni/./ProjectBean/Scene/../Scene/pbUI.h:
 
 jni/./ProjectBean/Scene/../Scene/pbEffect.h:
+
+jni/./ProjectBean/Scene/../Scene/ResultScene/pbResultViewer.h:
+
+jni/./ProjectBean/Scene/../Scene/ResultScene/../../stdafx.h:
+
+jni/./ProjectBean/Scene/../Scene/ShopScene/pbItem.h:
+
+jni/./ProjectBean/Scene/../Scene/ShopScene/../../stdafx.h:
+
+jni/./ProjectBean/Scene/../Scene/pbSceneManager.h:
 
 jni/./ProjectBean/Scene/../Actor/pbMarionette.h:
 
