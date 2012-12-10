@@ -132,7 +132,7 @@ void pbItem_Potion::notify() {
 					}
 					else {
 						//실패
-						SetPurchaseState(ITEM_PURCHASE_LOCKED);
+						//SetPurchaseState(ITEM_PURCHASE_LOCKED);
 					}
 				}// end if PURCHASE STATE
 
