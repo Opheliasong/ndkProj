@@ -64,10 +64,7 @@ public:
 	pbStepUpEffect();
 	virtual ~pbStepUpEffect();
 
-	void Initialize(screenplayTag PanelTag, float PanelWidth, float PanelHeight,
-			screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
-			screenplayTag LabelTag, float LabelWidth, float LabelHeight,
-			screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight );
+	void Initialize(TAGDATA& PanelTagData, TAGDATA& LabelTextTagData, TAGDATA& LabelTagData, TAGDATA& StepUpTagData);
 
 	void DataReset();
 
@@ -117,7 +114,7 @@ public:
 	pbStickerEffect();
 	virtual ~pbStickerEffect();
 
-	void Initialize(screenplayTag BaseTag, float fWidth, float fHeight, float LifeTime, bool Infinite);
+	void Initialize(TAGDATA& TagData, float LifeTime, bool Infinite);
 
 	virtual void PreSettingDraw();
 	virtual void DrawThis();
@@ -139,7 +136,7 @@ public:
 	pbHomingMissileEffect();
 	virtual ~pbHomingMissileEffect();
 
-	void Initialize(screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime, bool Infinite);
+	void Initialize(TAGDATA& TagData,  float LifeTime, bool Infinite);
 
 	virtual void PreSettingDraw();
 	virtual void DrawThis();
@@ -195,10 +192,9 @@ public:
 
 	inline void SetSceneTag(sceneTag SceneTag) { m_SceneTag = SceneTag;}
 
-	void AddStepUpEffect(float X, float Y, screenplayTag PanelTag, float PanelWidth, float PanelHeight,		screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
-															screenplayTag LabelTag, float LabelWidth, float LabelHeight,		screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight );
-	void AddStickerEffect(float X, float Y, screenplayTag BaseTag, float fWidth, float fHeight, float lifeTime);
-	void AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime,float fDamage, void (*DecreaseHP)(float fDamage) );
+	void AddStepUpEffect(float X, float Y, TAGDATA& PanelTagData, TAGDATA& LabelTextTagData, TAGDATA& LabelTagData, TAGDATA& StepUpTagData );
+	void AddStickerEffect(float X, float Y, TAGDATA& TagData, float lifeTime);
+	void AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, TAGDATA& TagData, float LifeTime,float fDamage, void (*DecreaseHP)(float fDamage) );
 	void AddMissEffect();
 
 	void Update(float fTime);

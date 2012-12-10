@@ -24,6 +24,8 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNI
 		str = env->GetStringUTFChars(apkPath, &isCopy);
 		gameFrame->npGameCreate(env,w,h, assetManager, str);
 	}*/
+	//LOGE("Width :%d", w);
+	//LOGE("Height :%d", h);
 	JavaVM* javaVm;
 	env->GetJavaVM(&javaVm);
 

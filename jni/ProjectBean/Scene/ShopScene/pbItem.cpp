@@ -29,18 +29,18 @@ pbItem::~pbItem() {
 	delete m_pDescriptionDrawUnit;
 }
 
-void pbItem::SetItemTag(screenplayTag Tag, float fWidth, float fHeight) {
-	m_pItemDrawUnit->SetTextureTAG(Tag);
-	m_pItemDrawUnit->SetSize(fWidth, fHeight);
+void pbItem::SetItemTag(TAGDATA& TagData) {
+	m_pItemDrawUnit->SetTextureTAG(TagData.Tag);
+	m_pItemDrawUnit->SetSize(TagData.fWidth, TagData.fHeight);
 
-	m_fItemY = fHeight/2;
+	m_fItemY = TagData.fHeight/2;
 }
 
-void pbItem::SetDescriptionTag(screenplayTag Tag, float fWidth, float fHeight) {
-	m_pDescriptionDrawUnit->SetTextureTAG(Tag);
-	m_pDescriptionDrawUnit->SetSize(fWidth, fHeight);
+void pbItem::SetDescriptionTag(TAGDATA& TagData) {
+	m_pDescriptionDrawUnit->SetTextureTAG(TagData.Tag);
+	m_pDescriptionDrawUnit->SetSize(TagData.fWidth, TagData.fHeight);
 
-	m_fDescriptionY = fHeight/2;
+	m_fDescriptionY = TagData.fHeight/2;
 }
 
 void pbItem::PriceCheck(int gold) {
@@ -135,11 +135,7 @@ void pbItem_Potion::notify() {
 						SetPurchaseState(ITEM_PURCHASE_LOCKED);
 					}
 				}// end if PURCHASE STATE
-/*				// 테스트 코드
-				else {
-					pbGoldPouch::GetInstance().IncreaseGold(500);
-					SetPurchaseState(ITEM_PURCHASE_AVAILABLE);
-				}*/
+
 			}//end if touchcount
 
 		}// end if isTouched

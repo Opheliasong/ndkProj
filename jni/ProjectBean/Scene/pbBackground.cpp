@@ -29,9 +29,9 @@ pbStaticBackground::~pbStaticBackground() {
 	delete m_BackgroundTextureRect;
 }
 
-void pbStaticBackground::Initialize(float Width, float Height, screenplayTag Tag){
-	m_BackgroundTextureRect = new pbBasicDrawUnit(Tag);
-	m_BackgroundTextureRect->SetSize(Width, Height);
+void pbStaticBackground::Initialize(TAGDATA& TagData){
+	m_BackgroundTextureRect = new pbBasicDrawUnit(TagData.Tag);
+	m_BackgroundTextureRect->SetSize(TagData.fWidth, TagData.fHeight);
 }
 
 void pbStaticBackground::Update(float fTime) {
@@ -49,12 +49,12 @@ pbMoveBackground::~pbMoveBackground() {
 	delete m_BackgroundTextureRect;
 }
 
-void pbMoveBackground::Initialize(float Width, float Height, screenplayTag Tag){
-	m_BackgroundTextureRect = new pbBasicDrawUnit(Tag);
-	m_BackgroundTextureRect->SetSize(Width, Height);
+void pbMoveBackground::Initialize(TAGDATA& TagData){
+	m_BackgroundTextureRect = new pbBasicDrawUnit(TagData.Tag);
+	m_BackgroundTextureRect->SetSize(TagData.fWidth, TagData.fHeight);
 
-	m_fBGAreaWidth = Width * 2 + WIDTH;
-	m_fVertexWidth = Width;
+	m_fBGAreaWidth = TagData.fWidth * 2 + WIDTH;
+	m_fVertexWidth = TagData.fWidth;
 
 }
 
@@ -81,16 +81,16 @@ pbScrollBackground::~pbScrollBackground() {
 	
 }
 
-void pbScrollBackground::Initialize(float Width, float Height, screenplayTag Tag){
+void pbScrollBackground::Initialize(TAGDATA& TagData){
 		//Vertex ����
-		SetVertexByCenter(m_UVControllVertex, Width, Height);			// ���� ���ؽ� ũ�� ����
-		SetVertexByCenter(&(m_UVControllVertex[6]), Width, Height);			// ���� ���ؽ� ũ�� ����
+		SetVertexByCenter(m_UVControllVertex, TagData.fWidth, TagData.fHeight);			// ���� ���ؽ� ũ�� ����
+		SetVertexByCenter(&(m_UVControllVertex[6]), TagData.fWidth, TagData.fHeight);			// ���� ���ؽ� ũ�� ����
 
 		m_fBGAreaWidth = WIDTH;
-		m_fVertexWidth = Width;
+		m_fVertexWidth = TagData.fWidth;
 
 		//UV ����
-		sprite* pSprite = npContainerDAO::GetInstance().getSpriteByTAG(Tag);
+		sprite* pSprite = npContainerDAO::GetInstance().getSpriteByTAG(TagData.Tag);
 
 		m_BackgroundUVIndex = pSprite->currentScreenplay->getKernel();
 		TextureAtlasIter textureAtlasIterator =  npAtlasMap::getInstance().FrameContainer.find(m_BackgroundUVIndex);
@@ -167,12 +167,12 @@ pbTouchableBackground::~pbTouchableBackground() {
 	delete m_BackgroundTextureRect;
 }
 
-void pbTouchableBackground::Initialize(float Width, float Height, screenplayTag Tag){
-	m_BackgroundTextureRect = new pbBasicDrawUnit(Tag);
-	m_BackgroundTextureRect->SetSize(Width, Height);
+void pbTouchableBackground::Initialize(TAGDATA& TagData){
+	m_BackgroundTextureRect = new pbBasicDrawUnit(TagData.Tag);
+	m_BackgroundTextureRect->SetSize(TagData.fWidth, TagData.fHeight);
 
-	m_fBGAreaWidth = Width * 2 + WIDTH;
-	m_fVertexWidth = Width;
+	m_fBGAreaWidth = TagData.fWidth * 2 + WIDTH;
+	m_fVertexWidth = TagData.fWidth;
 
 }
 
@@ -237,9 +237,9 @@ pbBackgroundProcessor& pbBackgroundProcessor::GetInstance() {
 	return SingleTon;
 }
 
-pbBackground* pbBackgroundProcessor::AddScrollBackGround(float Width, float Height, float X, float Y, float SpeedRatio, screenplayTag Tag) {
+pbBackground* pbBackgroundProcessor::AddScrollBackGround(float X, float Y, TAGDATA& TagData, float SpeedRatio) {
 	pbBackground* pCreateBG = new pbScrollBackground();
-	pCreateBG->Initialize(Width, Height, Tag);
+	pCreateBG->Initialize(TagData);
 	pCreateBG->SetPos(X, Y);
 	pCreateBG->SetFlowSpeedRatio(SpeedRatio);
 
@@ -248,9 +248,9 @@ pbBackground* pbBackgroundProcessor::AddScrollBackGround(float Width, float Heig
 	return pCreateBG;
 }
 
-pbBackground* pbBackgroundProcessor::AddMoveBackGround(float Width, float Height, float X, float Y, float SpeedRatio, screenplayTag Tag) {
+pbBackground* pbBackgroundProcessor::AddMoveBackGround(float X, float Y, TAGDATA& TagData, float SpeedRatio) {
 	pbBackground* pCreateBG = new pbMoveBackground();
-	pCreateBG->Initialize(Width, Height, Tag);
+	pCreateBG->Initialize(TagData);
 	pCreateBG->SetPos(X, Y);
 	pCreateBG->SetFlowSpeedRatio(SpeedRatio);
 
@@ -258,9 +258,9 @@ pbBackground* pbBackgroundProcessor::AddMoveBackGround(float Width, float Height
 
 	return pCreateBG;
 }
-pbBackground* pbBackgroundProcessor::AddStaticBackGround(float Width, float Height, float X, float Y, screenplayTag Tag) {
+pbBackground* pbBackgroundProcessor::AddStaticBackGround(float X, float Y, TAGDATA& TagData) {
 	pbBackground* pCreateBG = new pbStaticBackground();
-	pCreateBG->Initialize(Width, Height, Tag);
+	pCreateBG->Initialize(TagData);
 	pCreateBG->SetPos(X, Y);
 
 	registControled(pCreateBG);
@@ -268,9 +268,9 @@ pbBackground* pbBackgroundProcessor::AddStaticBackGround(float Width, float Heig
 	return pCreateBG;
 }
 
-pbTouchableBackground* pbBackgroundProcessor::AddTouchableBackGround(float Width, float Height, float X, float Y, screenplayTag Tag) {
+pbTouchableBackground* pbBackgroundProcessor::AddTouchableBackGround(float X, float Y, TAGDATA& TagData) {
 	pbTouchableBackground* pCreateBG = new pbTouchableBackground();
-	pCreateBG->Initialize(Width, Height, Tag);
+	pCreateBG->Initialize(TagData);
 	pCreateBG->SetPos(X, Y);
 
 	registControled(pCreateBG);
@@ -283,15 +283,12 @@ pbTouchableBackground* pbBackgroundProcessor::AddTouchableBackGround(float Width
 void pbBackgroundProcessor::Update(float fTime) {
 	BackgroundList* iterator;
 	BackgroundList* head = m_pBackgroundQueue;
-
 	iterator = head->getNext();
 	while( iterator != head ) {
 		pbBackground* pkernel = iterator->getKernel();
 		iterator = iterator->getNext();
-
 		pkernel->Update(fTime);
 	}
-
 }
 
 void pbBackgroundProcessor::ClearDataStore() {
@@ -302,7 +299,7 @@ void pbBackgroundProcessor::ClearDataStore() {
 
 	m_iBackgroundCount = 0;
 
-	LOGI("pbBackgroundProcessor::Release() Complete");
+	LOGI("pbBackgroundProcessor::ClearDataStore() Complete");
 }
 
 void pbBackgroundProcessor::registControled(pbBackground* pBG){

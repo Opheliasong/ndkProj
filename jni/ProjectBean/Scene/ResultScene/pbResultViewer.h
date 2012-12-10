@@ -32,8 +32,7 @@ class pbBasicDrawUnit;
 class pbScoreView {
 	pbScoreView();
 public:
-	pbScoreView(screenplayTag NameTag, float fNameWidth, float fNameHeight,
-			screenplayTag NumberZeroTag,	float fNumberWidth, float fNumberHeight, int Score);
+	pbScoreView(TAGDATA& NameTagData, TAGDATA& NumberTagData, int Score);
 	~pbScoreView();
 
 	void Draw();
@@ -81,8 +80,7 @@ public:
 	pbResultViewer();
 	~pbResultViewer();
 
-	void PushBackScoreView(float X, float Y, screenplayTag NameTag, float fNameWidth, float fNameHeight,
-			screenplayTag NumberZeroTag,	float fNumberWidth, float fNumberHeight, int Score);
+	void PushBackScoreView(float X, float Y,TAGDATA& NameTagData,	TAGDATA& NumberTagData, int Score);
 
 	virtual void PreSettingDraw();
 	virtual void DrawThis();

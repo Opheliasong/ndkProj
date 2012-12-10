@@ -229,7 +229,9 @@ bool pbComboManager::FeverOn() {
 	else {
 		//�ǹ� ����Ʈ �۵� �Ұ�
 //		npAudioSystem::playEffect(5);
-		pbEffectManager::GetInstance()->AddStickerEffect(pbCharacter::GetInstance()->GetPos()[0], pbCharacter::GetInstance()->GetPos()[1], "ci", 200, 200, 0.3f);
+		TAGDATA TagData;
+		TagData.SetData("ci", 200, 200);
+		pbEffectManager::GetInstance()->AddStickerEffect(pbCharacter::GetInstance()->GetPos()[0], pbCharacter::GetInstance()->GetPos()[1], TagData, 0.3f);
 		return false;
 	}
 

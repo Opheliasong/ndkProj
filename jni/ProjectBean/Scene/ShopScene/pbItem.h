@@ -19,8 +19,8 @@ public:
 	pbItem();
 	virtual ~pbItem();
 
-	void SetItemTag(screenplayTag Tag, float fWidth, float fHeight);
-	void SetDescriptionTag(screenplayTag Tag, float fWidth, float fHeight);
+	void SetItemTag(TAGDATA& TagData);
+	void SetDescriptionTag(TAGDATA& TagData);
 
 	void SetPos(float X, float Y) { m_vPos[0] = X; m_vPos[1] = Y; }
 

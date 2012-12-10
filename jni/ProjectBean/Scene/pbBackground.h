@@ -12,7 +12,7 @@ public:
 	pbBackground() { m_ID = -1; m_vPos[0] = 0.0f; m_vPos[1] = 0.0f; m_fScrollRatio = 1.0f; m_fBackgroundFlowPercent = 1.0f;m_fBGAreaWidth = 0.0f; m_fVertexWidth = 0.0f; }
 	virtual ~pbBackground() {};
 
-	virtual void Initialize(float Width, float Height, screenplayTag Tag)=0;
+	virtual void Initialize(TAGDATA& TagData)=0;
 	virtual void PreSettingDraw()=0;
 	virtual void DrawThis()=0;
 	virtual void Update(float fTime)=0;
@@ -42,7 +42,7 @@ public:
 	pbBasicBackground(){ m_BackgroundTextureRect = NULL; }
 	virtual ~pbBasicBackground(){};
 
-	virtual void Initialize(float Width, float Height,  screenplayTag Tag)=0;
+	virtual void Initialize(TAGDATA& TagData)=0;
 	virtual void PreSettingDraw();
 	virtual void DrawThis();
 	virtual void Update(float fTime)=0;
@@ -60,7 +60,7 @@ public:
 	}
 	virtual ~pbUVControllBackground(){};
 
-	virtual void Initialize(float Width, float Height,  screenplayTag Tag)=0;
+	virtual void Initialize(TAGDATA& TagData)=0;
 	virtual void PreSettingDraw()=0;
 	virtual void DrawThis()=0;
 	virtual void Update(float fTime)=0;
@@ -88,7 +88,7 @@ public:
 	pbStaticBackground();
 	virtual ~pbStaticBackground();
 
-	virtual void Initialize(float Width, float Height,  screenplayTag Tag);
+	virtual void Initialize(TAGDATA& TagData);
 	virtual void Update(float fTime);
 private:
 };
@@ -102,7 +102,7 @@ public:
 	pbMoveBackground();
 	virtual ~pbMoveBackground();
 
-	virtual void Initialize(float Width, float Height, screenplayTag Tag);
+	virtual void Initialize(TAGDATA& TagData);
 	virtual void Update(float fTime);
 private:
 };
@@ -117,7 +117,7 @@ public:
 	pbScrollBackground();
 	virtual ~pbScrollBackground();
 
-	virtual void Initialize(float Width, float Height, screenplayTag Tag);
+	virtual void Initialize(TAGDATA& TagData);
 
 	virtual void PreSettingDraw();
 	virtual void DrawThis();
@@ -135,7 +135,7 @@ public:
 	pbTouchableBackground();
 	virtual ~pbTouchableBackground();
 
-	virtual void Initialize(float Width, float Height, screenplayTag Tag);
+	virtual void Initialize(TAGDATA& TagData);
 	virtual void Update(float fTime);
 
 	virtual void notify();
@@ -158,10 +158,10 @@ public:
 
 	static pbBackgroundProcessor& GetInstance();
 
-	pbBackground* AddScrollBackGround(float Width, float Height, float X, float Y, float SpeedRatio, screenplayTag Tag);
-	pbBackground* AddMoveBackGround(float Width, float Height, float X, float Y, float SpeedRatio, screenplayTag Tag);
-	pbBackground* AddStaticBackGround(float Width, float Height, float X, float Y, screenplayTag Tag);
-	pbTouchableBackground* AddTouchableBackGround(float Width, float Height, float X, float Y, screenplayTag Tag);
+	pbBackground* AddScrollBackGround(float X, float Y, TAGDATA& TagData, float SpeedRatio);
+	pbBackground* AddMoveBackGround(float X, float Y, TAGDATA& TagData, float SpeedRatio);
+	pbBackground* AddStaticBackGround(float X, float Y, TAGDATA& TagData);
+	pbTouchableBackground* AddTouchableBackGround(float X, float Y, TAGDATA& TagData);
 	void Update(float fTime);
 
 	void ClearDataStore();

@@ -10,6 +10,15 @@
 
 typedef std::string sceneTag;
 
+typedef struct _SCREENPLAYTAGDATA {
+	screenplayTag Tag;
+	float fWidth;
+	float fHeight;
+	void SetData(screenplayTag tag, float width, float height) {
+		Tag = tag; fWidth = width; fHeight = height;
+	}
+} TAGDATA;
+
 namespace projectBean{
 /*	namespace TOUCHSTATUS{
 		typedef enum {TOUCHNONE=0,TAPDOWN=1,TAPUP=2,TAPMOVE=3,TOUCHMODEEND=4}TYPE;

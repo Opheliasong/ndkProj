@@ -519,10 +519,10 @@ bool pbUIProcessor::LoadData(const char* filename) {
 }*/
 
 //----------------------------BackPanel-------------------------------------//
-pbBasicUI* pbUIProcessor::AddBackPanelUI(float X, float Y,  screenplayTag Tag, float Width, float Height) {
+pbBasicUI* pbUIProcessor::AddBackPanelUI(float X, float Y,  TAGDATA& TagData) {
 	pbBackPanelUI* newUI = new pbBackPanelUI();
 	newUI->SetPos(X, Y);
-	newUI->SetBaseSprite(Tag, Width, Height);
+	newUI->SetBaseSprite(TagData.Tag, TagData.fWidth, TagData.fHeight);
 
 	//newUI ->SetID(ID);   // ID������ ����� �غ��� ��
 	registControled(newUI );
@@ -532,10 +532,10 @@ pbBasicUI* pbUIProcessor::AddBackPanelUI(float X, float Y,  screenplayTag Tag, f
 }
 
 //----------------------------Menu-------------------------------------//
-pbTouchUI* pbUIProcessor::AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height, void(Func)()) {
+pbTouchUI* pbUIProcessor::AddButtonUI(float X, float Y,  TAGDATA& TagData, void(Func)()) {
 	pbTouchUI* newUI = new pbButtonUI();
 	newUI->SetPos(X, Y);
-	newUI->SetBaseSprite(Tag, Width, Height);
+	newUI->SetBaseSprite(TagData.Tag, TagData.fWidth, TagData.fHeight);
 	newUI->SetTouchFunc(Func);
 
 	registControled(newUI );
@@ -545,14 +545,13 @@ pbTouchUI* pbUIProcessor::AddButtonUI(float X, float Y,  screenplayTag Tag, floa
 }
 
 //----------------------------Score-------------------------------------//
-pbNumber_Indicator* pbUIProcessor::AddNumberUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight,
-																				screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight,
+pbNumber_Indicator* pbUIProcessor::AddNumberUI(float X, float Y, TAGDATA& TextTagData,	TAGDATA& NumberTagData,
 																				int MaxDigits, int(NumberRetunFunc)())
 {
 	pbNumber_Indicator* newUI = new pbNumber_Indicator();
 	newUI->SetPos(X, Y);
-	newUI->SetBaseSprite(TextTag, TextWidth, TextHeight);
-	newUI->SetScoreSprite(ZeroNumberTag, NumberWidth, NumberHeight);
+	newUI->SetBaseSprite(TextTagData.Tag, TextTagData.fWidth, TextTagData.fHeight);
+	newUI->SetScoreSprite(NumberTagData.Tag, NumberTagData.fWidth, NumberTagData.fHeight);
 	newUI->DataReset();
 	newUI->SetShowDigits(MaxDigits);
 	newUI->SetNumberReturnFunc(NumberRetunFunc);
@@ -562,10 +561,10 @@ pbNumber_Indicator* pbUIProcessor::AddNumberUI(float X, float Y, screenplayTag T
 
 }
 //----------------------------APGauge-------------------------------------//
-pbBasicUI* pbUIProcessor::AddGaugeUI(float X, float Y, screenplayTag GaugePanelTag,  screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight,  float MaxGauge, float(GaugeReturnFunc)()) {
+pbBasicUI* pbUIProcessor::AddGaugeUI(float X, float Y, screenplayTag GaugePanelTag,  TAGDATA& GaugeTagData,  float MaxGauge, float(GaugeReturnFunc)()) {
 	pbGauge_Indicator* newUI = new pbGauge_Indicator();
-	newUI->SetBaseSprite(GaugePanelTag, GaugeWidth, GaugeHeight);
-	newUI->SetGaugeSprite(GaugeTag, GaugeWidth, GaugeHeight);
+	newUI->SetBaseSprite(GaugePanelTag, GaugeTagData.fWidth, GaugeTagData.fHeight);
+	newUI->SetGaugeSprite(GaugeTagData.Tag, GaugeTagData.fWidth, GaugeTagData.fHeight);
 	newUI->SetGaugeReturnFunc(GaugeReturnFunc);
 	newUI->SetMaxGaugePoint(MaxGauge);
 	newUI->SetPos(X, Y);
@@ -574,10 +573,10 @@ pbBasicUI* pbUIProcessor::AddGaugeUI(float X, float Y, screenplayTag GaugePanelT
 
 	return newUI;
 }
-pbBasicUI* pbUIProcessor::AddGaugeUI_RelativePos(float* pV2RelativePos, float X, float Y, screenplayTag GaugePanelTag,  screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight,  float MaxGauge, float(GaugeReturnFunc)()) {
+pbBasicUI* pbUIProcessor::AddGaugeUI_RelativePos(float* pV2RelativePos, float X, float Y, screenplayTag GaugePanelTag,  TAGDATA& GaugeTagData,  float MaxGauge, float(GaugeReturnFunc)()) {
 	pbGauge_Indicator* newUI = new pbGauge_Indicator();
-	newUI->SetBaseSprite(GaugePanelTag, GaugeWidth, GaugeHeight);
-	newUI->SetGaugeSprite(GaugeTag, GaugeWidth, GaugeHeight);
+	newUI->SetBaseSprite(GaugePanelTag, GaugeTagData.fWidth, GaugeTagData.fHeight);
+	newUI->SetGaugeSprite(GaugeTagData.Tag, GaugeTagData.fWidth, GaugeTagData.fHeight);
 	newUI->SetGaugeReturnFunc(GaugeReturnFunc);
 	newUI->SetMaxGaugePoint(MaxGauge);
 	newUI->SetPos(X, Y);
@@ -597,10 +596,8 @@ void pbUIProcessor::Update(float time){
 	while( iterator != head ) {
 		pbUI* pUI = iterator->getKernel();
 		iterator = iterator->getNext();
-
 		pUI->Update(time);
 	}
-
 }
 
 void pbUIProcessor::ClearDataStore() {
@@ -629,6 +626,7 @@ void pbUIProcessor::registControled(pbUI* pUI){
 	UIList::addTail(pUI,m_ControledUIStore);
 
 	m_UICounts++;
+
 }
 
 void pbUIProcessor::removeControled(pbUI* pUI){

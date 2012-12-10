@@ -47,12 +47,11 @@ int pbNumberRoulette::ReturnRouletteNumber() {
 
 ////------------------------------------------------------------------pbScoreView--------------------------------------------------------------------//
 
-pbScoreView::pbScoreView(screenplayTag NameTag, float fNameWidth, float fNameHeight,
-											screenplayTag NumberZeroTag,	float fNumberWidth, float fNumberHeight, int Score)
+pbScoreView::pbScoreView(TAGDATA& NameTagData, TAGDATA& NumberTagData,  int Score)
 {
 	m_pNameDrawUnit = new pbBasicDrawUnit();
-	m_pNameDrawUnit->SetTextureTAG(NameTag);
-	m_pNameDrawUnit->SetSize(fNameWidth, fNameHeight);
+	m_pNameDrawUnit->SetTextureTAG(NameTagData.Tag);
+	m_pNameDrawUnit->SetSize(NameTagData.fWidth, NameTagData.fHeight);
 
 	m_State =STATE_NONE;
 	m_CurrentDigits = 0;
@@ -60,15 +59,15 @@ pbScoreView::pbScoreView(screenplayTag NameTag, float fNameWidth, float fNameHei
 	for(int i = 0; i < MAX_DIGITS; i++)
 		m_DigitsNumber[i] = 0;
 
-	m_fTextPlacementWidth = fNameWidth/2;
-	m_PlacementWidth = fNumberWidth;
+	m_fTextPlacementWidth = NameTagData.fWidth/2;
+	m_PlacementWidth = NumberTagData.fWidth;
 
 	SetScore(Score);
 
 	//Number Setting
-	SetVertexByCenter(m_ScoreVertex, fNumberWidth, fNumberHeight);
+	SetVertexByCenter(m_ScoreVertex, NumberTagData.fWidth, NumberTagData.fHeight);
 
-	sprite* pSprite = npContainerDAO::GetInstance().getSpriteByTAG(NumberZeroTag);
+	sprite* pSprite = npContainerDAO::GetInstance().getSpriteByTAG(NumberTagData.Tag);
 	for (int i = 0; i < NUMBERING; i++) {
 		int index = pSprite->currentScreenplay->getKernel();
 		TextureAtlasIter textureAtlasIterator =
@@ -179,9 +178,8 @@ pbResultViewer::~pbResultViewer() {
 	ClearDataStore();
 }
 
-void pbResultViewer::PushBackScoreView(float X, float Y, screenplayTag NameTag, float fNameWidth, float fNameHeight,
-																							screenplayTag NumberZeroTag,	float fNumberWidth, float fNumberHeight, int Score) {
-	pbScoreView* pCreateView = new pbScoreView(NameTag, fNameWidth, fNameHeight, NumberZeroTag, fNumberWidth, fNumberHeight, Score);
+void pbResultViewer::PushBackScoreView(float X, float Y, TAGDATA& NameTagData, TAGDATA& NumberTagData, int Score) {
+	pbScoreView* pCreateView = new pbScoreView(NameTagData, NumberTagData, Score);
 	pCreateView->SetPos(X, Y);
 	m_ScoreViewVector.push_back(pCreateView);
 //	ScoreViewVector::iterator Iter = m_ScoreViewVector.begin();

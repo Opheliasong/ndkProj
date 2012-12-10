@@ -94,27 +94,24 @@ pbStepUpEffect::~pbStepUpEffect(){
 	delete m_pStepUpDrawUnit;
 }
 
-void pbStepUpEffect::Initialize(screenplayTag PanelTag, float PanelWidth, float PanelHeight,
-		screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
-		screenplayTag LabelTag, float LabelWidth, float LabelHeight,
-		screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight )
+void pbStepUpEffect::Initialize(TAGDATA& PanelTagData, TAGDATA& LabelTextTagData, TAGDATA& LabelTagData, TAGDATA& StepUpTagData)
 {
 	DataReset();
 
 	m_bInfinite = false;
 
-	m_pPanelDrawUnit->SetTextureTAG(PanelTag);
-	m_pPanelDrawUnit->SetSize(PanelWidth, PanelHeight);
+	m_pPanelDrawUnit->SetTextureTAG(PanelTagData.Tag);
+	m_pPanelDrawUnit->SetSize(PanelTagData.fWidth, PanelTagData.fHeight);
 
-	m_pLabelTextDrawUnit->SetTextureTAG(LabelTextTag);
-	m_pLabelTextDrawUnit->SetSize(LabelTextWidth, LabelTextHeight);
-	m_fLabelTextWidth = LabelTextWidth;
+	m_pLabelTextDrawUnit->SetTextureTAG(LabelTextTagData.Tag);
+	m_pLabelTextDrawUnit->SetSize(LabelTextTagData.fWidth, LabelTextTagData.fHeight);
+	m_fLabelTextWidth = LabelTextTagData.fWidth;
 
-	m_pLabelDrawUnit->SetTextureTAG(LabelTag);
-	m_pLabelDrawUnit->SetSize(LabelWidth, LabelHeight);
+	m_pLabelDrawUnit->SetTextureTAG(LabelTagData.Tag);
+	m_pLabelDrawUnit->SetSize(LabelTagData.fWidth, LabelTagData.fHeight);
 
-	m_pStepUpDrawUnit->SetTextureTAG(StepUpTag);
-	m_pStepUpDrawUnit->SetSize(StepUpWidth, StepUpHeight);
+	m_pStepUpDrawUnit->SetTextureTAG(StepUpTagData.Tag);
+	m_pStepUpDrawUnit->SetSize(StepUpTagData.fWidth, StepUpTagData.fHeight);
 
 
 }
@@ -346,10 +343,10 @@ pbStickerEffect::~pbStickerEffect(){
 	delete m_pDrawUnit;
 }
 
-void pbStickerEffect::Initialize(screenplayTag BaseTag, float fWidth, float fHeight, float LifeTime, bool Infinite)
+void pbStickerEffect::Initialize(TAGDATA& TagData, float LifeTime, bool Infinite)
 {
-	m_pDrawUnit->SetTextureTAG(BaseTag);
-	m_pDrawUnit->SetSize(fWidth, fHeight);
+	m_pDrawUnit->SetTextureTAG(TagData.Tag);
+	m_pDrawUnit->SetSize(TagData.fWidth, TagData.fHeight);
 
 	m_fLifeTime = LifeTime;
 	m_bInfinite = Infinite;
@@ -417,9 +414,9 @@ pbHomingMissileEffect::~pbHomingMissileEffect(){
 
 }
 
-void pbHomingMissileEffect::Initialize(screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime, bool Infinite){
-	m_pMissileDrawUnit->SetTextureTAG(MissileTag);
-	m_pMissileDrawUnit->SetSize(fWidth, fHeight);
+void pbHomingMissileEffect::Initialize(TAGDATA& TagData, float LifeTime, bool Infinite){
+	m_pMissileDrawUnit->SetTextureTAG(TagData.Tag);
+	m_pMissileDrawUnit->SetSize(TagData.fWidth, TagData.fHeight);
 
 	m_fLifeTime = LifeTime;
 	m_bInfinite = Infinite;
@@ -612,14 +609,12 @@ void pbEffectManager::Create()
 	LOGE("pbEffectProcess Create Failed");
 }
 
-void pbEffectManager::AddStepUpEffect(float X, float Y, screenplayTag PanelTag, float PanelWidth, float PanelHeight,		screenplayTag LabelTextTag, float LabelTextWidth, float LabelTextHeight,
-		screenplayTag LabelTag, float LabelWidth, float LabelHeight,		screenplayTag StepUpTag, float StepUpWidth, float StepUpHeight )
+void pbEffectManager::AddStepUpEffect(float X, float Y, TAGDATA& PanelTagData, TAGDATA& LabelTextTagData, TAGDATA& LabelTagData, TAGDATA& StepUpTagData)
 {
 	pbStepUpEffect* pEffect = m_pStepUpEffectRentalUnit->RentalMemory();
 	if( pEffect == NULL) return ;
 	pEffect->SetRegistedSceneTag(m_SceneTag);
-	pEffect->Initialize(PanelTag, PanelWidth, PanelHeight, 		LabelTextTag, LabelTextWidth, LabelTextHeight,
-								LabelTag, LabelWidth, LabelHeight, 	StepUpTag, StepUpWidth, StepUpHeight);
+	pEffect->Initialize(PanelTagData, LabelTextTagData, LabelTagData, StepUpTagData);
 	pEffect->SetPos(X, Y);
 	//pEffect->SetScale(fScale);
 
@@ -629,11 +624,11 @@ void pbEffectManager::AddStepUpEffect(float X, float Y, screenplayTag PanelTag, 
 	pbSceneManager::getInstance().RegistRenderToScene(m_SceneTag, pEffect);
 }
 
-void pbEffectManager::AddStickerEffect(float X, float Y, screenplayTag BaseTag, float fWidth, float fHeight, float lifeTime) {
+void pbEffectManager::AddStickerEffect(float X, float Y, TAGDATA& TagData, float lifeTime) {
 	pbStickerEffect* pEffect = m_pStickerEffectRentalUnit->RentalMemory();
 	if( pEffect == NULL) return;
 	pEffect->SetRegistedSceneTag(m_SceneTag);
-	pEffect->Initialize(BaseTag, fWidth, fHeight, lifeTime, false);
+	pEffect->Initialize(TagData, lifeTime, false);
 	pEffect->SetPos(X, Y);
 
 	registControled(pEffect);
@@ -642,11 +637,11 @@ void pbEffectManager::AddStickerEffect(float X, float Y, screenplayTag BaseTag, 
 	LOGE("ADD StickerEffect");
 }
 
-void pbEffectManager::AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, screenplayTag MissileTag, float fWidth, float fHeight, float LifeTime, float fDamage, void (*DecreaseHP)(float fDamage) ) {
+void pbEffectManager::AddHomingMissileEffect(float fStartX, float fStartY, float fDestX, float fDestY, TAGDATA& TagData,  float LifeTime, float fDamage, void (*DecreaseHP)(float fDamage) ) {
 	pbHomingMissileEffect* pEffect = m_pHomingMissileEffectRentalUnit->RentalMemory();
 	if( pEffect == NULL) return;
 	pEffect->SetRegistedSceneTag(m_SceneTag);
-	pEffect->Initialize(MissileTag, fWidth, fHeight, LifeTime, false);
+	pEffect->Initialize(TagData, LifeTime, false);
 
 	npV2Vector vOrigin, vDestination;
 	vOrigin[0] = fStartX;
@@ -670,7 +665,9 @@ void pbEffectManager::AddMissEffect() {
 	pbStickerEffect* pEffect = m_pStickerEffectRentalUnit->RentalMemory();
 	if( pEffect == NULL) return;
 	pEffect->SetRegistedSceneTag(m_SceneTag);
-	pEffect->Initialize("ci", 200, 200, 0.1f, false);
+	TAGDATA TagData;
+	TagData.SetData("ci", 200, 200);
+	pEffect->Initialize(TagData, 0.1f, false);
 	pEffect->SetPos(400, 240);
 
 	pEffect->SetColor(1.0f,1.0f,1.0f,1.0f);

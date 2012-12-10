@@ -214,11 +214,11 @@ public:
 
 	void CreateUIByType(const char* Type, float X, float Y, screenplayTag BaseTag, screenplayTag ExtraTag);
 
-	pbBasicUI* AddBackPanelUI(float X, float Y, screenplayTag Tag, float Width, float Height);
-	pbTouchUI* AddButtonUI(float X, float Y,  screenplayTag Tag, float Width, float Height, void(Func)());
-	pbBasicUI* AddGaugeUI(float X, float Y, screenplayTag GaugePanelTag, screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight, float MaxGauge, float(GaugeReturnFunc)());
-	pbBasicUI* AddGaugeUI_RelativePos(float* pV2RelativePos, float X, float Y, screenplayTag GaugePanelTag, screenplayTag GaugeTag, float GaugeWidth, float GaugeHeight, float MaxGauge, float(GaugeReturnFunc)());//위치따라가는 UI
-	pbNumber_Indicator* AddNumberUI(float X, float Y, screenplayTag TextTag, float TextWidth, float TextHeight, screenplayTag ZeroNumberTag, float NumberWidth, float NumberHeight, int MaxDigits, int(NumberRetunFunc)());
+	pbBasicUI* AddBackPanelUI(float X, float Y, TAGDATA& TagData);
+	pbTouchUI* AddButtonUI(float X, float Y,  TAGDATA& TagData, void(Func)());
+	pbBasicUI* AddGaugeUI(float X, float Y, screenplayTag GaugePanelTag, TAGDATA& GaugeTagData, float MaxGauge, float(GaugeReturnFunc)());
+	pbBasicUI* AddGaugeUI_RelativePos(float* pV2RelativePos, float X, float Y, screenplayTag GaugePanelTag, TAGDATA& GaugeTagData, float MaxGauge, float(GaugeReturnFunc)());//위치따라가는 UI
+	pbNumber_Indicator* AddNumberUI(float X, float Y, TAGDATA& TextTagData, TAGDATA& NumberTagData, int MaxDigits, int(NumberRetunFunc)());
 
 
 	void Update(float time);

@@ -24,6 +24,7 @@
 #include "Scene/ResultScene/pbResultViewer.h"
 #include "Scene/ShopScene/pbGoldPouch.h"
 #include "Scene/ShopScene/pbItem.h"
+#include "Scene/ShopScene/pbShop.h"
 #include "Scene/pbSceneManager.h"
 
 #include "Actor/pbMarionette.h"
