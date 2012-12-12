@@ -22,6 +22,7 @@
 #include "Scene/pbUI.h"
 #include "Scene/pbEffect.h"
 #include "Scene/ResultScene/pbResultViewer.h"
+#include "Scene/ShopScene/pbInventory.h"
 #include "Scene/ShopScene/pbGoldPouch.h"
 #include "Scene/ShopScene/pbItem.h"
 #include "Scene/ShopScene/pbShop.h"

@@ -27,9 +27,9 @@ public:
 	void SetPurchaseState(int State) { m_PurchaseState = State; }
 	void SetSelectState(int State) { m_SelectState = State; }
 	void SetPrice(int Price) { m_Price = Price; }
-	void SetItemCode(int Code) { m_ItemCode = Code; }
+	void SetItemCode(ItemCode Code) { m_ItemCode = Code; }
 
-	int GetItemCode() {return m_ItemCode;}
+	ItemCode GetItemCode() {return m_ItemCode;}
 
 	void PriceCheck(int gold);
 	bool IsTouched();
@@ -53,7 +53,7 @@ protected:
 	int m_PurchaseState;
 	int m_Price;
 
-	int m_ItemCode;
+	ItemCode m_ItemCode;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

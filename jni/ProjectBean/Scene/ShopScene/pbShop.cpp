@@ -9,6 +9,7 @@
 
 pbShop::pbShop() {
 	m_ItemPointerVector.reserve(10);
+	m_bChangedItems = false;
 }
 pbShop::~pbShop() {
 	ClearData();
@@ -24,11 +25,11 @@ void pbShop::RemoveItem(pbItem* pItem) {
 }
 
 
-void pbShop::AddItem_Potion(float X, float Y, TAGDATA& ItemTagData, TAGDATA& DescriptionTagData, int ItemCode, int Price) {
+void pbShop::AddItem_Potion(float X, float Y, TAGDATA& ItemTagData, TAGDATA& DescriptionTagData, ItemCode Code, int Price) {
 	pbItem_Potion* createItem = new pbItem_Potion();
 	createItem->SetItemTag(ItemTagData);
 	createItem->SetDescriptionTag(DescriptionTagData);
-	createItem->SetItemCode(ItemCode);
+	createItem->SetItemCode(Code);
 	createItem->SetPos(X, Y);
 	createItem->SetPrice(Price);
 
@@ -45,33 +46,33 @@ void pbShop::AddItem_Vehicle(float X, float Y, screenplayTag Tag, float fWidth, 
 void pbShop::LoadData() {
 	//TODO: XML 파싱
 
+
+	//계속 리셋
+	pbGoldPouch::GetInstance().SetGold(500);
+
 	//임시 아이템 추가 코드
 	TAGDATA ItemTagData, DescriptionTagData;
-	int ItemCode, Price;
+	int Price;
 
 	ItemTagData.SetData("run", 80, 80);
 	DescriptionTagData.SetData("ci", 150, 150);
-	ItemCode = 0;
 	Price = 10;
-	AddItem_Potion(100, 400, ItemTagData, DescriptionTagData, ItemCode, Price);
+	AddItem_Potion(100, 400, ItemTagData, DescriptionTagData, ITEMCODE_LIFE, Price);
 
 	ItemTagData.SetData("run", 80, 80);
 	DescriptionTagData.SetData("ci", 150, 150);
-	ItemCode = 1;
 	Price = 50;
-	AddItem_Potion(200, 400, ItemTagData, DescriptionTagData, ItemCode, Price);
+	AddItem_Potion(200, 400, ItemTagData, DescriptionTagData, ITEMCODE_FEVERPOINT, Price);
 
 	ItemTagData.SetData("run", 80, 80);
 	DescriptionTagData.SetData("ci", 150, 150);
-	ItemCode = 2;
 	Price = 110;
-	AddItem_Potion(100, 300, ItemTagData, DescriptionTagData, ItemCode, Price);
+	AddItem_Potion(100, 300, ItemTagData, DescriptionTagData, ITEMCODE_SPEEDDOWN, Price);
 
 	ItemTagData.SetData("run", 80, 80);
 	DescriptionTagData.SetData("ci", 150, 150);
-	ItemCode = 3;
 	Price = 250;
-	AddItem_Potion(200, 300, ItemTagData, DescriptionTagData, ItemCode, Price);
+	AddItem_Potion(200, 300, ItemTagData, DescriptionTagData, ITEMCODE_SCOREPLUS, Price);
 }
 
 void pbShop::ClearData() {
@@ -102,4 +103,16 @@ pbShop& pbShop::GetInstance() {
 	static pbShop SingleTon;
 
 	return SingleTon;
+}
+
+void pbShop::Update(float fTime) {
+	if( GetChangedItem() ) {
+		ItemVector::iterator Iter = m_ItemPointerVector.begin();
+		for( ;Iter != m_ItemPointerVector.end(); Iter++ ) {
+			pbItem* pItem = (*Iter);
+			pItem->PriceCheck(pbGoldPouch::GetInstance().GetGold());
+		}
+		ResetChangedItem();
+	}
+
 }

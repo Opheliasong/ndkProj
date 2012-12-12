@@ -72,11 +72,11 @@ void pbMainFrame::npShowIntro() {
 		pbBoss::Create();
 		pbEffectManager::Create();
 		pbComboManager::Create();
+
+		pbInventory::GetInstance().LoadData();
 /*
 		pbGuideLineGenerator::Create();
 		pbNoteProcessor::Create();*/
-
-		pbGoldPouch::GetInstance().SetGold(500);
 
 		//FIXLOG[10-10] : 초기화는 공용 오브젝트만 초기화, 다른 초기화는 게임스테이트에 따라 다르게 초기화 한다
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
@@ -123,7 +123,8 @@ void pbMainFrame::npShowIntro() {
 
 		//---------리절트 네비게이트 무버
 		newMover = new pbSceneMover(SCENESTATE::GAME_RESULT);
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
+		/*newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );*/
+		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
 		newMover->AddStateElement(SCENESTATE::ACTION_SELECT_1, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 

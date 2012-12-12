@@ -10,6 +10,12 @@
 
 typedef std::string sceneTag;
 
+typedef std::string ItemCode;
+#define ITEMCODE_LIFE "LIFE"
+#define ITEMCODE_FEVERPOINT "FEVERPOINT"
+#define ITEMCODE_SPEEDDOWN "SPEEDDOWN"
+#define ITEMCODE_SCOREPLUS "SCOREPLUS"
+
 typedef struct _SCREENPLAYTAGDATA {
 	screenplayTag Tag;
 	float fWidth;

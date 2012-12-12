@@ -35,7 +35,7 @@ void  pbRandomTimeTrigger::TriggerStart() {
 	m_bTakeTimeFinish = false;
 	m_bTriggerOn = true;
 
-	LOGfloatString("TakeTime", m_fTakeTime);
+	LOGfloatString("pbRandomTimeTrigger:TakeTime", m_fTakeTime);
 }
 
 void  pbRandomTimeTrigger::TriggerEnd() {

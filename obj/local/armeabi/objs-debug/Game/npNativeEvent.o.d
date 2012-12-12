@@ -267,8 +267,9 @@ obj/local/armeabi/objs-debug/Game/npNativeEvent.o: jni/npNativeEvent.cpp \
  jni/./ProjectBean/Scene/../Scene/pbEffect.h \
  jni/./ProjectBean/Scene/../Scene/ResultScene/pbResultViewer.h \
  jni/./ProjectBean/Scene/../Scene/ResultScene/../../stdafx.h \
- jni/./ProjectBean/Scene/../Scene/ShopScene/pbGoldPouch.h \
+ jni/./ProjectBean/Scene/../Scene/ShopScene/pbInventory.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/../../stdafx.h \
+ jni/./ProjectBean/Scene/../Scene/ShopScene/pbGoldPouch.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/pbItem.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/pbShop.h \
  jni/./ProjectBean/Scene/../Scene/pbSceneManager.h \
@@ -817,9 +818,11 @@ jni/./ProjectBean/Scene/../Scene/ResultScene/pbResultViewer.h:
 
 jni/./ProjectBean/Scene/../Scene/ResultScene/../../stdafx.h:
 
-jni/./ProjectBean/Scene/../Scene/ShopScene/pbGoldPouch.h:
+jni/./ProjectBean/Scene/../Scene/ShopScene/pbInventory.h:
 
 jni/./ProjectBean/Scene/../Scene/ShopScene/../../stdafx.h:
+
+jni/./ProjectBean/Scene/../Scene/ShopScene/pbGoldPouch.h:
 
 jni/./ProjectBean/Scene/../Scene/ShopScene/pbItem.h:
 

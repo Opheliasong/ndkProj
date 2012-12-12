@@ -173,6 +173,9 @@ void pbPlaySceneWrapper::InitializeScene() {
 	StartFadeIn(0.5f);
 	pbEffectManager::GetInstance()->SetSceneTag(GetTag());
 	GetStageTrigger()->Initialize();
+
+	pbInventory::GetInstance().DataTransferToStageValue();
+
 	TAGDATA BaseTagData, SecondTagData;
 	//background
 	BaseTagData.SetData("ci", 800, 480);
@@ -378,6 +381,7 @@ void pbShopSceneWrapper::UpdateScene(float fTime) {
 
 	pbUIProcessor::GetInstance()->Update(fTime);
 	pbCharacter::GetInstance()->Update(fTime);
+	pbShop::GetInstance().Update(fTime);
 }
 
 void pbShopSceneWrapper::ClearScene() {
