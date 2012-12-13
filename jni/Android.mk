@@ -67,6 +67,7 @@ npNativeEvent.cpp\
 /ProjectBean/Scene/pbUI.cpp\
 /ProjectBean/Scene/pbEffect.cpp\
 /ProjectBean/Scene/ResultScene/pbResultViewer.cpp\
+/ProjectBean/Scene/ShopScene/pbVehicle.cpp\
 /ProjectBean/Scene/ShopScene/pbInventory.cpp\
 /ProjectBean/Scene/ShopScene/pbGoldPouch.cpp\
 /ProjectBean/Scene/ShopScene/pbItem.cpp\

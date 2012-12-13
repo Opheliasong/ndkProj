@@ -39,6 +39,9 @@ public:
 
 	virtual void notify() = 0;
 
+	virtual void SelectNone() = 0;
+	virtual void SelectOne() = 0;
+
 	enum { ITEM_PURCHASE_AVAILABLE = 0, ITEM_PURCHASE_IMPOSIBLE, ITEM_PURCHASE_LOCKED};
 	enum { ITEM_SELECT_NONE = 0, ITEM_SELECT_ONE};
 protected:
@@ -69,7 +72,63 @@ public:
 	virtual void DrawThis();
 
 	virtual void notify();
+
+	virtual void SelectNone();
+	virtual void SelectOne();
 private:
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////-----------------------------------------------------		pbItem_Vehicle			------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class pbItem_Vehicle : public pbItem{
+public:
+	pbItem_Vehicle();
+	virtual ~pbItem_Vehicle();
+
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
+
+	virtual void notify();
+
+	virtual void SelectNone();
+	virtual void SelectOne();
+
+	void VehicleStateCheck();
+	void VehicleChange();
+
+	void SetCaptionTagData(TAGDATA& TagData);
+
+	//void SetStatePurchase(int State) {m_VehicleState = State; }
+
+	enum { VEHICLE_PURCHASE_IS_REQUIRED = 0, VEHICLE_CHANGE_ABLE};
+private:
+	int m_VehicleState;
+
+	pbBasicDrawUnit* m_pOwnCaption;
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////-----------------------------------------------------		pbItem_Pass			------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class pbItem_Pass : public pbItem{
+public:
+	pbItem_Pass();
+	virtual ~pbItem_Pass();
+
+	virtual void PreSettingDraw();
+	virtual void DrawThis();
+
+	virtual void notify();
+
+	virtual void SelectNone();
+	virtual void SelectOne();
+
+	void SetDestLevel(int Level) { m_DestLevel = Level; }
+private:
+	int m_DestLevel;
 };
 
 #endif /* PBITEM_H_ */

@@ -145,7 +145,7 @@ void pbIntroSceneWrapper::UpdateScene(float fTime) {
 	}
 
 	if( IsFadeOutEnd()) {
-		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FORWARD);
 		ResetFadeValues();
 	}
 }
@@ -336,6 +336,7 @@ void pbResultSceneWrapper::ClearScene() {
 	m_ResultViewer->ClearDataStore();
 	TouchLayer::GetInstance().ClearRegistedList();
 	//pbBackgroundProcessor::GetInstance().ClearDataStore();
+
 	LOGI("pbResultSceneWrapper ClearScene Complete");
 }
 
@@ -362,7 +363,7 @@ void pbShopSceneWrapper::InitializeScene() {
 
 	// 캐릭터
 	pbCharacter::GetInstance()->LoadData(GetTag());
-	pbCharacter::GetInstance()->SetTouchFunction(&(pbCharacter::Result_TouchFunc) );
+	pbCharacter::GetInstance()->SetTouchFunction(&(pbCharacter::Shop_TouchFunc) );
 	pbCharacter::GetInstance()->SetPos(600.0f, 100.0f);
 	pbCharacter::GetInstance()->SetConditionPos(600.f, 100.f);
 	pbCharacter::GetMarionette()->SelectMoveState(pbCharacter::WEAVING_UP);
@@ -374,6 +375,8 @@ void pbShopSceneWrapper::InitializeScene() {
 	pbShop::GetInstance().SetPos(0,0);
 	this->RegistToRenderList(&pbShop::GetInstance());
 	LOGI("pbShopSceneWrapper InitializeScene Complete");
+
+	pbStageValue::ResetShopRoute();
 }
 
 void pbShopSceneWrapper::UpdateScene(float fTime) {

@@ -255,8 +255,9 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/Scene/../../nitroFrame/npSubject.h \
  jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h \
  jni/./ProjectBean/Scene/../pbTypes.h \
- jni/./ProjectBean/Scene/../pbStageValue.h \
+ jni/./ProjectBean/Scene/../pbStatusWeight.h \
  jni/./ProjectBean/Scene/../stdafx.h \
+ jni/./ProjectBean/Scene/../pbStageValue.h \
  jni/./ProjectBean/Scene/../Trigger/pbStageTrigger.h \
  jni/./ProjectBean/Scene/../Trigger/../stdafx.h \
  jni/./ProjectBean/Scene/../Trigger/pbTimeTrigger.h \
@@ -268,8 +269,9 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/Scene/../Scene/pbEffect.h \
  jni/./ProjectBean/Scene/../Scene/ResultScene/pbResultViewer.h \
  jni/./ProjectBean/Scene/../Scene/ResultScene/../../stdafx.h \
- jni/./ProjectBean/Scene/../Scene/ShopScene/pbInventory.h \
+ jni/./ProjectBean/Scene/../Scene/ShopScene/pbVehicle.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/../../stdafx.h \
+ jni/./ProjectBean/Scene/../Scene/ShopScene/pbInventory.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/pbGoldPouch.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/pbItem.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/pbShop.h \
@@ -793,9 +795,11 @@ jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h:
 
 jni/./ProjectBean/Scene/../pbTypes.h:
 
-jni/./ProjectBean/Scene/../pbStageValue.h:
+jni/./ProjectBean/Scene/../pbStatusWeight.h:
 
 jni/./ProjectBean/Scene/../stdafx.h:
+
+jni/./ProjectBean/Scene/../pbStageValue.h:
 
 jni/./ProjectBean/Scene/../Trigger/pbStageTrigger.h:
 
@@ -819,9 +823,11 @@ jni/./ProjectBean/Scene/../Scene/ResultScene/pbResultViewer.h:
 
 jni/./ProjectBean/Scene/../Scene/ResultScene/../../stdafx.h:
 
-jni/./ProjectBean/Scene/../Scene/ShopScene/pbInventory.h:
+jni/./ProjectBean/Scene/../Scene/ShopScene/pbVehicle.h:
 
 jni/./ProjectBean/Scene/../Scene/ShopScene/../../stdafx.h:
+
+jni/./ProjectBean/Scene/../Scene/ShopScene/pbInventory.h:
 
 jni/./ProjectBean/Scene/../Scene/ShopScene/pbGoldPouch.h:
 

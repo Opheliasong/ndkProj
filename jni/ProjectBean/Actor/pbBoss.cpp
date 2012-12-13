@@ -89,6 +89,8 @@ void pbBoss::DrawThis() {
 void pbBoss::Update(float fTime) {
 	int m_MarionetteState = m_pMarionette->GetState();
 
+	m_pMarionette->MoveUpdate(fTime);
+
 	if( m_MarionetteState == APPROACHING) {
 		if( m_pMarionette->GetActionCondition() ) {
 			m_pMarionette->SelectMoveState(WEAVING_UP);
@@ -113,8 +115,6 @@ void pbBoss::Update(float fTime) {
 			LOGE("CHANGE TO DIE");
 		}
 	}
-
-	m_pMarionette->MoveUpdate(fTime);
 
 	m_pHPMeter->Update(fTime);
 
@@ -214,7 +214,7 @@ bool pbBoss::WeavingDownCondition(float* pV2Pos) {
 }
 bool pbBoss::WalkOutCondition(float* pV2Pos) {
 	if(pV2Pos[1] < -300) {
-		GetMarionette()->SetPosX(-300);
+		GetMarionette()->SetPosY(-300);
 		return true;
 	}
 	return false;

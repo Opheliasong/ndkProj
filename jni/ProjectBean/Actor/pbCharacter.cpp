@@ -2,32 +2,18 @@
 
 using namespace projectBean;
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////----------------------------------------------------		pbCharacter		------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 pbCharacter* pbCharacter::SingleObject = NULL;
 
 pbCharacter::pbCharacter() {
-	m_Color.Init(1.0f, 1.0f, 1.0f, 1.0f);
-
-/*	m_fLifePosX = 0.0f;
-
-	m_iFeverEffectMode = FEVER_NONE;
-	m_fFeverEffectDistance = 0.0f;
-	m_bFeverReady = false;
-	m_fFeverTime = 0.0f;
-	m_fFeverDestDistance = 0.0f;
-	m_fFeverTargetTime = 0.0f;
-	m_fEffectScale = 3.0f;
-
-	m_EffectVertexIndex = 0;
-	m_EffectUVIndex = 0; //����Ʈ
-	m_fLifeRotate = 0.0f;
-*/
 	m_RegistSceneTag.reserve(10);
 
 	m_pBodyDrawUnit = NULL;
 	m_pVehicleDrawUnit = NULL;
 	m_fVehiclePosY = 0.0f;
-
 	m_pMarionette = NULL;
 
 	m_fpTouchFunc = NULL;
@@ -45,6 +31,7 @@ void pbCharacter::Create(){
 		SingleObject->m_pBodyDrawUnit = new pbBasicDrawUnit();
 		SingleObject->m_pVehicleDrawUnit = new pbBasicDrawUnit();
 		SingleObject->m_pMarionette = new pbMarionette();
+
 		LOGI("CHARACTER Create Complete");
 
 		return;
@@ -61,13 +48,14 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 
 	m_pBodyDrawUnit->SetTextureTAG("run");
 	m_pBodyDrawUnit->SetSize(104, 110);
-	m_pVehicleDrawUnit->SetTextureTAG("ci");
-	m_pVehicleDrawUnit->SetSize(130, 40);
 
-	m_fVehiclePosY = -(m_pBodyDrawUnit->getHeight()/4);
+	//----------탈것 세팅----------//
+	m_fVehiclePosY = -(m_pBodyDrawUnit->getHeight()/4) ;
+	pbVehicle::GetInstance().ChangeVehicle(pbInventory::GetInstance().GetMountedItemCode());
 
-	//m_fLifePosX = 104*0.43f;
 
+
+	/////-----------------------------마리오네트 ---------------------------------------//
 	m_pMarionette->AddLineMoveState(APPEARED, 200, 0, &(pbCharacter::AppearedCondition));
 	m_pMarionette->AddLineMoveState(WEAVING_UP,0, 15, &(pbCharacter::WeavingUpCondition));
 	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -15, &(pbCharacter::WeavingDownCondition));
@@ -80,32 +68,34 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 }
 
 void pbCharacter::PreSettingDraw() {
-	glColor4f(1.0f, 1.0f,1.0f, m_Color.A);
+	//glColor4f(1.0f, 1.0f,1.0f, m_Color.A);
 	glPushMatrix();
 		m_pMarionette->Translate();
 }
 void pbCharacter::DrawThis() {
-		// 탈것
-		glPushMatrix();
-		glTranslatef(0.0f, m_fVehiclePosY , 0.0f);
-		m_pVehicleDrawUnit->PreSettingDraw();
-		m_pVehicleDrawUnit->DrawThis();
-		glPopMatrix();
-
 		//캐릭터 본체
 		glPushMatrix();
 		m_pBodyDrawUnit->PreSettingDraw();
 		m_pBodyDrawUnit->DrawThis();
 		glPopMatrix();
 
-/*		glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
-		m_pSatelliteDrawUnit->PreSettingDraw();
-		for(int i = 0; i < pbStageValue::GetLifeTotal(); i++)
+		// 탈것
+		glPushMatrix();
+		glTranslatef(0.0f, m_fVehiclePosY,0.0f);
+		m_pVehicleDrawUnit->PreSettingDraw();
+		m_pVehicleDrawUnit->DrawThis();
+		glPopMatrix();
+
+		//glColor4f(m_Color.R, m_Color.G, m_Color.B, m_Color.A);
+/*		m_pVehicleDrawUnit->PreSettingDraw();
+		int totalLife = pbStageValue::GetLifeTotal();
+		float fBaseAngle = (360.0f/totalLife);
+		for(int i = 0; i < totalLife; i++)
 		{
 			glPushMatrix();
-			glRotatef((float(i)*120.0f) + m_fLifeRotate*360.0f, 0.0f, 0.0f, 1.0f);
-			glTranslatef(m_fLifePosX + m_fFeverEffectDistance, 0.0f, 0.f);
-			m_pSatelliteDrawUnit->DrawThis();
+			glRotatef( i*fBaseAngle + m_fLifeRotate*360.0f, 0.0f, 0.0f, 1.0f);
+			glTranslatef(70, 0.0f, 0.f);
+			m_pVehicleDrawUnit->DrawThis();
 			glPopMatrix();
 		}*/
 
@@ -117,6 +107,11 @@ void pbCharacter::DrawThis() {
 void pbCharacter::SetPos(float X, float Y){
 	m_pMarionette->SetPosX(X);
 	m_pMarionette->SetPosY(Y);
+}
+
+void pbCharacter::SetVehicleTagData(TAGDATA& TagData) {
+	m_pVehicleDrawUnit->SetTextureTAG(TagData.Tag);
+	m_pVehicleDrawUnit->SetSize(TagData.fWidth, TagData.fHeight);
 }
 
 float* pbCharacter::GetPos() { return m_pMarionette->GetV2Pos(); }
@@ -152,12 +147,16 @@ void pbCharacter::Update(float fTime){
 		if( m_pMarionette->GetActionCondition() ) {
 			m_pMarionette->SelectMoveState(NONE);
 
-			pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+			if( pbStageValue::IsNextShopRoute())
+				pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_SELECT_1);
+			else
+				pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FORWARD);
 		}
 	}
 
 	m_pMarionette->MoveUpdate(fTime);
 
+//	m_fLifeRotate += fTime;
 
 /*	static float fPartOfLine, fWholeOfLine = 0.0f;
 
@@ -285,7 +284,13 @@ void pbCharacter::PlayGame_TouchFunc() {
 }
 //결과 화면 터치 함수
 void pbCharacter::Result_TouchFunc() {
+	pbStageValue::IncreaeStageLevel();
 	pbSceneManager::getInstance().GetCurrentScene()->GetStageTrigger()->ActivateIDState(pbCharacter::WALKOUT);
+}
+//샵 화면 터치 함수
+void pbCharacter::Shop_TouchFunc() {
+	pbSceneManager::getInstance().GetCurrentScene()->GetStageTrigger()->ActivateIDState(pbCharacter::WALKOUT);
+	pbStageValue::PrintLevelLog();
 }
 
 void pbCharacter::notify(){
@@ -316,7 +321,7 @@ void pbCharacter::notify(){
 		}
 }
 
-///////---------------------------------------------------------------------Touch---------------------------------------------------------------------------------------------//
+///////---------------------------------------------------------------------마리오네트 컨디션---------------------------------------------------------------------------------------------//
 bool pbCharacter::AppearedCondition(float* pV2Pos) {
 	if(pV2Pos[0] > GetInstance()->m_vConditionPos[0]) {
 		GetMarionette()->SetPosX(GetInstance()->m_vConditionPos[0]);

@@ -11,6 +11,7 @@
 #include "../nitroFrame/npObserver.h"
 #include "../nitroFrame/npTimer.h"
 #include "pbTypes.h"
+#include "pbStatusWeight.h"
 #include "pbStageValue.h"
 
 #include "Trigger/pbStageTrigger.h"
@@ -22,6 +23,7 @@
 #include "Scene/pbUI.h"
 #include "Scene/pbEffect.h"
 #include "Scene/ResultScene/pbResultViewer.h"
+#include "Scene/ShopScene/pbVehicle.h"
 #include "Scene/ShopScene/pbInventory.h"
 #include "Scene/ShopScene/pbGoldPouch.h"
 #include "Scene/ShopScene/pbItem.h"

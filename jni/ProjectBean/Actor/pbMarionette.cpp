@@ -95,6 +95,7 @@ void pbMarionette::ClearDataStore() {
 }
 
 void pbMarionette::MoveUpdate(float fTime) {
+	//m_bActionComplete = false;
 	if( !m_bUpdatePause ) {
 		if( m_pCurrentMover != NULL) {
 			m_fAccumulateTime += fTime;

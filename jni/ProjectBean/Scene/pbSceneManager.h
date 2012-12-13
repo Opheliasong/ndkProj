@@ -153,6 +153,7 @@ private:
 
 	pbSceneMap m_SceneStore;
 	pbSceneWrapper* m_pCurrentScene;
+
 };
 
 

@@ -15,10 +15,12 @@ public:
 	pbInventory();
 	~pbInventory();
 
-	void AddItemStatus(ItemCode Code);
-	void PlusItemCount(ItemCode Code, int Count);
+	void AddItem(ItemCode Code);
+
+	void SetMountedVehicle(ItemCode Code);
 
 	static int GetItemCodeValue(ItemCode Code);
+	ItemCode GetMountedItemCode() { return m_MountedCode;}
 
 	void DataTransferToStageValue();
 
@@ -27,8 +29,9 @@ public:
 
 	static pbInventory& GetInstance();
 private:
-	typedef std::map<ItemCode, int> StatusMap;
-	StatusMap m_StatusMap;
+	typedef std::map<ItemCode, int> ItemMap;
+	ItemMap m_ItemMap;
+	ItemCode m_MountedCode;
 };
 
 

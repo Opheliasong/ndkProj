@@ -19,8 +19,8 @@ public:
 	~pbShop();
 
 	void AddItem_Potion(float X, float Y, TAGDATA& ItemTagData, TAGDATA& DescriptionTagData, ItemCode Code, int Price);
-//	void AddItem_Vehicle(float X, float Y, screenplayTag Tag, float fWidth, float fHeight, int ItemCode);
-
+	void AddItem_Vehicle(float X, float Y, TAGDATA& ItemTagData, TAGDATA& DescriptionTagData, ItemCode Code, int Price);
+	void AddItem_Pass(float X, float Y, TAGDATA& ItemTagData, TAGDATA& DescriptionTagData, int Level, int Price);
 	void LoadData();
 	void ClearData();
 

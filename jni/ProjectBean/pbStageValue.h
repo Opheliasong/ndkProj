@@ -10,6 +10,11 @@
 
 #include "stdafx.h"
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////----------------------------------------------------		pbStageValue		------------------------------------------------------------------------------///////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// 스테이지에서 사용하는 종속된 변수의 묶음
+/// 아이템 가중치의 사용 : 플레이씬 로딩때마다 가중치 초기화 후, 아이템 개수를 세고 기체 능력치 적용을 반복한다
 
 class pbStageValue {
 public:
@@ -21,16 +26,9 @@ public:
 	inline static int GetScoreTotal() { return m_TotalScore;}
 	static int CalcScoreData();
 
-	//--스피드 감소 아이템 능력치--//
-	inline static int GetScoreWeight() { return m_ScoreWeight; }
-	static void SetScoreWeight(int ItemCount);
-
 	/////-----------라이프--------------////
 	static int CalcLifeData();
 	inline static int GetLifeTotal() { return m_iNumLife; }
-
-	//--라이프 아이템 능력치--//
-	static void SetLifeWeight(int ItemCount);
 
 	/////-----------스테이지--------------////
 	inline static float GetStageX() {	return m_fStageMoveX;	}
@@ -42,10 +40,6 @@ public:
 	inline static void SetStageMaxLength(float Length) { m_fMaxStageLength = Length; }
 	inline static void SetStageMoveSpeed(float Speed) { m_fStageMoveSpeed = Speed;	}
 
-	//--스피드 감소 아이템 능력치--//
-	inline static float GetSpeedWeight() { return m_fSpeedWeight; }
-	static void SetSpeedWeight(int ItemCount);
-
 	/////-----------피버게이지--------------////
 	inline static void FeverGaugeReset() {m_fTotalFeverGauge = 0;	m_bChangeFeverGauge = true;	}
 	inline static bool IsFeverGaugeMaximum() {return m_fTotalFeverGauge == (float)MAX_FEVERGAUGE;	}
@@ -53,9 +47,28 @@ public:
 	static void IncreaseFeverGauge(float Point);
 	static float GetFeverGauge();
 
-	//--피버 포인트 아이템 능력치--//
-	inline static float GetFeverPoint() { return m_fFeverPointWeight; }
-	static void SetFeverPoint(int ItemCount);
+
+	////--------------아이템 가중치----------------//
+	static void CalcLifeWeight(int ItemCount);
+	static void CalcItemScoreWeight(int ItemCount);
+	static void CalcItemSpeedWeight(int ItemCount);
+	static void CalcItemFeverPointWeight(int ItemCount);
+	static pbStatusWeights& GetStatusWeight() { return m_StatusWeight; }
+
+	static void PrintWeightLog();
+
+	/////-----------네비게이트--------------////
+	static bool IsNextShopRoute() { return m_ShopRoute;}
+	static int GetStageLevel() { return m_StageLevel; }
+	static void SetStageLevel(int Level);
+	static void IncreaeStageLevel();
+
+	static int GetShopLevel() { return m_ShopLevel; }
+	static void SetShopLevel(int Level);
+	static void IncreaeShopLevelForItemAction();
+
+	static void ResetShopRoute() { m_ShopRoute = false; }
+	static void PrintLevelLog();
 
 	enum {MAX_FEVERGAUGE = 100 };
 private:
@@ -63,7 +76,6 @@ private:
 	static int m_TotalScore;
 	static int m_GettingScore;
 
-	static int m_ScoreWeight;	 // 점수 가중치
 	/////-----------라이프--------------////
 	static bool m_bChangedLife;
 	static int m_iNumLife;
@@ -73,13 +85,19 @@ private:
 	static float m_fStageMoveSpeed;
 	static float m_fMaxStageLength;
 
-	static float m_fSpeedWeight;	 // 속도 가중치
 
 	/////-----------피버게이지--------------////
 	static float m_fTotalFeverGauge;
 	static bool m_bChangeFeverGauge;
 
-	static float m_fFeverPointWeight;	//피버포인트 가중치
+	////--------------아이템 가중치----------------//
+	static pbStatusWeights m_StatusWeight;
+
+	/////-----------네비게이트--------------////
+	static int m_StageLevel;
+	static int m_ShopLevel;
+	static bool m_ShopRoute;	// 상점가는 길
+
 };
 
 

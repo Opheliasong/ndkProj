@@ -74,6 +74,7 @@ void pbMainFrame::npShowIntro() {
 		pbComboManager::Create();
 
 		pbInventory::GetInstance().LoadData();
+		pbVehicle::GetInstance().LoadData();
 /*
 		pbGuideLineGenerator::Create();
 		pbNoteProcessor::Create();*/
@@ -102,36 +103,36 @@ void pbMainFrame::npShowIntro() {
 
 		//---------크리에이트 네비게이트 무버
 		pbSceneMover* newMover = new pbSceneMover(SCENESTATE::GAME_CREATE);
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_FORWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
 		//---------인트로 네비게이트 무버
 		newMover = new pbSceneMover(SCENESTATE::GAME_INTRO);
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_FORWARD, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
 		//---------샵 네비게이트 무버
 		newMover = new pbSceneMover(SCENESTATE::GAME_SHOP);
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
-		newMover->AddStateElement(SCENESTATE::ACTION_BACKWARD, SCENESTATE::GAME_INTRO, pIntroScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_FORWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_RECURSIVE, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
 		//---------플레이 네비게이트 무버
 		newMover = new pbSceneMover(SCENESTATE::GAME_PLAY);
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_RESULT, pResultScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_FORWARD, SCENESTATE::GAME_RESULT, pResultScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
 		//---------리절트 네비게이트 무버
 		newMover = new pbSceneMover(SCENESTATE::GAME_RESULT);
-		/*newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );*/
-		newMover->AddStateElement(SCENESTATE::ACTION_FOWARD, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
+		newMover->AddStateElement(SCENESTATE::ACTION_FORWARD, SCENESTATE::GAME_PLAY, pPlayScene->GetTag() );
+		//newMover->AddStateElement(SCENESTATE::ACTION_FORWARD, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
 		newMover->AddStateElement(SCENESTATE::ACTION_SELECT_1, SCENESTATE::GAME_SHOP, pShopScene->GetTag() );
 		pbSceneNavigator::GetInstance().AddSceneMover(newMover);
 
 		//-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-//
 
 
-		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FOWARD);
+		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FORWARD);
 
 		m_bFirstLoad = true;
 		LOGI("pbMainFrame::npShowIntro() Complete");
