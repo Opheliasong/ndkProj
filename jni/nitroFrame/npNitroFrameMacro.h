@@ -69,6 +69,7 @@ public: virtual varType get##funcName(void){return this->varName;};
 
 
 #define NP_IS_EMPTY(T) T==NULL
+#define NP_IS_NOT_EMPTY(T) T!=NULL
 
 
 

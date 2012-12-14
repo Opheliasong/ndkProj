@@ -223,8 +223,8 @@ void pbTouchableBackground::notify() {
 
 		if (x >= left && x <= right) {
 			if (y >= bottom && y <= top) {
-				m_bTouched = true;
-				LOGE("[DEBUG]pbTouchableBackground:: Touched");
+				//m_bTouched = true;
+				//LOGE("[DEBUG]pbTouchableBackground:: Touched");
 			}
 		}
 	}

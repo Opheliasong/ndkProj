@@ -20,6 +20,11 @@ public:
 	void notify();
 	void onTimeAlerts();
 	void Update(float fTime);
+	void ResetNoteState();
+
+	NP_DEFINE_PROPERTY(float, pressTime, PressTime);	//Touch Event가 발생 하였을 경우 증가하게 되는 PressTime 속성
+	NP_DEFINE_PROPERTY(bool, pressOn, PressOn);
+	NP_DEFINE_PROPERTY(float, RequirePressTouchTime, RequirePressTouchTime);
 };
 
 #endif /* PBLONGPRESSNOTES_H_ */

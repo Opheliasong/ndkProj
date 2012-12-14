@@ -37,8 +37,6 @@ typedef std::string texturePath;
 class npTextureGenerator{
 private:
 	char* apkRootPath;
-	AAssetManager* assetManager;
-	AAsset* asset;
 	zip* apkArchive;
 public :zip_file* apkZipFile;		//TODO png_zip_read()를 위해서 public으로 열어두었다. 이를 해결할 방법을 찾아야 하지 않을까?
 

@@ -206,7 +206,7 @@ void npTextureGenerator::Initializing(char* apkPath) {
         return;
         }
     //zip Files print LOG
-    LOGI("File %i : %s\n", i, name);
+    //LOGI("File %i : %s\n", i, name);
  	}
 }
 

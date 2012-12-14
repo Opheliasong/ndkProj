@@ -24,8 +24,6 @@ pbSceneMover::~pbSceneMover() {
 
 			delete pkernel;
 		}
-
-
 		SceneStateElementList::destroyList(m_pStateHeader);
 
 		LOGI("pbSceneMover Destroy Complete");
@@ -225,7 +223,6 @@ void pbPlaySceneWrapper::InitializeScene() {
 	createUI = pbUIProcessor::GetInstance()->AddScoreUI(195, 450, "ci", 119, 25, "run", 20, 35);
 	this->RegistToRenderList(createUI);
 
-
 /*	pbComboManager::GetInstance()->LoadData();
 	pbCharacter::GetInstance()->LoadData();
 	pbGuideLineGenerator::GetInstance()->LoadGuideLine("GuideLine.xml");
@@ -242,7 +239,6 @@ void pbPlaySceneWrapper::InitializeScene() {
 	pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(800, 100, 400, 50, 1.0f, "ci");
 	RegistToRenderList(pCreateBG);
 
-
 	LOGI("pbPlaySceneWrapper InitializeScene Complete");
 }
 
@@ -253,7 +249,9 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 		pbGlobalInGameVariable::fWorldX += pbGlobalInGameVariable::fWorldMoveX;
 
 		//float mesc = 1000.f * fTime;
+		nitroFrame::npTimer::getInstance().updateTime(fTime);
 		pbBackgroundProcessor::GetInstance().Update(fTime);
+		pbNoteProcessor::GetInstance()->Update(fTime);
 		pbUIProcessor::GetInstance()->Update(fTime);
 /*		nitroFrame::npTimer::updateTime(mesc);
 		pbNoteProcessor::GetInstance()->Update(fTime);
@@ -315,18 +313,18 @@ void pbIntroSceneWrapper::InitializeScene() {
 }
 
 void pbIntroSceneWrapper::UpdateScene(float fTime) {
-//	static float plusTime = 0;
+	static float plusTime = 0;
 
 	pbBackgroundProcessor::GetInstance().Update(fTime);
 
-/*	plusTime += fTime;
+	plusTime += fTime;
 
 	if (plusTime > 3.0f) {
 		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(
 				SCENESTATE::ACTION_FOWARD);
 		plusTime = 0;
 		LOGI("PLUSCHANGE");
-	}*/
+	}
 
 	if( m_IntroBG != NULL ) {
 		if( m_IntroBG->IsTouched() ) {

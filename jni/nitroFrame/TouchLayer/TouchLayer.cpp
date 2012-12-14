@@ -22,8 +22,8 @@ void TouchLayer::onTouchPoint(int x, int y, int touchFlag, int touchPoint) {
 	this->pointX = ((x / npRenderprocess::getInstance().getWidthRatio()));
 	this->pointY = ((y / npRenderprocess::getInstance().getHeightRatio()));
 
-	//[FIXLOG:11-24]: 1사분면 좌표로 변경
-	this->pointY = ( npRenderprocess::getInstance().getRenderHeight() - this->pointY );
+
+	//[FIXLOG:11-24]: 1사분면 좌표로 변경this->pointY = ( npRenderprocess::getInstance().getRenderHeight() - this->pointY );
 
 	/*
 	this->pointX = this->pointX-(npRenderprocess::getInstance().getRenderWidth()/2);
@@ -60,6 +60,8 @@ TouchLayer::TouchLayer():pointX(0),pointY(0),activePointer(0),touchFlag(0) {
 
 TouchLayer::~TouchLayer() {
 	//npLinkNode<iTouchObserver*>::remove(&this->RegistedList);
+	npLinkNode<iTouchObserver*>::destroyList(&this->RegistedList);
+	//npLinkNode<iTouchObserver*>::destroyList(&this->DeleteStack);
 }
 
 void TouchLayer::RegistedObserver(iTouchObserver* pointer) {
@@ -68,6 +70,7 @@ void TouchLayer::RegistedObserver(iTouchObserver* pointer) {
 
 void TouchLayer::RemovedObserver(iTouchObserver* pointer) {
 	npLinkNode<iTouchObserver*>::findDelete(pointer,&this->RegistedList);
+	//npLinkNode<iTouchObserver*>::addTail(pointer, &this->DeleteStack);
 }
 
 void TouchLayer::PausedObserver(iTouchObserver* pointer, unsigned int pauseMS) {

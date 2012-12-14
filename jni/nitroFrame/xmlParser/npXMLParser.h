@@ -10,11 +10,10 @@
 
 #include <jni.h>
 #include <string>
-#include "../include/tinyxml.h"
-#include <android/asset_manager.h>
-#include <android/asset_manager_jni.h>
-#include "../npDebugUtill.h"
+
 #include "../npNitroFrameMacro.h"
+#include "../npDebugUtill.h"
+#include "../include/tinyxml.h"
 #include "../include/zipint.h"
 #include "../include/zip.h"
 
@@ -50,7 +49,6 @@ protected:
 	//JNIEnv* env;
 	JavaVM* javaVm;
 	jobject* assetManager;
-	AAsset* assets;
 
 	//libzip Testing
 	zip* apkArchive;

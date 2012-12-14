@@ -10,23 +10,23 @@
 GLfloat npTextureRect::vertex[12] = {0,};
 
 npTextureRect::npTextureRect(){
-	this->vertex[0] = -1.0f;
-	this->vertex[1] =  1.0f;
+	this->vertex[0] = -0.5f;
+	this->vertex[1] =  0.5f;
 	this->vertex[2] = 0;
 
 	//왼쪽아래
-	this->vertex[3] = -1.0f;
-	this->vertex[4] = -1.0f;
+	this->vertex[3] = -0.5f;
+	this->vertex[4] = -0.5f;
 	this->vertex[5] = 0;
 
 	//오른쪽 위
-	this->vertex[6] = 1.0f;
-	this->vertex[7] = 1.0f;
+	this->vertex[6] = 0.5f;
+	this->vertex[7] = 0.5f;
 	this->vertex[8] = 0;
 
 	//오른쪽 아래
-	this->vertex[9] = 1.0f;
-	this->vertex[10] = -1.0f;
+	this->vertex[9] = 0.5f;
+	this->vertex[10] = -0.5f;
 	this->vertex[11] = 0;
 
 	LOGE("Call CTOR");
@@ -69,6 +69,7 @@ npTextureRect::npTextureRect(const npTextureRect& source){
 }
 
 npTextureRect::~npTextureRect(){
+	delete this->sprtie;
 }
 
 void npTextureRect::PreSettingDraw() {
@@ -78,8 +79,9 @@ void npTextureRect::PreSettingDraw() {
 void npTextureRect::DrawThis() {
 
 	glPushMatrix();
-	glVertexPointer(3, GL_FLOAT, 0,this->vertex);
-	glTranslatef(this->positionX, this->positionY , 0.f);
+	glVertexPointer(3, GL_FLOAT, 0,vertex);
+	glTranslatef(*this->positionX, *this->positionY , 0.f);
+	glRotatef(this->rotationAngle, this->rotationAxis.x, this->rotationAxis.y, this->rotationAxis.z);
 	glScalef(this->height, this->width, 1.0f);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glPopMatrix();
@@ -108,6 +110,50 @@ bool npTextureRect::SetTextureTAG(screenplayTag TAG) {
 	return true;
 }
 
+void npTextureRect::SetPosition(float* x, float* y) {
+	this->positionX = x;
+	this->positionY = y;
+}
+
+void npTextureRect::SetRotationByXAxis(float rotationAngle) {
+	this->rotationAngle = rotationAngle;
+	this->rotationAxis.x = 1.f;
+	this->rotationAxis.y = 0.f;
+	this->rotationAxis.z = 0.f;
+}
+
+
+
+void npTextureRect::SetRotationByYAxis(float rotationAngle) {
+	this->rotationAngle = rotationAngle;
+	this->rotationAxis.x = 0.f;
+	this->rotationAxis.y = 1.f;
+	this->rotationAxis.z = 0.f;
+}
+
+
+
+void npTextureRect::SetRotationByZAxis(float rotationAngle) {
+	this->rotationAngle = rotationAngle;
+	this->rotationAxis.x = 0.f;
+	this->rotationAxis.y = 0.f;
+	this->rotationAxis.z = 1.f;
+}
+
+
+
+void npTextureRect::SetRotation(float rotationAngle, float x, float y, float z) {
+	this->rotationAngle = rotationAngle;
+	this->rotationAxis.x = x;
+	this->rotationAxis.y = y;
+	this->rotationAxis.z = z;
+}
+
 sprite* npTextureRect::getSprite() {
 	return this->sprtie;
 }
+
+bool npTextureRect::IsFinish() {
+	return this->sprtie->IsFinish();
+}
+

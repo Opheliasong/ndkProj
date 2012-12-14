@@ -1,12 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <UI_Placement>
-	<UIDataHeader>
-		<UIData ID = "0"  X = "400" Y = "450" TAG_1 = "UI_BackPanel"		TAG_2 = "NULL">BackPanel</UIData>
-		<UIData ID = "1"  X = "25" 	Y = "450" TAG_1 = "UI_Menu"			TAG_2 = "NULL">Menu</UIData>
-		<UIData ID = "2"  X = "777" Y = "450" TAG_1 = "UI_Help"				TAG_2 = "NULL">Help</UIData>
-		<UIData ID = "3"  X = "585" Y = "447" TAG_1 = "UI_APGaugeText"	TAG_2 = "UI_APGauge">APGauge</UIData>
-		<UIData ID = "4"  X = "195" Y = "450" TAG_1 = "UI_ScoreText"		TAG_2 = "UI_Score">Score</UIData>
-	</UIDataHeader>
+
+    <UIDataHeader>
+
+        <UIData
+            ID="0"
+            TAG_1="UI_BackPanel"
+            TAG_2="NULL"
+            X="400"
+            Y="450" >
+BackPanel
+        </UIData>
+
+        <UIData
+            ID="1"
+            TAG_1="UI_Menu"
+            TAG_2="NULL"
+            X="25"
+            Y="450" >
+Menu
+        </UIData>
+
+        <UIData
+            ID="2"
+            TAG_1="UI_Help"
+            TAG_2="NULL"
+            X="777"
+            Y="450" >
+Help
+        </UIData>
+
+        <UIData
+            ID="3"
+            TAG_1="UI_APGaugeText"
+            TAG_2="UI_APGauge"
+            X="585"
+            Y="447" >
+APGauge
+        </UIData>
+
+        <UIData
+            ID="4"
+            TAG_1="UI_ScoreText"
+            TAG_2="UI_Score"
+            X="195"
+            Y="450" >
+Score
+        </UIData>
+    </UIDataHeader>
+
 </UI_Placement>
-           

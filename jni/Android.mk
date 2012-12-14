@@ -59,23 +59,37 @@ npNativeEvent.cpp\
 /nitroFrame/Drawable/npTextureRect.cpp\
 /nitroFrame/TouchLayer/TouchObserver.cpp\
 /nitroFrame/TouchLayer/TouchLayer.cpp\
-/ProjectBean/pbDrawUnit.cpp\
-/ProjectBean/pbMainFrame.cpp\
+/nitroFrame/Timer/npTimer.cpp\
+/nitroFrame/Timer/npTimerObserver.cpp\
+/ProjectBean/Notes/pbNoteElement.cpp\
+/ProjectBean/Notes/pbTargetingNotes.cpp\
+/ProjectBean/Notes/pbTabNotes.cpp\
+/ProjectBean/Notes/pbDTabNotes.cpp\
+/ProjectBean/Notes/pbLongPressNotes.cpp\
+/ProjectBean/Notes/pbNinjaNotes.cpp\
+/ProjectBean/Notes/pbNoteProcessor.cpp\
 /ProjectBean/pbGlobalVariable.cpp\
-/ProjectBean/pbSceneWrapper.cpp\
+/ProjectBean/pbDrawUnit.cpp\
 /ProjectBean/pbBackground.cpp\
 /ProjectBean/pbUI.cpp\
+/ProjectBean/pbSceneWrapper.cpp\
+/ProjectBean/pbMainFrame.cpp\
+#/ProjectBean/pbCharacter.cpp\
 #/ProjectBean/pbBoss.cpp\
-/ProjectBean/pbCharacter.cpp\
 /ProjectBean/pbEffect.cpp\
 /ProjectBean/pbGuideLine.cpp\
 /ProjectBean/pbNote.cpp\
 /ProjectBean/pbNoteProcessor.cpp\
 
-
-LOCAL_LDLIBS:= -L$(SYSROOT)usr/lib -llog -lEGL -lGLESv1_CM -landroid
+USER_SYSPATH:= /Users/nitropig/Documents/SDKs/android-ndk-r8/platforms/android-8/arch-arm/usr
+#LOCAL_LDLIBS:= -L$(SYSROOT)usr/lib -llog -lEGL -lGLESv1_CM -landroid
+LOCAL_LDLIBS:= -L$(SYSROOT)usr/lib -llog -lGLESv1_CM -landroid
 LOCAL_LDLIBS+=-L$(SYSROOT)/usr/lib -ldl
 LOCAL_LDLIBS+=-L$(SYSROOT)/usr/lib -lz
+#LOCAL_LDILIBS:= $(USER_SYSPATH)/lib -llog -lEGL -lGLESv1_CM -landroid
+#LOCAL_LDLIBS+=-L$(USER_SYSPATH)/lib -ldl
+#LOCAL_LDLIBS+=-L$(USER_SYSPATH)/lib -lz
+
 LOCAL_STATIC_LIBRARIES += tinyXml	libpng libstdc++ libzip
-LOCAL_EXPORT_LDLIBS := $(LOCAL_PATH)/libs/$(TARGET_ARCH_ABI)/libsupc++.a
+#LOCAL_EXPORT_LDLIBS := $(LOCAL_PATH)/libs/$(TARGET_ARCH_ABI)/libsupc++.a
 include $(BUILD_SHARED_LIBRARY)

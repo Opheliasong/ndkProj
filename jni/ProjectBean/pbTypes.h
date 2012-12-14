@@ -8,7 +8,6 @@
 #ifndef PBTYPES_H_
 #define PBTYPES_H_
 
-namespace projectBean{
 /*	namespace TOUCHSTATUS{
 		typedef enum {TOUCHNONE=0,TAPDOWN=1,TAPUP=2,TAPMOVE=3,TOUCHMODEEND=4}TYPE;
 	}*/
@@ -34,13 +33,7 @@ namespace TOUCHFLAGS{
 		}TYPE;
 	}
 	namespace NOTEGROWSTATE{
-		//��Ʈ�� ���� ����
-		//��Ʈ�� ���� ���´� 4���� ���¸� ������ �� ���¿� ��� �Ǵ��� �ϰ� �ȴ�.
-		/*NOTEBABY : ���� �ǵ帮�� �ȵǴ� ��Ʈ. = Fail
-		 * NOTEGROWUP : �������� ��Ʈ = FAST
-		 * NOTEADULT : ������ �Ϸ�� ��� �� ��Ʈ = GREAT
-		 * NOTEOLDER: ������ ���� ��ȭ�Ǵ� ��Ʈ = SLOW
-		 */
+		//노트의 성장 상태를 구분하는 enum
 		typedef enum {
 			NOTEBABY = 1000, NOTEGROWUP, NOTEADULT, NOTEOLDER
 		}TYPE;
@@ -62,6 +55,5 @@ namespace TOUCHFLAGS{
 		typedef enum {LOAD_NONE = 100, LOAD_INTRO ,LOAD_MAINMENU, LOAD_PLAY, }LOAD;
 		typedef enum {ACTION_NONE = 200, ACTION_FOWARD, ACTION_BACKWARD, ACTION_SELECT_1, ACTION_SELECT_2, ACTION_SELECT_3,	}ACTION;
 	}
-}
 
 #endif /* PBTYPES_H_ */

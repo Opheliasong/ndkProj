@@ -21,7 +21,7 @@ sprite* npFactoryDAO::getSpriteByTAG(screenplayTag tag) {
 		sprite* retSprite = new sprite;
 		retSprite->screenplay = &iter->second;
 		retSprite->currentScreenplay = retSprite->screenplay;
-		LOGI("Done Copy Sprite Node");
+		//LOGI("Done Copy Sprite Node");
 
 		return retSprite;
 	}else{

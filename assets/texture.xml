@@ -1,3 +1,16 @@
-<texture filename="texture.png" width="64" height="64">
-	<sprite tag="ci" x="0" y="0" width="64" height="64" transformpoint="center">texture.png</sprite>
+<texture
+    filename="texture.png"
+    height="64"
+    width="64" >
+
+    <sprite
+        height="64"
+        tag="ci"
+        transformpoint="center"
+        width="64"
+        x="0"
+        y="0" >
+texture.png
+    </sprite>
+
 </texture>

@@ -28,7 +28,7 @@ public:
 	inline bool IsInRect(float x, float y);
 };
 
-//===============Touch Area ����========================
+//===============Touch Area 占쏙옙占쏙옙========================
 
 class pbTouchArea {
 protected:
@@ -42,7 +42,7 @@ public:
 	virtual ~pbTouchArea();
 
 	bool InRect(float x, float y);
-	void setTouchArea(float bodyWidth, float bodyHeight);		// ���� : ��ġ�� leftTop �����̴���� Center �������� ����
+	void setTouchArea(float bodyWidth, float bodyHeight);		// 占쏙옙占쏙옙 : 占쏙옙치占쏙옙 leftTop 占쏙옙占쏙옙占싱댐옙占쏙옙占�Center 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
 	void movePositon(float x, float y);
 
 	void LogPrintRect();
@@ -64,51 +64,50 @@ public:
 };
 
 
-//===============Note �� ����========================
-class pbNote: public npObserver {
+//===============Note 占쏙옙 占쏙옙占쏙옙========================
+class pbNote: public iTouchObserver, npDrawable {
 protected:
-	pbTouchArea* m_TouchArea; //Note �� ��ġ �� ������ ���ϴ� TouchArea
+	pbTouchArea* m_TouchArea; //Note 占쏙옙 占쏙옙치 占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占싹댐옙 TouchArea
 
 	float m_fAlertTime;
-	NOTEGROWSTATE::TYPE m_NoteGrowState;		//��Ʈ�� �����ϴ� �Ϳ� �� ����
+	NOTEGROWSTATE::TYPE m_NoteGrowState;		//占쏙옙트占쏙옙 占쏙옙占쏙옙占싹댐옙 占싶울옙 占쏙옙 占쏙옙占쏙옙
 
 	NOTETYPE::TYPE m_Types;
 	NOTEJUDGEMENT::TYPE m_NoteJudgement;
 
-	NoteState::STATE m_State;				// ���� : 8-24
+	NoteState::STATE m_State;				// 占쏙옙占쏙옙 : 8-24
 
-	COLOR_RGBA m_Color;			//�߰� : 8-24
-	GLuint m_BodyVertexIndex; //�ٵ��� ���ؽ����� index
-	GLuint m_BodyUVIndex; //�ٵ��� UV ���� index
+	COLOR_RGBA m_Color;			//占쌩곤옙 : 8-24
+	GLuint m_BodyVertexIndex; //占쌕듸옙占쏙옙 占쏙옙占쌔쏙옙占쏙옙占쏙옙 index
+	GLuint m_BodyUVIndex; //占쌕듸옙占쏙옙 UV 占쏙옙占쏙옙 index
 
-	COLOR_RGBA m_EffectColor; // �߰� : 8-29
+	COLOR_RGBA m_EffectColor; // 占쌩곤옙 : 8-29
 	GLuint m_EffectVertexIndex;
-	GLuint m_EffectUVIndex; //����Ʈ���� UV ���� index
+	GLuint m_EffectUVIndex; //占쏙옙占쏙옙트占쏙옙占쏙옙 UV 占쏙옙占쏙옙 index
 	float m_fEffectScale;
 	float m_fEffectAngle;
 
-	float m_fAnimationTime;	//- + 0 ���� ���������� �Ѵ�. �߰� : 8-29
-	float m_fAnimationPercent;	// �߰� : 8-29
+	float m_fAnimationTime;	//- + 0 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙 占싼댐옙. 占쌩곤옙 : 8-29
+	float m_fAnimationPercent;	// 占쌩곤옙 : 8-29
 
 	int m_ID;
-	float m_PositionX; //Note�� ��ġ�� x
-	float m_PositionY; //Note�� ��ġ�� y
+	float m_PositionX; //Note占쏙옙 占쏙옙치占쏙옙 x
+	float m_PositionY; //Note占쏙옙 占쏙옙치占쏙옙 y
 
-	bool m_bEndPhase;				//�߰� : 8-24
-
+	bool m_bEndPhase;				//占쌩곤옙 : 8-24
 	bool m_TargetOnSwitch;
 
 public:
 	int m_RentalIndex;
 
 protected:
-	//Touch ����Ȯ�� �Լ�
+	//Touch 占쏙옙占쏙옙확占쏙옙 占쌉쇽옙
 	virtual bool CheckingTouchOn(int x, int y);
 	virtual inline void BindColor() { glColor4f(m_Color.R,m_Color.G, m_Color.B, m_Color.A); }
 	virtual inline void BindEffectColor() { glColor4f(m_EffectColor.R,m_EffectColor.G, m_EffectColor.B, m_EffectColor.A); }
 
 public:
-	//--------�⺻ �Լ� ------------------------//
+	//--------占썩본 占쌉쇽옙 ------------------------//
 	pbNote();
 	pbNote(int ID, unsigned int VertexIndex, int width, int height,
 			unsigned int UvIndex, int x, int y);
@@ -122,14 +121,14 @@ public:
 	virtual void Draw() {};
 	virtual void Update(float fTime) {};
 
-	//---------observer ��� �Լ� ------------------------//
+	//---------observer 占쏙옙占�占쌉쇽옙 ------------------------//
 	virtual void notify();
 	virtual void notify(int x, int y, TOUCHSTATUS::TYPE Touchstatus);
 	virtual void notify(TOUCHSTATUS::TYPE touchStatus);
 	virtual void wakeUpNotify();
 	virtual float resetWakeTime();
 
-	//-----------���� �Լ� ------------------------//
+	//-----------占쏙옙占쏙옙 占쌉쇽옙 ------------------------//
 	virtual void setNotePosition(float x, float y);
 	inline float GetPosX() {return m_PositionX;}
 	inline float GetPosY() {return m_PositionY;}
@@ -151,8 +150,8 @@ public:
 
 	virtual inline NOTEJUDGEMENT::TYPE GetNoteJudge() { return m_NoteJudgement; }
 	virtual inline void SetNoteJudge(NOTEJUDGEMENT::TYPE NoteJudge) { m_NoteJudgement = NoteJudge; }
-	//---------TouchArea ��� �Լ� ------------------------//
-	virtual void setTouchWidthAndHeight(int width, int height);	//���� : ���� ���ؽ��� ����ϱ⿡ ��ġ �������� ��谡�־� Touch�� �����ϴ� �Լ������� ����8-27
+	//---------TouchArea 占쏙옙占�占쌉쇽옙 ------------------------//
+	virtual void setTouchWidthAndHeight(int width, int height);	//占쏙옙占쏙옙 : 占쏙옙占쏙옙 占쏙옙占쌔쏙옙占쏙옙 占쏙옙占쏙옙歐藪�占쏙옙치 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙瘟∽옙羚占�Touch占쏙옙 占쏙옙占쏙옙占싹댐옙 占쌉쇽옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙8-27
 	virtual inline int getBodyHeight() {
 		return m_TouchArea->getBodyHeight();
 	}
@@ -222,9 +221,9 @@ public:
 
 	enum { ANICOUNT = 8};
 private:
-	npV2Vector m_vSecondNoteCurrentPos;			//�ι�° ��Ʈ ������ġ
-	npV2Vector m_vSecondNoteDestDistance;			//�ι�° ��Ʈ �̵���ġ
-	int m_iNoteTouchCount;						//�ι��� ��Ʈ ��� ���� ��ġ ī��Ʈ
+	npV2Vector m_vSecondNoteCurrentPos;			//占싸뱄옙째 占쏙옙트 占쏙옙占쏙옙占쏙옙치
+	npV2Vector m_vSecondNoteDestDistance;			//占싸뱄옙째 占쏙옙트 占싱듸옙占쏙옙치
+	int m_iNoteTouchCount;						//占싸뱄옙占쏙옙 占쏙옙트 占쏙옙占쏘를 占쏙옙占쏙옙 占쏙옙치 카占쏙옙트
 	float m_fSecondNoteAlpha;
 	float m_fSecondNoteTime;
 
@@ -258,10 +257,10 @@ public:
 	void Update(float fTime);
 
 private:
-	float m_fActionPointDistance;			//�ص������ ���۵Ǵ� ����
+	float m_fActionPointDistance;			//占쌔듸옙占쏙옙占쏙옙占쏘가 占쏙옙占쌜되댐옙 占쏙옙占쏙옙
 	float m_fActionPointPosY;
-	float m_fPreVisionPosX;					//�������־���� ���� ǥ���ϴ� ��ġ
-	float m_fDestinationPosY;			//���������� ���ԵǴ� ��
+	float m_fPreVisionPosX;					//占쏙옙占쏙옙占쏙옙占쌍억옙占쏙옙占�占쏙옙占쏙옙 표占쏙옙占싹댐옙 占쏙옙치
+	float m_fDestinationPosY;			//占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쌉되댐옙 占쏙옙
 
 	float m_fPressPercent;
 	float m_fPressTime;
@@ -272,8 +271,8 @@ private:
 
 	float m_fRotate;
 
-	GLuint m_DestinationVertIndex; //�������� ���ؽ����� index
-	GLuint m_DestinationUVIndex; //�������� UV ���� index
+	GLuint m_DestinationVertIndex; //占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쌔쏙옙占쏙옙占쏙옙 index
+	GLuint m_DestinationUVIndex; //占쏙옙占쏙옙占쏙옙占쏙옙 UV 占쏙옙占쏙옙 index
 };
 
 
@@ -300,8 +299,6 @@ public:
 private:
 	GLuint m_AniUVStartIndex;
 	GLuint m_AniUVEndIndex;
-
-
 };
 
 };

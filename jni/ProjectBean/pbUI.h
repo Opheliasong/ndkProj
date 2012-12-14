@@ -1,7 +1,11 @@
 #ifndef _UI_H
 #define _UI_H
 
-#include "stdafx.h"
+//#include "stdafx.h"
+#include "pbTypes.h"
+#include "../nitroFrame/Drawable/npDrawable.h"
+#include "pbDrawUnit.h"
+#include "pbGlobalVariable.h"
 
 using namespace projectBean;
 

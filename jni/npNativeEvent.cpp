@@ -33,6 +33,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNI
 	LOGE("Create & Initialize Framework");
 	nitroFrame::pbMainFrame::GetInstance()->npGameCreate(env,str);
 	npRenderprocess::getInstance().setDeviceResolution(w,h);
+	LOGE("Device Width : %d / Device Height : %d", w,h);
 	//npRenderprocess::getInstance().setRenderingResolution(480,800);
 	npRenderprocess::getInstance().setRenderingResolution(800,480);
 

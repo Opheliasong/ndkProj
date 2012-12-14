@@ -5,6 +5,7 @@
  *      Author: NitroPigSoft02
  */
 #include "pbMainFrame.h"
+#include "Notes/pbNoteProcessor.h"
 namespace nitroFrame{
 pbMainFrame* pbMainFrame::Instance = NULL;
 
@@ -65,11 +66,12 @@ void pbMainFrame::npShowIntro() {
 																	0.0f,1.0f,0.0f);
 		//XMLParsingBufferCreater::GetInstance().SetArchive(apkPath);
 		pbUIProcessor::Create();
+//		pbCharacter::Create();
 /*
 		pbEffectProcess::Create();
 		pbGuideLineGenerator::Create();
 		pbComboManager::Create();
-		pbCharacter::Create();
+
 		pbBoss::Create();
 
 		pbNoteProcessor::Create();*/
@@ -77,6 +79,10 @@ void pbMainFrame::npShowIntro() {
 		//FIXLOG[10-10] : 초기화는 공용 오브젝트만 초기화, 다른 초기화는 게임스테이트에 따라 다르게 초기화 한다
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
+
+		//노트 Process 관련 시작
+		pbNoteProcessor::Create();
+		LOGE("Craete Done Note Processor");
 
 		//-------------------------------------------------씬 관련 초기화-------------------------------------------------------------//
 		//---------씬 래퍼 세팅-----------------//
@@ -136,14 +142,15 @@ void pbMainFrame::npGameLoop() {
 	count++;
 	LOGfloatString("FPS:", m_FPS/(float)count);
 #endif
-
 	switch(m_GameStates){
 		case GAMECREATE:{
 			npShowIntro();
+			break;
 		}
 		case GAMEUPDATE:{
+			//nitroFrame::npTimer::getInstance().updateTime(m_timeDelta);
 			npGameUpdate();
-//			LOGE("UPdate");
+			break;
 		}
 	}
 
@@ -152,22 +159,16 @@ void pbMainFrame::npGameLoop() {
 
 void pbMainFrame::npGameDestroy() {
 	pbUIProcessor::Release();
-
+	pbNoteProcessor::Release();
+//	pbCharacter::Release();
 /*	pbNoteProcessor::Release();
 	pbBoss::Release();
-	pbCharacter::Release();
+
 	pbGuideLineGenerator::Release();
 
 	pbEffectProcess::Release();
 	pbComboManager::Release();
-	pbBackgroundProcessor::Release();
-
-	pbUserData::Release();
-	nitroFrame::npTimer::release();
-	pbDataStorage::release();
-	pbTouchLayer::Release();
-	pbRenderProcess::Release();
-	npAudioSystem::Release();*/
+*/
 
 	delete Instance;
 
@@ -175,11 +176,13 @@ void pbMainFrame::npGameDestroy() {
 }
 
 void pbMainFrame::npGameUpdate() {
+
 	if( pbSceneNavigator::GetInstance().IsReadyToNextScene()) {
 		pbSceneNavigator::GetInstance().MoveScene();
 	}
 
 	pbSceneManager::getInstance().Update(m_timeDelta);
+	//pbNoteProcessor::GetInstance()->Update(m_timeDelta);
 }
 
 void pbMainFrame::npGamePaused() {
@@ -203,6 +206,7 @@ void pbMainFrame::npGameDisplay() {
 
 	glPushMatrix();
 	pbSceneManager::getInstance().Draw();
+	pbNoteProcessor::GetInstance()->RenderingAll();
 	glPopMatrix();
 
 

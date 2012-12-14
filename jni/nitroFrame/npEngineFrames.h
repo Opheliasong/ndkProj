@@ -14,8 +14,8 @@
 #include <time.h>
 #include <math.h>
 #include <jni.h>
-#include <android/asset_manager.h>
-#include <android/asset_manager_jni.h>
+//#include <android/asset_manager.h>
+//#include <android/asset_manager_jni.h>
 #include "NitroFrame.h"
 #include "npNitroFrameMacro.h"
 #include "Render/npContainerDAO.h"
@@ -78,7 +78,7 @@ protected:
 	JavaVM* javaVm;
 	NP_DEFINE_PROPERTY(JNIEnv*, m_env, Env)		//env 객체
 	NP_DEFINE_PROPERTY(jobject, m_AssetManager, AssetManager) //android AssetManager
-	NP_DEFINE_PROPERTY(AAsset*, m_Asset, Assets)	//Android Asset 객체
+	//NP_DEFINE_PROPERTY(AAsset*, m_Asset, Assets)	//Android Asset 객체
 	char* apkPath;
 
 	float m_bFirstLoad; // 추가 : 재로딩 & 메모리 누수 방지
@@ -87,7 +87,7 @@ public:
 	GAMESTATE m_GameStates;
 
 	npEngineFrame(const char* apkPath);
-	protected:	npEngineFrame():m_env(0),m_FPS(0),m_beforeTime(0),m_timeDelta(0),m_GameStates(GAMECREATE), m_bFirstLoad(true),m_AssetManager(NULL),m_Asset(NULL){}
+	protected:	npEngineFrame():m_env(0),m_FPS(0),m_beforeTime(0),m_timeDelta(0),m_GameStates(GAMECREATE), m_bFirstLoad(true),m_AssetManager(NULL){}
 	virtual ~npEngineFrame(){};
 
 	//기본 Frame 함수들

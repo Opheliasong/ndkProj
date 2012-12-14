@@ -1,10 +1,4 @@
 #include "pbCharacter.h"
-#include "pbDataStorage.h"
-#include "pbGlobalVariable.h"
-#include "pbRenderProcess.h"
-#include "npAudioSystem.h"
-#include "gluLookAt.h"
-
 
 using namespace projectBean;
 
@@ -73,8 +67,8 @@ void pbCharacter::Create(){
 }
 
 void pbCharacter::LoadData() {
-	pbRenderProcess::RegistRenderCharacter(this);
-	pbTouchLayer::registerObserver(this);
+//	pbRenderProcess::RegistRenderCharacter(this);
+//	pbTouchLayer::registerObserver(this);
 
 	SetVertexIndex(5 ,6, 1);
 	SetUVIndex(21, 22, 19);
@@ -237,9 +231,9 @@ void pbCharacter::FeverEffectOn() {
 	m_fFeverEffectDistance = 0.0f;
 	m_fFeverDestDistance = FEVER_DISTANCE_EXPLOSION;
 
-	if( pbBoss::GetInstance()->IsBattlePhase() )
+/*	if( pbBoss::GetInstance()->IsBattlePhase() )
 		pbEffectProcess::GetInstance()->AddHomingMissileEffect(m_vBodyPos[0], m_vBodyPos[1], pbBoss::GetMarionette()->GetV2Pos()[0], pbBoss::GetMarionette()->GetV2Pos()[1], 1 , 2.0f ,
-				pbComboManager::GetInstance()->GetFever()*10.0f, &(pbBoss::DecreaseHP));
+				pbComboManager::GetInstance()->GetFever()*10.0f, &(pbBoss::DecreaseHP));*/
 }
 
 void pbCharacter::FeverEffectReady() {
@@ -268,9 +262,8 @@ void pbCharacter::FeverEffectCancle() {
 }
 
 void pbCharacter::ClearDataStore() {
-		pbRenderProcess::RemoveRenderCharacter();
-		pbTouchLayer::removeObserver(this);
-		LOGI("pbCharacter::ClearDataStore");
+	pbTouchLayer::removeObserver(this);
+	LOGI("pbCharacter::ClearDataStore");
 }
 
 void pbCharacter::Release(){
@@ -304,7 +297,7 @@ void pbCharacter::notify(){
 //--------------------------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------�޺� �Ŵ���------------------------------------------------------------------//
 //--------------------------------------------------------------------------------------------------------------------------------------//
-pbComboManager* pbComboManager::SingleObject = NULL;
+/*pbComboManager* pbComboManager::SingleObject = NULL;
 
 pbComboManager::pbComboManager(){
 	SingleObject = NULL;
@@ -335,11 +328,11 @@ void pbComboManager::Create() {
 void pbComboManager::LoadData() {
 	DataReset();
 
-/*	//SetVertexIndex(18);
+	//SetVertexIndex(18);
 	GetBaseDrawUnit()->SetSizeWH(213,43);
 	GetBaseDrawUnit()->SetUVIndex(45);
 	GetBaseDrawUnit()->SetV2Pos(445, 400);
-	pbRenderProcess::RegistRenderUI(this);*/
+	pbRenderProcess::RegistRenderUI(this);
 
 }
 
@@ -374,18 +367,18 @@ void pbComboManager::SetVertexIndex(GLuint BodyIndex)
 
 void pbComboManager::SetUVIndex(GLuint StartNumberUVIndex)
 {
-/*	for(int i = 0; i < NUMBERING; i++)
+	for(int i = 0; i < NUMBERING; i++)
 	{
 		m_NumberUVIndex[i] = (StartNumberUVIndex + 2) + i;
 		m_FeverNumberUVIndex[i] = (StartNumberUVIndex + 2 + 10) +i;
 	}
 
 //	m_BodyUVIndex = StartNumberUVIndex;
-	m_FeverBodyUVIndex = StartNumberUVIndex + 1;*/
+	m_FeverBodyUVIndex = StartNumberUVIndex + 1;
 }
 
 void pbComboManager::Draw() {
-/*	glPushMatrix();
+	glPushMatrix();
 	glTranslatef(m_vPos[0], m_vPos[1], 0.0f);
 	//�޺� �ؽ�Ʈ
 		glPushMatrix();
@@ -414,7 +407,7 @@ void pbComboManager::Draw() {
 
 			count--;
 		}
-	glPopMatrix();*/
+	glPopMatrix();
 }
 
 void pbComboManager::Update(float fTime) {
@@ -519,5 +512,5 @@ void pbComboManager::Release() {
 		LOGI("pbComboManager Release");
 	}
 
-}
+}*/
 

@@ -35,7 +35,6 @@ void pbDTabNotes::PreSettingDraw() {
 }
 
 void pbDTabNotes::DrawThis() {
-	//	LOGE("DTab) DrawThis");
 
 	if(!m_bEndPhase){
 		//1-1) Body Sprite Rendeirng
@@ -67,6 +66,7 @@ void pbDTabNotes::DrawThis() {
 }
 
 void pbDTabNotes::notify() {
+
 	//1) 우선 Note의 너비와 높이 위치를 가지고 현재 터치 포인트 좌표가 노트 안에 있는지 확인 해야 한다.
 	float left = this->positionX - this->noteWidth/2;
 	float right = this->positionX + this->noteWidth/2;

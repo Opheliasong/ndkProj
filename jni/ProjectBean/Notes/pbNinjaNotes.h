@@ -20,6 +20,12 @@ public:
 	void notify();
 	void onTimeAlerts();
 	void Update(float fTime);
+	void ResetNoteState();
+
+	NP_DEFINE_PROPERTY(int, avoidPoints, AvoidPoint);
+protected:
+	bool DoAvoid;
+
 };
 
 #endif /* PBNINJANOTES_H_ */

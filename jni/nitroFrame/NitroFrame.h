@@ -8,7 +8,7 @@
 #ifndef NPNITROFRAME_H_
 #define NPNITROFRAME_H_
 
-#include <stddef.h.>
+//#include <stddef.h.>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +27,7 @@
 #include "gluLookAt.h"
 #include "npEngineFrames.h"
 #include "npAudioSystem.h"
+#include "npNitroFrameMacro.h"
 
 //XML Parsing 관련
 #include "xmlParser/npXMLParser.h"

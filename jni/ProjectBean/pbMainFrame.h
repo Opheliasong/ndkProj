@@ -8,7 +8,11 @@
 #ifndef PBMAINFRAME_H_
 #define PBMAINFRAME_H_
 
-#include "stdafx.h"
+//#include "stdafx.h"
+#include "pbUI.h"
+#include "pbSceneWrapper.h"
+#include "pbBackground.h"
+#include "Notes/pbNoteProcessor.h"
 
 namespace nitroFrame{
 class pbMainFrame :public npEngineFrame{

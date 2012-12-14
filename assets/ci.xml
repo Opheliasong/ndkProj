@@ -1,3 +1,16 @@
-<texture filename="ci_black.png" width="512" height="512">
-	<sprite tag="ci" x="0" y="0" width="512" height="512" transformpoint="center">ci_black.png</sprite>
+<texture
+    filename="ci_black.png"
+    height="512"
+    width="512" >
+
+    <sprite
+        height="512"
+        tag="ci"
+        transformpoint="center"
+        width="512"
+        x="0"
+        y="0" >
+ci_black.png
+    </sprite>
+
 </texture>

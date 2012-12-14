@@ -98,16 +98,16 @@ void npXMLParser::CloseAssetsAndBuffer(char* buffer) {
 	if(buffer != NULL)
 		delete buffer;
 
-	AAsset_close(this->assets);
+	//AAsset_close(this->assets);
 
-	this->assets = NULL;
+	//this->assets = NULL;
 }
 
-npXMLParser::npXMLParser(JavaVM* javaVM, jobject* aAssetManager):javaVm(javaVM),assetManager(aAssetManager),assets(NULL),xmlTextBuffer(NULL) {
+npXMLParser::npXMLParser(JavaVM* javaVM, jobject* aAssetManager):javaVm(javaVM),assetManager(aAssetManager),xmlTextBuffer(NULL) {
 
 }
 
-npXMLParser::npXMLParser():javaVm(NULL),assetManager(NULL),assets(NULL),xmlTextBuffer(NULL){
+npXMLParser::npXMLParser():javaVm(NULL),assetManager(NULL),xmlTextBuffer(NULL){
 
 }
 

@@ -8,7 +8,9 @@
 #ifndef PBDRAWUNIT_H_
 #define PBDRAWUNIT_H_
 
-#include "stdafx.h"
+//#include "stdafx.h"
+#include "../nitroFrame/Drawable/npDrawable.h"
+#include "../nitroFrame/Render/Sprite.h"
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////------------------------------------------------------ IDraw ------------------------------------------------------------------------------///////
@@ -69,12 +71,27 @@ public:
 	NP_DEFINE_PROPERTY(float, m_Height, Height);
 
 	void SetSize(float width, float Height);
+
+	//회전 함수
+	void SetRotationByXAxis(float rotationAngle);
+	void SetRotationByYAxis(float rotationAngle);
+	void SetRotationByZAxis(float rotationAngle);
+	void SetRotation(float rotationAngle, float x, float y, float z);
+
 	bool SetTextureTAG(screenplayTag TAG);
 	sprite* getSprite();
 protected:
 	static GLfloat vertex[12];
 	sprite* sprtie;
 	screenplayTag tag;
+
+	float rotationAngle;
+	struct RotationAxis{
+		float x;
+		float y;
+		float z;
+	};
+	RotationAxis rotationAxis;
 };
 
 #endif /* PBDRAWUNIT_H_ */

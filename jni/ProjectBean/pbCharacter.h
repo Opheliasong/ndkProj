@@ -80,8 +80,8 @@ private:
 
 
 //------------------------------------------�޺� �Ŵ���------------------------------------------------------//
-
-class pbComboManager : public pbUI_Untouchable {
+/*
+class pbComboManager : public pbBasicUI {
 public:
 	pbComboManager();
 	~pbComboManager();
@@ -131,7 +131,7 @@ private:
 	GLuint m_NumberVertexIndex;
 
 
-};
+};*/
 
 
 

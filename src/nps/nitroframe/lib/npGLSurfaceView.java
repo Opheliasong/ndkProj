@@ -91,6 +91,8 @@ public class npGLSurfaceView extends GLSurfaceView {
 			Display display = ((WindowManager)m_Context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 			m_Width = display.getWidth();
 			m_Height = display.getHeight();
+			Log.e("","display Width : "+display.getWidth());
+			Log.e("","display height : "+display.getHeight());
 		}catch(Exception e){
 			Log.e("GLView", "GLView CTOR Exception: "+e.toString());
 		}

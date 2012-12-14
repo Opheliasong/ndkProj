@@ -212,23 +212,37 @@ void pbNoteDropper::onTimeAlerts() {
 //		pbNoteProcessor::GetInstance()->AddLongNote(900, PosY, fSecondValueX, fSecondValueY);
 		//LOGE("Add Long Notes");
 
-		pbDTabNotes* newOne = m_pDoubleTapNoteRentalUnit->RentalMemory();
-		newOne->ResetNoteState();
-		newOne->setNotePosition(400, PosY);
-		newOne->setTargetMarkSize(65.f,65.f);
-		newOne->SetOnTargeting();
-
-		pbNoteProcessor::GetInstance()->AddNotes(newOne);
+//		pbDTabNotes* newOne = m_pDoubleTapNoteRentalUnit->RentalMemory();
+//		newOne->ResetNoteState();
+//		newOne->setNotePosition(400, PosY);
+//		newOne->setTargetMarkSize(65.f,65.f);
+//		newOne->SetOnTargeting();
+//
+//		pbNoteProcessor::GetInstance()->AddNotes(newOne);
 	}
 	else if(type == 2 ) {
 //		m_fGenerateTime =  800;
 //		pbNoteProcessor::GetInstance()->AddTargetingNote(900, PosY);
 		//LOGE("Add Dtab Note");
+//		pbLongPressNotes* newOne = m_pLongNoteRentalUnit->RentalMemory();
+//		newOne->ResetNoteState();
+//		newOne->setNotePosition(500,PosY);
+//		newOne->setTargetMarkSize(65.f,65.f);
+//		newOne->SetOnTargeting();
+//
+//		pbNoteProcessor::GetInstance()->AddNotes(newOne);
 	}
 	else if(type == 3 ) {
 	//		m_fGenerateTime =  800;
 	//		pbNoteProcessor::GetInstance()->AddTargetingNote(900, PosY);
 //			LOGE("Add NinJa Note");
+		pbNinjaNotes* newOne = m_pNinjaNoteRentalunit->RentalMemory();
+		newOne->ResetNoteState();
+		newOne->setNotePosition(50,PosY);
+		newOne->setTargetMarkSize(65.f,65.f);
+		newOne->SetOnTargeting();
+
+		pbNoteProcessor::GetInstance()->AddNotes(newOne);
 		}
 
 }

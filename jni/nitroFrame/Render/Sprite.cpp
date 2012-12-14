@@ -26,10 +26,19 @@ void sprite::ReadyForNextScreenplay() {
 }
 
 
-sprite::sprite(){
+sprite::sprite():currentScreenplay(NULL){
 	screenplay = new npLinkNode<int>;
 }
 
 
 sprite::~sprite() {
+}
+
+bool sprite::IsFinish() {
+	//만약 screenplay Head와 현재의 screenplay가 같다면
+	//한바퀴 Looping이 완료 된 시점이다.
+	if(this->currentScreenplay == this->screenplay){
+		return true;
+	}
+	return false;
 }

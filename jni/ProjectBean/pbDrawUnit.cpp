@@ -88,11 +88,14 @@ void pbDrawUnit::DeleteChildUnit(GLuint ID) {
 
 GLfloat pbBasicDrawUnit::vertex[12] = {0,};
 
-pbBasicDrawUnit::pbBasicDrawUnit(){
+pbBasicDrawUnit::pbBasicDrawUnit():rotationAngle(0.f){
 	SetVertexByCenter(this->vertex, 1, 1);
 	sprtie = NULL;
 	m_Width = 0;
 	m_Height = 0;
+	rotationAxis.x = 0.f;
+	rotationAxis.y = 0.f;
+	rotationAxis.z = 0.f;
 	LOGE("pbBasicDrawUnit :: Call Constructor");
 }
 
@@ -103,7 +106,11 @@ pbBasicDrawUnit::pbBasicDrawUnit(screenplayTag TAG){
 	this->sprtie = npContainerDAO::GetInstance().getSpriteByTAG(this->tag);
 	m_Width = 0;
 	m_Height = 0;
+	rotationAxis.x = 0.f;
+	rotationAxis.y = 0.f;
+	rotationAxis.z = 0.f;
 
+	LOGE("pbBasicDrawUnit :: Call Constructor");
 }
 
 pbBasicDrawUnit::pbBasicDrawUnit(const pbBasicDrawUnit& source){
@@ -122,11 +129,11 @@ void pbBasicDrawUnit::PreSettingDraw() {
 }
 
 void pbBasicDrawUnit::DrawThis() {
+	glRotatef(this->rotationAngle,this->rotationAxis.x,this->rotationAxis.y,this->rotationAxis.z);
 	glScalef(this->m_Width, this->m_Height, 1.0f);
 	glVertexPointer(3, GL_FLOAT, 0,this->vertex);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glPopMatrix();
-
 }
 
 void pbBasicDrawUnit::SetSize(float width, float Height) {
@@ -142,6 +149,34 @@ bool pbBasicDrawUnit::SetTextureTAG(screenplayTag TAG) {
 		return false;
 	}
 	return true;
+}
+
+void pbBasicDrawUnit::SetRotationByXAxis(float rotationAngle) {
+	this->rotationAngle = rotationAngle;
+	this->rotationAxis.x = 1.f;
+	this->rotationAxis.y = 0.f;
+	this->rotationAxis.z = 0.f;
+}
+
+void pbBasicDrawUnit::SetRotationByYAxis(float rotationAngle) {
+	this->rotationAngle = rotationAngle;
+	this->rotationAxis.x = 0.f;
+	this->rotationAxis.y = 1.f;
+	this->rotationAxis.z = 0.f;
+}
+
+void pbBasicDrawUnit::SetRotationByZAxis(float rotationAngle) {
+	this->rotationAngle = rotationAngle;
+	this->rotationAxis.x = 0.f;
+	this->rotationAxis.y = 0.f;
+	this->rotationAxis.z = 1.f;
+}
+
+void pbBasicDrawUnit::SetRotation(float rotationAngle, float x, float y, float z) {
+	this->rotationAngle = rotationAngle;
+	this->rotationAxis.x = x;
+	this->rotationAxis.y = y;
+	this->rotationAxis.z = z;
 }
 
 sprite* pbBasicDrawUnit::getSprite() {
