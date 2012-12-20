@@ -221,7 +221,7 @@ bool pbBoss::WalkOutCondition(float* pV2Pos) {
 }
 
 
-/////---------------함수 포인터용 정적함수------------------------------//
+/////---------------스테이지 트리거 함수------------------------------//
 void pbBoss::Approaching() {
 	GetMarionette()->SelectMoveState(APPROACHING);
 	GetMarionette()->SetMovePause(false);
@@ -235,6 +235,7 @@ void pbBoss::PostDieProcess() {
 	pbSceneManager::getInstance().GetCurrentScene()->GetStageTrigger()->ActivateIDState(pbCharacter::WALKOUT);
 }
 
+/////---------------HP감소 정적함수------------------------------//
 void pbBoss::DecreaseHP(float fDamage){
 	if( GetInstance() != NULL) {
 		GetHPMeter()->DecreaseHP(fDamage);

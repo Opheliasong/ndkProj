@@ -37,7 +37,7 @@ public:
 	virtual void PreSettingDraw() = 0;
 	virtual void DrawThis() = 0;
 
-	virtual void notify() = 0;
+	virtual void notify();
 
 	virtual void SelectNone() = 0;
 	virtual void SelectOne() = 0;

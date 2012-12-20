@@ -17,7 +17,7 @@
 #include "Trigger/pbStageTrigger.h"
 #include "Trigger/pbTimeTrigger.h"
 
-#include "Scene/pbDrawUnit.h"
+#include "Scene/pbBasicDrawUnit.h"
 #include "Scene/pbSceneNavigator.h"
 #include "Scene/pbBackground.h"
 #include "Scene/pbUI.h"
@@ -28,7 +28,7 @@
 #include "Scene/ShopScene/pbGoldPouch.h"
 #include "Scene/ShopScene/pbItem.h"
 #include "Scene/ShopScene/pbShop.h"
-#include "Scene/pbSceneManager.h"
+#include "Scene/pbSceneWrapper.h"
 
 #include "Actor/pbMarionette.h"
 #include "Actor/pbHPMeter.h"

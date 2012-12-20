@@ -40,9 +40,11 @@ public:
 	static bool WeavingDownCondition(float* pV2Pos);
 	static bool WalkOutCondition(float* pV2Pos);
 
-	/////---------------함수 포인터용 정적함수------------------------------//
+	/////---------------스테이지 트리거용 함수------------------------------//
 	static void Approaching();
 	static void PostDieProcess();
+
+	/////---------------HP감소 정적함수------------------------------//
 	static void DecreaseHP(float fDamage);
 
 	////---------------------------인스턴스 접근-------------------------------------//

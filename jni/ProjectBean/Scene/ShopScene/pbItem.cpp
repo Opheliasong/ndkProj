@@ -72,6 +72,25 @@ bool pbItem::IsTouched() {
 	return false;
 }
 
+
+void pbItem::notify() {
+	if(TouchLayer::GetInstance().touchFlag == TOUCHFLAGS::TAPDOWN) {
+		if( IsTouched() ) {
+			if( m_SelectState == ITEM_SELECT_NONE) {
+				SelectNone();
+			}
+			else if( m_SelectState == ITEM_SELECT_ONE) {
+				SelectOne();
+			}//end if touchcount
+
+		}// end if isTouched
+		else {
+			m_SelectState = ITEM_SELECT_NONE;
+		}
+
+	}// end if TOUCHFLAGS
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------		pbItem_Potion			------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,6 +152,8 @@ void pbItem_Potion::SelectOne() {
 }
 
 void pbItem_Potion::notify() {
+	pbItem::notify();
+/*
 	if(TouchLayer::GetInstance().touchFlag == TOUCHFLAGS::TAPDOWN) {
 		if( IsTouched() ) {
 			if( m_SelectState == ITEM_SELECT_NONE) {
@@ -148,6 +169,7 @@ void pbItem_Potion::notify() {
 		}
 
 	}// end if TOUCHFLAGS
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -255,6 +277,8 @@ void pbItem_Vehicle::SetCaptionTagData(TAGDATA& TagData){
 }
 
 void pbItem_Vehicle::notify() {
+	pbItem::notify();
+/*
 	if(TouchLayer::GetInstance().touchFlag == TOUCHFLAGS::TAPDOWN) {
 		if( IsTouched() ) {
 			if( m_SelectState == ITEM_SELECT_NONE) {
@@ -270,6 +294,7 @@ void pbItem_Vehicle::notify() {
 		}
 
 	}// end if TOUCHFLAGS
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -335,6 +360,8 @@ void pbItem_Pass::SelectOne() {
 }
 
 void pbItem_Pass::notify() {
+	pbItem::notify();
+/*
 	if(TouchLayer::GetInstance().touchFlag == TOUCHFLAGS::TAPDOWN) {
 		if( IsTouched() ) {
 			if( m_SelectState == ITEM_SELECT_NONE) {
@@ -350,4 +377,5 @@ void pbItem_Pass::notify() {
 		}
 
 	}// end if TOUCHFLAGS
+*/
 }

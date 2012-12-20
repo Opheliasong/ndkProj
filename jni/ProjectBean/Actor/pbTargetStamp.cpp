@@ -100,7 +100,7 @@ void pbTargetStamp::Update(float fTime) {
 			Animaition_Start(fTime);
 		}
 		else if( m_iPhase == TARGET_ING ) {
-			Animaition_Limit(fTime);
+			Animaition_Targeting(fTime);
 		}
 		else if( m_iPhase == TARGET_TOUCH_END ) {
 			Animaition_TouchEnd(fTime);
@@ -128,7 +128,7 @@ void pbTargetStamp::Animaition_Start(float fTime) {
 	}
 }
 
-void pbTargetStamp::Animaition_Limit(float fTime) {
+void pbTargetStamp::Animaition_Targeting(float fTime) {
 	m_fAniTime += fTime;
 
 	if( m_fAniTime > m_fLimitTime*0.4f) {

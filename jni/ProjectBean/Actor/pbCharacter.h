@@ -16,6 +16,7 @@ private:
 	~pbCharacter();
 
 public:
+	/////---------------일반------------------------------//
 	static void Create();
 	void LoadData(sceneTag RegistSceneTag);
 	void ClearDataStore();
@@ -51,7 +52,7 @@ public:
 	static bool WeavingDownCondition(float* pV2Pos);
 	static bool WalkOutCondition(float* pV2Pos);
 
-	//상태 관련 함수
+	/////---------------스테이지 트리거 ------------------------------//
 	static void Appeared();
 	static void WalkOut();
 

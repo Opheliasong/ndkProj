@@ -60,7 +60,7 @@ npNativeEvent.cpp\
 /nitroFrame/TouchLayer/TouchObserver.cpp\
 /nitroFrame/TouchLayer/TouchLayer.cpp\
 /ProjectBean/pbStageValue.cpp\
-/ProjectBean/Scene/pbDrawUnit.cpp\
+/ProjectBean/Scene/pbBasicDrawUnit.cpp\
 /ProjectBean/Scene/pbMainFrame.cpp\
 /ProjectBean/Scene/pbSceneNavigator.cpp\
 /ProjectBean/Scene/pbBackground.cpp\
@@ -72,7 +72,7 @@ npNativeEvent.cpp\
 /ProjectBean/Scene/ShopScene/pbGoldPouch.cpp\
 /ProjectBean/Scene/ShopScene/pbItem.cpp\
 /ProjectBean/Scene/ShopScene/pbShop.cpp\
-/ProjectBean/Scene/pbSceneManager.cpp\
+/ProjectBean/Scene/pbSceneWrapper.cpp\
 /ProjectBean/Trigger/pbStageTrigger.cpp\
 /ProjectBean/Trigger/pbTimeTrigger.cpp\
 /ProjectBean/Actor/pbHPMeter.cpp\

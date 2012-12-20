@@ -34,7 +34,7 @@ public:
 
 	////-----------애니메이션 루프 함수--------------//
 	void Animaition_Start(float fTime);
-	void Animaition_Limit(float fTime);
+	void Animaition_Targeting(float fTime);
 	void Animaition_TouchEnd(float fTime);
 	void Animaition_LimitEnd(float fTime);
 

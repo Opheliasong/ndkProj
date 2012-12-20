@@ -73,30 +73,30 @@ public:
 	enum {MAX_FEVERGAUGE = 100 };
 private:
 	/////-----------스코어--------------////
-	static int m_TotalScore;
-	static int m_GettingScore;
+	static int m_TotalScore;		//총 스코어
+	static int m_GettingScore;		//현재 얻은 스코어
 
 	/////-----------라이프--------------////
-	static bool m_bChangedLife;
-	static int m_iNumLife;
+	static bool m_bChangedLife;	// 라이프 변화 캐치
+	static int m_iNumLife;			// 라이프 갯수
 
 	/////-----------스테이지--------------////
-	static float m_fStageMoveX;
-	static float m_fStageMoveSpeed;
-	static float m_fMaxStageLength;
+	static float m_fStageMoveX;			//스테이지 X위치
+	static float m_fStageMoveSpeed;	//스테이지 이동 속도
+	static float m_fMaxStageLength;	//스테이지 길이
 
 
 	/////-----------피버게이지--------------////
-	static float m_fTotalFeverGauge;
-	static bool m_bChangeFeverGauge;
+	static float m_fTotalFeverGauge;		//총 피버 게이지
+	static bool m_bChangeFeverGauge;	//피버게이지 변화 캐치
 
 	////--------------아이템 가중치----------------//
-	static pbStatusWeights m_StatusWeight;
+	static pbStatusWeights m_StatusWeight;		// 아이템 가중치
 
 	/////-----------네비게이트--------------////
-	static int m_StageLevel;
-	static int m_ShopLevel;
-	static bool m_ShopRoute;	// 상점가는 길
+	static int m_StageLevel;							//스테이지 레벨
+	static int m_ShopLevel;								// 상점 레벨
+	static bool m_ShopRoute;	// 상점가는 길 체크
 
 };
 

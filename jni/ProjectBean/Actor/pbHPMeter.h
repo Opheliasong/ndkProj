@@ -16,7 +16,7 @@ public:
 	pbHPMeter();
 	~pbHPMeter();
 
-	void Initialize(float CurrentHP, float OneLineHP);
+	void Initialize(float fTotalHP, float OneLineHP);
 
 	void SetTag(screenplayTag PanelTag, screenplayTag MeterTag, float fWidth, float fHeight);
 	void SetPos(float X, float Y) { m_vPos[0] = X, m_vPos[1] = Y;}

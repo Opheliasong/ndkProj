@@ -260,7 +260,7 @@ obj/local/armeabi/objs-debug/Game/npNativeEvent.o: jni/npNativeEvent.cpp \
  jni/./ProjectBean/Scene/../Trigger/pbStageTrigger.h \
  jni/./ProjectBean/Scene/../Trigger/../stdafx.h \
  jni/./ProjectBean/Scene/../Trigger/pbTimeTrigger.h \
- jni/./ProjectBean/Scene/../Scene/pbDrawUnit.h \
+ jni/./ProjectBean/Scene/../Scene/pbBasicDrawUnit.h \
  jni/./ProjectBean/Scene/../Scene/../stdafx.h \
  jni/./ProjectBean/Scene/../Scene/pbSceneNavigator.h \
  jni/./ProjectBean/Scene/../Scene/pbBackground.h \
@@ -274,7 +274,7 @@ obj/local/armeabi/objs-debug/Game/npNativeEvent.o: jni/npNativeEvent.cpp \
  jni/./ProjectBean/Scene/../Scene/ShopScene/pbGoldPouch.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/pbItem.h \
  jni/./ProjectBean/Scene/../Scene/ShopScene/pbShop.h \
- jni/./ProjectBean/Scene/../Scene/pbSceneManager.h \
+ jni/./ProjectBean/Scene/../Scene/pbSceneWrapper.h \
  jni/./ProjectBean/Scene/../Actor/pbMarionette.h \
  jni/./ProjectBean/Scene/../Actor/../stdafx.h \
  jni/./ProjectBean/Scene/../Actor/pbHPMeter.h \
@@ -806,7 +806,7 @@ jni/./ProjectBean/Scene/../Trigger/../stdafx.h:
 
 jni/./ProjectBean/Scene/../Trigger/pbTimeTrigger.h:
 
-jni/./ProjectBean/Scene/../Scene/pbDrawUnit.h:
+jni/./ProjectBean/Scene/../Scene/pbBasicDrawUnit.h:
 
 jni/./ProjectBean/Scene/../Scene/../stdafx.h:
 
@@ -834,7 +834,7 @@ jni/./ProjectBean/Scene/../Scene/ShopScene/pbItem.h:
 
 jni/./ProjectBean/Scene/../Scene/ShopScene/pbShop.h:
 
-jni/./ProjectBean/Scene/../Scene/pbSceneManager.h:
+jni/./ProjectBean/Scene/../Scene/pbSceneWrapper.h:
 
 jni/./ProjectBean/Scene/../Actor/pbMarionette.h:
 
