@@ -9,51 +9,41 @@
 
 GLfloat npTextureRect::vertex[12] = {0,};
 
-npTextureRect::npTextureRect(){
-	this->vertex[0] = -0.5f;
-	this->vertex[1] =  0.5f;
-	this->vertex[2] = 0;
+npTextureRect::npTextureRect():positionX(NULL),positionY(NULL){
+	SetVertexByCenter(this->vertex, 1, 1);
 
-	//왼쪽아래
-	this->vertex[3] = -0.5f;
-	this->vertex[4] = -0.5f;
-	this->vertex[5] = 0;
-
-	//오른쪽 위
-	this->vertex[6] = 0.5f;
-	this->vertex[7] = 0.5f;
-	this->vertex[8] = 0;
-
-	//오른쪽 아래
-	this->vertex[9] = 0.5f;
-	this->vertex[10] = -0.5f;
-	this->vertex[11] = 0;
-
-	LOGE("Call CTOR");
+	rotationAngle = 0.f;
+	rotationAxis.x = 0.f;
+	rotationAxis.y = 0.f;
+	rotationAxis.z = 0.f;
 }
 
-npTextureRect::npTextureRect(screenplayTag TAG){
+npTextureRect::npTextureRect(screenplayTag TAG):positionX(NULL),positionY(NULL){
 	this->tag = TAG;
 	this->sprtie = npContainerDAO::GetInstance().getSpriteByTAG(this->tag);
+
+//	SetVertexByCenter(this->vertex, 1, 1);
 	//왼쪽 위
-	this->vertex[0] = -1.0f;
-	this->vertex[1] =  1.0f;
-	this->vertex[2] = 0;
-
+	vertex[0] = -1.f/2.f;
+	vertex[1] =  1.0f/2.f;
+	vertex[2] = 0;
 	//왼쪽아래
-	this->vertex[3] = -1.0f;
-	this->vertex[4] = -1.0f;
-	this->vertex[5] = 0;
-
+	vertex[3] = -1.0f/2.f;
+	vertex[4] = -1.0f/2.f;
+	vertex[5] = 0;
 	//오른쪽 위
-	this->vertex[6] = 1.0f;
-	this->vertex[7] = 1.0f;
-	this->vertex[8] = 0;
-
+	vertex[6] = 1.0f/2.f;
+	vertex[7] = 1.0f/2.f;
+	vertex[8] = 0;
 	//오른쪽 아래
-	this->vertex[9] = 1.0f;
-	this->vertex[10] = -1.0f;
-	this->vertex[11] = 0;
+	vertex[9] = 1.0f/2.f;
+	vertex[10] = -1.0f/2.f;
+	vertex[11] = 0;
+
+	rotationAngle = 0.f;
+	rotationAxis.x = 0.f;
+	rotationAxis.y = 0.f;
+	rotationAxis.z = 0.f;
 }
 
 npTextureRect::npTextureRect(const npTextureRect& source){
@@ -63,9 +53,7 @@ npTextureRect::npTextureRect(const npTextureRect& source){
 	this->width = source.width;
 	this->positionX = source.positionX;
 	this->positionY = source.positionY;
-
-	//this->vertex
-	memcpy(this->vertex,source.vertex,12*sizeof(GLfloat));
+	this->rotationAxis = source.rotationAxis;
 }
 
 npTextureRect::~npTextureRect(){
@@ -77,12 +65,11 @@ void npTextureRect::PreSettingDraw() {
 }
 
 void npTextureRect::DrawThis() {
-
 	glPushMatrix();
 	glVertexPointer(3, GL_FLOAT, 0,vertex);
 	glTranslatef(*this->positionX, *this->positionY , 0.f);
+	glScalef(this->width, this->height, 1.0f);
 	glRotatef(this->rotationAngle, this->rotationAxis.x, this->rotationAxis.y, this->rotationAxis.z);
-	glScalef(this->height, this->width, 1.0f);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glPopMatrix();
 

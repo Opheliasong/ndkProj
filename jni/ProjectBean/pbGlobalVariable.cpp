@@ -5,7 +5,7 @@
 //-----------------�ΰ��ӿ��� ���� �� ����------------------------//
 void pbGlobalInGameVariable::ResetGlobalVariable() {
 	fWorldMoveDir = Direction::BACKWARD;
-	fWorldMoveX = 0.0f;//����*���ǵ�*Ÿ��
+	fWorldMoveX = 10.0f;//����*���ǵ�*Ÿ��
 	fWorldX = 0.0f;
 	fWorldMoveSpeed = WORLD_MOVESPEED;
 	bGamePause = false;
@@ -16,7 +16,7 @@ void pbGlobalInGameVariable::ResetGlobalVariable() {
 	LOGI("pbGlobalInGameVariable::ResetGlobalVariable");
 }
 Direction::HEADING pbGlobalInGameVariable::fWorldMoveDir = Direction::BACKWARD;
-GLfloat pbGlobalInGameVariable::fWorldMoveX = 0.0f;//����*���ǵ�*Ÿ��
+GLfloat pbGlobalInGameVariable::fWorldMoveX = 10.0f;//����*���ǵ�*Ÿ��
 GLfloat pbGlobalInGameVariable::fWorldX = 0.0f;
 GLfloat pbGlobalInGameVariable::fWorldMoveSpeed = WORLD_MOVESPEED;
 bool pbGlobalInGameVariable::bGamePause = false;

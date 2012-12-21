@@ -70,6 +70,4 @@ void npRenderprocess::setDeviceResolution(int width, int height) {
 				this->widthRatio = this->deviceWidth / (float)this->renderWidth;
 				this->heightRatio = this->deviceHeight / (float)this->renderHeight;
 	}
-
-
 }

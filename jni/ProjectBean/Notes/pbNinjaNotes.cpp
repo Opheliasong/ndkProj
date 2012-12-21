@@ -10,13 +10,16 @@
 pbNinjaNotes::pbNinjaNotes() {
 	noteType = NINJA;
 
+	this->noteWidth = 110.f;
+	this->noteHeight = 110.f;
+
 	this->avoidPoints = 3;
 	this->DoAvoid = false;
 
 	this->BodyActor = new npTextureRect("ci");
 	this->BodyActor->SetPosition(&this->positionX, &this->positionY);
 
-	this->TargetMarker = new npTextureRect("ci");
+	this->TargetMarker = new npTextureRect("marker");
 	this->TargetMarker->SetPosition(&this->positionX, &this->positionY);
 
 	this->DeadActor  = new npTextureRect("run");
@@ -48,7 +51,7 @@ void pbNinjaNotes::DrawThis() {
 			npRenderprocess::getInstance().DoDraw(*this->TargetMarker);
 		}
 
-	}else{ // 2) Hit 되었을 경우 Effect 처리
+	}else{
 		npRenderprocess::getInstance().DoDraw(*this->DeadActor);
 		if(this->DeadActor->IsFinish()){
 			ReleaseNote();
@@ -58,30 +61,19 @@ void pbNinjaNotes::DrawThis() {
 }
 
 void pbNinjaNotes::notify() {
-	//1) 우선 Note의 너비와 높이 위치를 가지고 현재 터치 포인트 좌표가 노트 안에 있는지 확인 해야 한다.
-	float left = this->positionX - this->noteWidth/2;
-	float right = this->positionX + this->noteWidth/2;
-	float top = this->positionY + this->noteHeight/2;
-	float bottom = this->positionY - this->noteHeight/2;
-
-	int TouchPointX = TouchLayer::GetInstance().pointX;
-	int TouchPointY = TouchLayer::GetInstance().pointY;
-
-	//RemasetY 의 경우 480(480 height)에게서 TouchPointY 를 감소하여 Y축을 OpenGL형태로 변환
-	//RemasteredY 의 경우 TouchPointY를 OpenGL의 좌표로 변환한 변수
-	float RemasteredY = 480.f - TouchPointY;
-
 	if(TouchLayer::GetInstance().touchFlag == 0){
-		if(TouchPointX > left && TouchPointX < right){
-			if(RemasteredY < top && RemasteredY > bottom){
-				//Targeting 이 On 되었는지 안되었는지 확인
-				if(targetingIndicate == true){
-					//TODO Targeting On이 되었을 경우 Avoid Points를 감소하고, 새로운 위치를 재 설정
-					this->DoAvoid = true;
-					this->avoidPoints--;
-				}else{
-					//TODO Targeting On이 되지 않았을 경우 Comobo Reset 처리
-				}
+		if(IsHitThis()){
+			//Targeting 이 On 되었는지 안되었는지 확인
+			if(targetingIndicate == true){
+				this->DoAvoid = true;
+				this->avoidPoints--;
+//				LOGE("Ninja Note Avoid Points:%d",this->avoidPoints);
+				//					LOGE("NinJa Note State : %d",this->m_bEndPhase);
+				//					LOGE("Ninja Note Body Actor Position) X:%f, Y:%f ",*this->BodyActor->getX(), *this->BodyActor->getY());
+				//					LOGE("Ninja Note Body Actor size) w:%f, h:%f ",this->BodyActor->getWidthSize(), this->BodyActor->getHeightSize());
+			}else{
+				//TODO Targeting On이 되지 않았을 경우 Comobo Reset 처리
+				m_bEndPhase = true;;
 			}
 		}
 	}
@@ -92,13 +84,14 @@ void pbNinjaNotes::onTimeAlerts() {
 
 void pbNinjaNotes::Update(float fTime) {
 	//Position Update
-	float x = positionX + pbGlobalInGameVariable::fWorldMoveX;
+	float x = positionX - (200.f*fTime);
 	float y = positionY;
 
 	pbTargetingNotes::Update(fTime);
 
-	if(this->avoidPoints == 0){
+	if(this->avoidPoints <= 0){
 		m_bEndPhase = true;
+		noteState = DEAD;
 		this->DoAvoid = false;
 	}
 
@@ -109,20 +102,31 @@ void pbNinjaNotes::Update(float fTime) {
 		srand(time(NULL));
 		float increaseX = (rand() % 15)*20;
 		float changedYPosition = (rand()% 10)*30 + 100;
-
-		this->setNotePosition(x + increaseX, changedYPosition);
+		//this->setNotePosition(x + increaseX, changedYPosition);
+		x += increaseX;
+		y = changedYPosition;
 
 		//Avoid 상태 해지
 		this->DoAvoid = false;
 	}
+	setNotePosition(x,y);
 }
 
 void pbNinjaNotes::ResetNoteState() {
 	pbNoteElement::ResetNoteState();
 	pbTargetingNotes::ResetNoteState();
-	this->noteWidth = 90.f;
-	this->noteHeight = 90.f;
+	this->noteWidth = 110.f;
+	this->noteHeight = 110.f;
 	this->avoidPoints = 3;
 	this->DoAvoid = false;
+	if(NP_IS_NOT_EMPTY(BodyActor)){
+		BodyActor->SetPosition(&this->positionX, &this->positionY);
+	}
+	if(NP_IS_NOT_EMPTY(Effector)){
+		BodyActor->SetPosition(&this->positionX, &this->positionY);
+	}
+	if(NP_IS_NOT_EMPTY(DeadActor)){
+		BodyActor->SetPosition(&this->positionX, &this->positionY);
+	}
 }
 

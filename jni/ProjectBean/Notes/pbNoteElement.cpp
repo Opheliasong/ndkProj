@@ -8,29 +8,9 @@
 #include "pbNoteElement.h"
 #include "pbNoteProcessor.h"
 
-GLfloat pbNoteElement::vertex[12];
-
 pbNoteElement::pbNoteElement() {
-	this->vertex[0] = -1.0f;
-	this->vertex[1] =  1.0f;
-	this->vertex[2] = 0;
-
-	//왼쪽아래
-	this->vertex[3] = -1.0f;
-	this->vertex[4] = -1.0f;
-	this->vertex[5] = 0;
-
-	//오른쪽 위
-	this->vertex[6] = 1.0f;
-	this->vertex[7] = 1.0f;
-	this->vertex[8] = 0;
-
-	//오른쪽 아래
-	this->vertex[9] = 1.0f;
-	this->vertex[10] = -1.0f;
-	this->vertex[11] = 0;
-
 	m_bEndPhase = false;
+	noteState = NOTECREATE;
 }
 
 pbNoteElement::~pbNoteElement() {
@@ -102,5 +82,26 @@ void pbNoteElement::prepareDrawUnitRendering() {
 	//glPushMatrix();
 	//setGlTranslateByPosition();
 }
+
+bool pbNoteElement::IsHitThis() {
+	float left = this->positionX - this->noteWidth/2;
+	float right = this->positionX + this->noteWidth/2;
+	float top = this->positionY + this->noteHeight/2;
+	float bottom = this->positionY - this->noteHeight/2;
+
+	int TouchPointX = TouchLayer::GetInstance().pointX;
+	int TouchPointY = TouchLayer::GetInstance().pointY;
+
+	//TODO 해상도의 Width에 맞추어서 Remaster 할 수 있게 하자.
+	float RemasteredY = 480.f - TouchPointY;
+
+	if(TouchPointX > left && TouchPointX < right){
+		if(RemasteredY < top && RemasteredY > bottom){
+			return true;
+		}
+	}
+	return false;
+}
+
 
 

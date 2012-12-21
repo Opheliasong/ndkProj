@@ -17,14 +17,14 @@ sprite* npFactoryDAO::getSpriteByTAG(screenplayTag tag) {
 
 	iter = screenplayContainer->find(tag);
 	if(iter != screenplayContainer->end()){
-
 		sprite* retSprite = new sprite;
 		retSprite->screenplay = &iter->second;
 		retSprite->currentScreenplay = retSprite->screenplay;
-		//LOGI("Done Copy Sprite Node");
-
+//		LOGI("Done Copy Sprite Node");
 		return retSprite;
 	}else{
+		LOGI("Not Copy Sprite, Not find TAG");
+		LOGI("TAG Name Is : %s",tag.c_str());
 		return NULL;
 	}
 }

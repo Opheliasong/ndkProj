@@ -46,21 +46,9 @@ public:
 
 protected:
 	virtual void ReleaseNote();
-
-//	pbBasicDrawUnit* BodyActor;
-//	pbBasicDrawUnit* Effector;
-//	pbBasicDrawUnit* DeadActor;
-
 	npTextureRect* BodyActor;
 	npTextureRect* Effector;
 	npTextureRect* DeadActor;
-
-//	sprite* effectSprite;
-//	sprite* baseSprite;
-//	sprite* deadEffectSprite;
-
-	static GLfloat vertex[12];
-	NOTETYPE::TYPE m_Types;
 
 	int m_ID;
 	NP_DEFINE_PROPERTY(float, noteWidth, NoteWidth);
@@ -76,6 +64,7 @@ protected:
 
 	void setGlTranslateByPosition();
 	void prepareDrawUnitRendering();
+	bool IsHitThis();
 public:
 	int m_RentalIndex;
 };

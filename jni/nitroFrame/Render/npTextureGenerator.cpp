@@ -111,9 +111,9 @@ GLuint npTextureGenerator::GenerateTextureByPNGPath(const char* aTextureName) {
 	//Allocate the image_data as a big block, to be given to openGL
 	png_byte* image_data = new png_byte[rowbytes * tHeight];
 
-	LOGE("rowbytes : %d",rowbytes);
-	LOGE("tHeights: %d", tHeight);
-	LOGE("tWeights: %d", tWidth);
+//	LOGE("rowbytes : %d",rowbytes);
+//	LOGE("tHeights: %d", tHeight);
+//	LOGE("tWeights: %d", tWidth);
 
 	if(NP_IS_EMPTY(image_data)){
 		//clean up memory and close stuff

@@ -18,7 +18,7 @@ void npXMLParser::SetupXMLPath(xmlPath path){
 
 void npXMLParser::SetupApkPath(std::string apkPath){
 
-	LOGE("XMLparser)setup APk path : %s",apkPath.c_str());
+//	LOGE("XMLparser)setup APk path : %s",apkPath.c_str());
 
 	this->apkArchive = zip_open(apkPath.c_str(),0,NULL);
 
@@ -81,8 +81,8 @@ char* npXMLParser::OpenAssetsByPath(xmlPath path) {
 		LOGE("XMLparser) not open zipFile");
 		return NULL;
 	}
-	LOGE("done zip fopen");
-	LOGE("zip Left Bytes: %d",apkZipFile->bytes_left);
+//	LOGE("done zip fopen");
+//	LOGE("zip Left Bytes: %d",apkZipFile->bytes_left);
 
 	char* buffer= new char[apkZipFile->bytes_left];
 	zip_fread(apkZipFile,buffer,apkZipFile->bytes_left);

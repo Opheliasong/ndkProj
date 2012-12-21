@@ -25,7 +25,6 @@ public:
 	NP_DEFINE_PROPERTY(int, avoidPoints, AvoidPoint);
 protected:
 	bool DoAvoid;
-
 };
 
 #endif /* PBNINJANOTES_H_ */

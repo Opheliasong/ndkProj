@@ -53,7 +53,7 @@ void npInsertDAO::ParsingRawSource(const RawDataPacket& rawSource, UVPacket& out
  *지금은 Static int를 이용해서-2,147,483,648 ~ 2,147,483,647 까지 가능하다.
  */
 int npInsertDAO::GetFramewIndex() {
-	static int Index=-1;
+	static int Index=0;
 	return ++Index;
 }
 
@@ -107,13 +107,11 @@ void npInsertDAO::CalcUVArrayByRawSource(const RawDataPacket& rawSource,UVPacket
 
 	outputPacket.texture[6] = (float)(rawSource.x + rawSource.width) / (float)rawSource.textureWidth;
 	outputPacket.texture[7] = (float)(rawSource.y + rawSource.height) / (float)rawSource.textureHeight;
-	/*
-	LOGE("RawSource x: %d",rawSource.x);
-	LOGE("RawSource Texture Width: %d",rawSource.textureWidth);
-	LOGE("RawSource y: %d",rawSource.y);
 
-	LOGE("texture[0]:%f",(float)((float)rawSource.x/ (float)rawSource.textureWidth));
-	*/
+//	LOGE("RawSource x: %d",rawSource.x);
+//	LOGE("RawSource Texture Width: %d",rawSource.textureWidth);
+//	LOGE("RawSource y: %d",rawSource.y);
+//	LOGE("texture[0]:%f",(float)((float)rawSource.x/ (float)rawSource.textureWidth));
 /*
 	LOGE("texture[0]:%f",outputPacket.texture[0]);
 	LOGE("texture[1]:%f",outputPacket.texture[1]);

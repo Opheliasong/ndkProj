@@ -39,7 +39,6 @@ public:
 protected:
 	float m_fAlertTime;
 
-//	sprite* targetingSprite;
 	float TargetMarkerAngle;
 	COLOR_RGBA m_EffectColor;
 	float m_fAnimationPercent;

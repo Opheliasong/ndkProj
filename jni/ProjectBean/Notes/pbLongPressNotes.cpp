@@ -11,12 +11,12 @@ pbLongPressNotes::pbLongPressNotes() {
 	noteType = LONGPRESS;
 
 	this->pressTime = 0;
-	this->RequirePressTouchTime = 1500.f;
+	this->RequirePressTouchTime = 1000.f;
 
-	this->BodyActor = new npTextureRect("ci");
+	this->BodyActor = new npTextureRect("swipe");
 	this->BodyActor->SetPosition(&this->positionX, &this->positionY);
 
-	this->TargetMarker = new npTextureRect("ci");
+	this->TargetMarker = new npTextureRect("marker");
 	this->TargetMarker->SetPosition(&this->positionX, &this->positionY);
 
 	this->DeadActor = new npTextureRect("run");
@@ -24,11 +24,11 @@ pbLongPressNotes::pbLongPressNotes() {
 }
 
 pbLongPressNotes::~pbLongPressNotes() {
-	// TODO Auto-generated destructor stub
 }
 
 void pbLongPressNotes::PreSettingDraw() {
 	this->BodyActor->SetSize(this->noteWidth, this->noteHeight);
+//	LOGE("%d: Size) W:%f, H:%f",this->m_RentalIndex,this->noteWidth,this->noteHeight);
 	this->TargetMarker->SetSize(this->TargetMarkWidth, this->TargetMarkHeight);
 	this->DeadActor->SetSize(this->noteWidth, this->noteHeight);
 }
@@ -62,30 +62,15 @@ void pbLongPressNotes::DrawThis() {
  * @fn 터치 이벤트가 발생되면 Call 될 logic
  */
 void pbLongPressNotes::notify() {
-	//1) 우선 Note의 너비와 높이 위치를 가지고 현재 터치 포인트 좌표가 노트 안에 있는지 확인 해야 한다.
-	float left = this->positionX - this->noteWidth/2;
-	float right = this->positionX + this->noteWidth/2;
-	float top = this->positionY + this->noteHeight/2;
-	float bottom = this->positionY - this->noteHeight/2;
-
-	int TouchPointX = TouchLayer::GetInstance().pointX;
-	int TouchPointY = TouchLayer::GetInstance().pointY;
-
-	//RemasetY 의 경우 480(480 height)에게서 TouchPointY 를 감소하여 Y축을 OpenGL형태로 변환
-	//RemasteredY 의 경우 TouchPointY를 OpenGL의 좌표로 변환한 변수
-	float RemasteredY = 480.f - TouchPointY;
-
 	if(TouchLayer::GetInstance().touchFlag == 0 || TouchLayer::GetInstance().touchFlag == 2){
-		if(TouchPointX > left && TouchPointX < right){
-			if(RemasteredY < top && RemasteredY > bottom){
-				//Targeting 이 On 되었는지 안되었는지 확인
-				if(targetingIndicate == true){
-					//Touch Event가 Down or  move 이면서, 현재의 Rect내에 Touch Point가 존재한다면, pressOn을 True로 켜둔다.
-					this->pressOn = true;
-				}else{
-					//TODO Targeting On이 되지 않았을 경우 Comobo Reset 처리
-				}
+		if(IsHitThis()){
+			//Targeting 이 On 되었는지 안되었는지 확인
+			if(targetingIndicate == true){
+				//Touch Event가 Down or  move 이면서, 현재의 Rect내에 Touch Point가 존재한다면, pressOn을 True로 켜둔다.
+			}else{
+				//TODO Targeting On이 되지 않았을 경우 Comobo Reset 처리
 			}
+			this->pressOn = true;
 		}else{
 			this->pressOn = false;
 		}
@@ -99,9 +84,11 @@ void pbLongPressNotes::onTimeAlerts() {
 
 void pbLongPressNotes::Update(float fTime) {
 //	float x = positionX + pbGlobalInGameVariable::fWorldMoveX;
-	float x = positionX;
+	//float x = positionX;
+	float x = positionX - (200.f*fTime);
 	float y = positionY;
 
+	setNotePosition(x,y);
 	pbTargetingNotes::Update(fTime);
 
 	if(pressOn){
@@ -111,6 +98,7 @@ void pbLongPressNotes::Update(float fTime) {
 
 			//TODO Combo처리 및 점수 처리
 			m_bEndPhase = true;
+			noteState = DEAD;
 		}
 	}
 }
@@ -118,8 +106,8 @@ void pbLongPressNotes::Update(float fTime) {
 void pbLongPressNotes::ResetNoteState() {
 	pbNoteElement::ResetNoteState();
 	pbTargetingNotes::ResetNoteState();
-	this->noteWidth = 130.f;
-	this->noteHeight = 130.f;
+	this->noteWidth = 250.f;
+	this->noteHeight = 150.f;
 	this->pressOn = false;
 	this->pressTime = 0.f;
 }

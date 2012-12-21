@@ -77,8 +77,9 @@ void pbMainFrame::npShowIntro() {
 		pbNoteProcessor::Create();*/
 
 		//FIXLOG[10-10] : 초기화는 공용 오브젝트만 초기화, 다른 초기화는 게임스테이트에 따라 다르게 초기화 한다
-		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("ScriptTexture.xml");
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
 
 		//노트 Process 관련 시작
 		pbNoteProcessor::Create();
