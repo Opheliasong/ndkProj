@@ -1,16 +1,1 @@
-<texture
-    filename="texture.png"
-    height="64"
-    width="64" >
-
-    <sprite
-        height="64"
-        tag="ci"
-        transformpoint="center"
-        width="64"
-        x="0"
-        y="0" >
-texture.png
-    </sprite>
-
-</texture>
+<texture filename="texture.png" width="1024" height="1024">	<sprite tag="ghost" x="0" y="24" width="137" height="176" transformpoint="center">ghost.png</sprite>	<sprite tag="knight" x="137" y="3" width="191" height="197" transformpoint="center">knight.png</sprite>	<sprite tag="armored" x="333" y="3" width="218" height="196" transformpoint="center">armored.png</sprite>	<sprite tag="normal" x="558" y="10" width="210" height="190" transformpoint="center">normal.png</sprite>	<sprite tag="target" x="2" y="201" width="46" height="46" transformpoint="center">target.png</sprite>	<sprite tag="0" x="433" y="202" width="37" height="45" transformpoint="center">0.png</sprite>	<sprite tag="9" x="391" y="203" width="38" height="44" transformpoint="center">9.png</sprite>	<sprite tag="8" x="350" y="203" width="39" height="44" transformpoint="center">8.png</sprite>	<sprite tag="7" x="312" y="203" width="37" height="43" transformpoint="center">7.png</sprite>	<sprite tag="6" x="270" y="203" width="40" height="44" transformpoint="center">6.png</sprite>	<sprite tag="5" x="234" y="203" width="33" height="44" transformpoint="center">5.png</sprite>	<sprite tag="4" x="193" y="203" width="37" height="43" transformpoint="center">4.png</sprite>	<sprite tag="3" x="154" y="203" width="31" height="44" transformpoint="center">3.png</sprite>	<sprite tag="2" x="110" y="203" width="39" height="43" transformpoint="center">2.png</sprite>	<sprite tag="1" x="82" y="203" width="19" height="43" transformpoint="center">1.png</sprite></texture>

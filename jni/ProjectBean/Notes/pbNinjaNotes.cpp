@@ -16,10 +16,10 @@ pbNinjaNotes::pbNinjaNotes() {
 	this->avoidPoints = 3;
 	this->DoAvoid = false;
 
-	this->BodyActor = new npTextureRect("ci");
+	this->BodyActor = new npTextureRect("ghost");
 	this->BodyActor->SetPosition(&this->positionX, &this->positionY);
 
-	this->TargetMarker = new npTextureRect("marker");
+	this->TargetMarker = new npTextureRect("target");
 	this->TargetMarker->SetPosition(&this->positionX, &this->positionY);
 
 	this->DeadActor  = new npTextureRect("run");

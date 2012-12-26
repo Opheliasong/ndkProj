@@ -10,10 +10,10 @@
 pbDTabNotes::pbDTabNotes() {
 	noteType = DTABNOTE;
 
-	this->BodyActor = new npTextureRect("knight");
+	this->BodyActor = new npTextureRect("armored");
 	this->BodyActor->SetPosition(&this->positionX, &this->positionY);
 
-	this->TargetMarker = new npTextureRect("marker");
+	this->TargetMarker = new npTextureRect("target");
 	this->TargetMarker->SetPosition(&this->positionX, &this->positionY);
 
 	this->DeadActor = new npTextureRect("run");

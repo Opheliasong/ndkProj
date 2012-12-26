@@ -10,10 +10,10 @@
 pbTabNotes::pbTabNotes() {
 	noteType = TABNOTE;
 
-	this->BodyActor = new npTextureRect("ghost");
+	this->BodyActor = new npTextureRect("normal");
 	this->BodyActor->SetPosition(&this->positionX, &this->positionY);
 
-	this->TargetMarker = new npTextureRect("marker");
+	this->TargetMarker = new npTextureRect("target");
 	this->TargetMarker->SetPosition(&this->positionX, &this->positionY);
 
 	this->DeadActor = new npTextureRect("run");
