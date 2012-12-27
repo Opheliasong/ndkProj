@@ -22,12 +22,12 @@
 
 //typedef std::string screenplayTag;
 
-typedef void (*SEL_SCHEDULE)(float);
 class sprite {
 public:
 	void BindThisSprite();
 
 	void ReadyForNextScreenplay();
+	bool IsFinish();
 
 	npLinkNode<int>* screenplay;
 	npLinkNode<int>* currentScreenplay;
@@ -35,6 +35,7 @@ public:
 
 	sprite();
 	~sprite();
+
 };
 
 

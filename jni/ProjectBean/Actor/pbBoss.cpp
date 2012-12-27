@@ -39,7 +39,7 @@ void pbBoss::LoadData() {
 	m_pMarionette->AddLineMoveState(WEAVING_DOWN,0, -30, &(pbBoss::WeavingDownCondition));
 	m_pMarionette->AddZigZagMoveState(WALKOUT, 0, -200, 10, 80, &(pbBoss::WalkOutCondition));
 
-	m_pBodyDrawUnit->SetTextureTAG("run");
+	m_pBodyDrawUnit->SetTextureTAG("knight");
 	m_pBodyDrawUnit->SetSize(200, 200);
 
 	m_pMarionette->SelectMoveState(NONE);
@@ -52,7 +52,7 @@ void pbBoss::LoadData() {
 	m_pHPMeter->SetTag("run", "run", 600, 30);
 	m_pHPMeter->SetPos(400, 30);
 
-	m_pTargetStamp->SetTag("ci", m_pBodyDrawUnit->getWidth() * 1.2f , m_pBodyDrawUnit->getHeight() * 1.2f );
+	m_pTargetStamp->SetTag("target", m_pBodyDrawUnit->getWidth() * 1.2f , m_pBodyDrawUnit->getHeight() * 1.2f );
 	m_pTargetStamp->SetRotateValue(1.0f);
 	m_pTargetStamp->SetLimitTime(5.0f);
 	m_pTargetStamp->GetTrigger()->SetTriggerCondition(3.0f, 1.0f);

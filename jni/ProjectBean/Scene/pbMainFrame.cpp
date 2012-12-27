@@ -5,6 +5,7 @@
  *      Author: NitroPigSoft02
  */
 #include "pbMainFrame.h"
+#include "../Notes/pbNoteProcessor.h"
 namespace nitroFrame{
 pbMainFrame* pbMainFrame::Instance = NULL;
 
@@ -67,21 +68,23 @@ void pbMainFrame::npShowIntro() {
 
 //		pbGlobalInGameVariable::ResetGlobalVariable();
 
+		//FIXLOG[10-10] : 초기화는 공용 오브젝트만 초기화, 다른 초기화는 게임스테이트에 따라 다르게 초기화 한다
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("texture.xml");
+
 		pbUIProcessor::Create();
 		pbCharacter::Create();
 		pbBoss::Create();
 		pbEffectManager::Create();
 		pbComboManager::Create();
+		pbNoteProcessor::Create();
 
 		pbInventory::GetInstance().LoadData();
 		pbVehicle::GetInstance().LoadData();
 /*
 		pbGuideLineGenerator::Create();
-		pbNoteProcessor::Create();*/
-
-		//FIXLOG[10-10] : 초기화는 공용 오브젝트만 초기화, 다른 초기화는 게임스테이트에 따라 다르게 초기화 한다
-		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
-		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
+		*/
 
 		//-------------------------------------------------씬 관련 초기화-------------------------------------------------------------//
 		//---------씬 래퍼 세팅-----------------//
@@ -159,7 +162,15 @@ void pbMainFrame::npGameLoop() {
 	LOGfloatString("FPS:", m_FPS/(float)count);
 #endif
 
-	switch(m_GameStates){
+	if(m_GameStates == GAMEUPDATE) {
+		npGameUpdate();
+	}
+	else if(m_GameStates == GAMECREATE)  {
+		npShowIntro();
+	}
+
+	m_beforeTime = beginTime;
+/*	switch(m_GameStates){
 		case GAMECREATE:{
 			npShowIntro();
 		}
@@ -167,9 +178,9 @@ void pbMainFrame::npGameLoop() {
 			npGameUpdate();
 //			LOGE("UPdate");
 		}
-	}
+	}*/
 
-	m_beforeTime = beginTime;
+
 }
 
 void pbMainFrame::npGameDestroy() {
@@ -178,8 +189,8 @@ void pbMainFrame::npGameDestroy() {
 	pbBoss::Release();
 	pbEffectManager::Release();
 	pbComboManager::Release();
-/*	pbNoteProcessor::Release();
-	pbGuideLineGenerator::Release();
+	pbNoteProcessor::Release();
+/*		pbGuideLineGenerator::Release();
 
 */
 

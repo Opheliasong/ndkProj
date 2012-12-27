@@ -15,6 +15,8 @@ sprite* npFactoryDAO::getSpriteByTAG(screenplayTag tag) {
 	screenMapIter iter;
 	screenplayMap* screenplayContainer = &screenplayStore::getInstance().screenplayContainer;
 
+
+	LOGE("Factory) parm TAG: %s",tag.c_str());
 	iter = screenplayContainer->find(tag);
 	if(iter != screenplayContainer->end()){
 

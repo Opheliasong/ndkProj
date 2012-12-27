@@ -57,8 +57,11 @@ npNativeEvent.cpp\
 /nitroFrame/Render/npRenderProcess.cpp\
 /nitroFrame/Drawable/npDrawable.cpp\
 /nitroFrame/Drawable/npTextureRect.cpp\
+/ProjectBean/Notes/pbNoteElement.cpp\
 /nitroFrame/TouchLayer/TouchObserver.cpp\
 /nitroFrame/TouchLayer/TouchLayer.cpp\
+/nitroFrame/Timer/npTimerObserver.cpp\
+/nitroFrame/Timer/npTimer.cpp\
 /ProjectBean/pbStageValue.cpp\
 /ProjectBean/Scene/pbBasicDrawUnit.cpp\
 /ProjectBean/Scene/pbMainFrame.cpp\
@@ -73,6 +76,12 @@ npNativeEvent.cpp\
 /ProjectBean/Scene/ShopScene/pbItem.cpp\
 /ProjectBean/Scene/ShopScene/pbShop.cpp\
 /ProjectBean/Scene/pbSceneWrapper.cpp\
+/ProjectBean/Notes/pbTargetingNotes.cpp\
+/ProjectBean/Notes/pbDTabNotes.cpp\
+/ProjectBean/Notes/pbLongPressNotes.cpp\
+/ProjectBean/Notes/pbNinjaNotes.cpp\
+/ProjectBean/Notes/pbTabNotes.cpp\
+/ProjectBean/Notes/pbNoteProcessor.cpp\
 /ProjectBean/Trigger/pbStageTrigger.cpp\
 /ProjectBean/Trigger/pbTimeTrigger.cpp\
 /ProjectBean/Actor/pbHPMeter.cpp\

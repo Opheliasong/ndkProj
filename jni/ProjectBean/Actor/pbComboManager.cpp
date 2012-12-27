@@ -53,7 +53,7 @@ void pbComboManager::LoadData() {
 	DataReset();
 
 	SetTextTag("ci", "ci", 150, 35);
-	SetNumberTag("run", "run", 25, 35);
+	SetNumberTag("number", "number", 25, 35);
 	SetPos(440, 410);
 }
 

@@ -250,10 +250,18 @@ obj/local/armeabi-v7a/objs-debug/Game/npNativeEvent.o: \
  jni/./ProjectBean/Scene/../../nitroFrame/npLinkNode.h \
  jni/./ProjectBean/Scene/../../nitroFrame/npMath.h \
  jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npXMLParser.h \
- jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h \
- jni/./ProjectBean/Scene/../../nitroFrame/npTimer.h \
- jni/./ProjectBean/Scene/../../nitroFrame/npSubject.h \
- jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/npRenderTypedef.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Render/Sprite.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Drawable/npDrawable.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchLayer.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchObserver.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Timer/npTimerObserver.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Timer/npTimer.h \
+ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/ctime \
+ jni/./ProjectBean/Scene/../../nitroFrame/Timer/../npLinkNode.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Timer/../npDebugUtill.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Timer/../npNitroFrameMacro.h \
+ jni/./ProjectBean/Scene/../../nitroFrame/Timer/npTimerObserver.h \
  jni/./ProjectBean/Scene/../pbTypes.h \
  jni/./ProjectBean/Scene/../pbStatusWeight.h \
  jni/./ProjectBean/Scene/../stdafx.h \
@@ -785,13 +793,29 @@ jni/./ProjectBean/Scene/../../nitroFrame/npMath.h:
 
 jni/./ProjectBean/Scene/../../nitroFrame/xmlParser/npXMLParser.h:
 
-jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/npRenderTypedef.h:
 
-jni/./ProjectBean/Scene/../../nitroFrame/npTimer.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Render/Sprite.h:
 
-jni/./ProjectBean/Scene/../../nitroFrame/npSubject.h:
+jni/./ProjectBean/Scene/../../nitroFrame/Drawable/npDrawable.h:
 
-jni/./ProjectBean/Scene/../../nitroFrame/npObserver.h:
+jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchLayer.h:
+
+jni/./ProjectBean/Scene/../../nitroFrame/TouchLayer/TouchObserver.h:
+
+jni/./ProjectBean/Scene/../../nitroFrame/Timer/npTimerObserver.h:
+
+jni/./ProjectBean/Scene/../../nitroFrame/Timer/npTimer.h:
+
+D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/ctime:
+
+jni/./ProjectBean/Scene/../../nitroFrame/Timer/../npLinkNode.h:
+
+jni/./ProjectBean/Scene/../../nitroFrame/Timer/../npDebugUtill.h:
+
+jni/./ProjectBean/Scene/../../nitroFrame/Timer/../npNitroFrameMacro.h:
+
+jni/./ProjectBean/Scene/../../nitroFrame/Timer/npTimerObserver.h:
 
 jni/./ProjectBean/Scene/../pbTypes.h:
 

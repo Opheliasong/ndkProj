@@ -6,6 +6,7 @@
  */
 
 #include "pbSceneWrapper.h"
+#include "../Notes/pbNoteProcessor.h"
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-----------------------------------------------------pbSceneWrapper  Base Class------------------------------------------------------------------------------///////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,15 +181,15 @@ void pbPlaySceneWrapper::InitializeScene() {
 	//background
 	BaseTagData.SetData("ci", 800, 480);
 	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(400, 240, BaseTagData, 0.1f);
-	RegistToRenderList(pCreateBG);
+	this->RegistToRenderList(pCreateBG);
 
 	BaseTagData.SetData("ci", 400, 240);
 	pCreateBG = pbBackgroundProcessor::GetInstance().AddMoveBackGround(0, 220, BaseTagData, 0.5f);
-	RegistToRenderList(pCreateBG);
+	this->RegistToRenderList(pCreateBG);
 
 	BaseTagData.SetData("ci", 800, 100);
 	pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(400, 50, BaseTagData, 1.0f);
-	RegistToRenderList(pCreateBG);
+	this->RegistToRenderList(pCreateBG);
 
 
 	//----------------UI------------------------------//
@@ -197,13 +198,13 @@ void pbPlaySceneWrapper::InitializeScene() {
 	this->RegistToRenderList(createUI);
 	//라이프 UI 추가
 	BaseTagData.SetData("ci", 90, 30);
-	SecondTagData.SetData("run", 25, 35);
+	SecondTagData.SetData("number", 25, 35);
 	pbNumber_Indicator* LifeUI = pbUIProcessor::GetInstance()->AddNumberUI(100, 450, BaseTagData, SecondTagData, 1, &(pbStageValue::CalcLifeData));
 	LifeUI->SetNumber(pbStageValue::GetLifeTotal());
 	this->RegistToRenderList(LifeUI);
 	//스코어 UI 추가
 	BaseTagData.SetData("ci", 100, 30);
-	SecondTagData.SetData("run", 25, 35);
+	SecondTagData.SetData("number", 25, 35);
 	pbNumber_Indicator* ScoreUI = pbUIProcessor::GetInstance()->AddNumberUI(125 + 110, 450, BaseTagData, SecondTagData, 9, &(pbStageValue::CalcScoreData));
 	ScoreUI->SetNumber( pbStageValue::GetScoreTotal());
 	this->RegistToRenderList(ScoreUI);
@@ -212,20 +213,20 @@ void pbPlaySceneWrapper::InitializeScene() {
 	createUI = pbUIProcessor::GetInstance()->AddButtonUI(760, 450, BaseTagData, &(pbPlaySceneWrapper::MenuTouch));
 	this->RegistToRenderList(createUI);
 	// 맵 네비게이트
-	pbStageValue::SetStageMaxLength(40000);
+	pbStageValue::SetStageMaxLength(20000);
 	BaseTagData.SetData("ci", 250, 25);
 	createUI = pbUIProcessor::GetInstance()->AddGaugeUI(590, 450, "run", BaseTagData, pbStageValue::GetStageMaxLength(), &(pbStageValue::GetStageX));
 	this->RegistToRenderList(createUI);
 
 	pbComboManager::GetInstance()->LoadData();
-	RegistToRenderList(pbComboManager::GetInstance());
+	this->RegistToRenderList(pbComboManager::GetInstance());
 
 	// 캐릭터
 	pbCharacter::GetInstance()->LoadData(GetTag());
 	pbCharacter::GetInstance()->SetPos(-200, 240);
 	pbCharacter::GetInstance()->SetConditionPos(72.f, 240.f);
 	pbCharacter::GetInstance()->SetTouchFunction(&(pbCharacter::PlayGame_TouchFunc));
-	RegistToRenderList(pbCharacter::GetInstance());
+	this->RegistToRenderList(pbCharacter::GetInstance());
 	GetStageTrigger()->AddPosState(0, &(pbCharacter::Appeared));
 	GetStageTrigger()->AddIDState(pbCharacter::WALKOUT, &(pbCharacter::WalkOut));
 
@@ -234,12 +235,16 @@ void pbPlaySceneWrapper::InitializeScene() {
 	createUI = pbUIProcessor::GetInstance()->AddGaugeUI_RelativePos(pbCharacter::GetMarionette()->GetV2Pos(), 0, -((pbCharacter::GetInstance()->GetHeight()/2) + 15), "run", BaseTagData, pbStageValue::MAX_FEVERGAUGE, &(pbStageValue::GetFeverGauge));
 	this->RegistToRenderList(createUI);
 
+
+	//노트
+	this->RegistToRenderList(pbNoteProcessor::GetInstance());
+
 	// 보스
 	pbBoss::GetInstance()->LoadData();
 	pbBoss::GetMarionette()->SetPosX(1200);pbBoss::GetMarionette()->SetPosY(240);
 	pbBoss::GetInstance()->SetConditionPos(690.0f, 240.0f);
-	RegistToRenderList(pbBoss::GetInstance());
-	GetStageTrigger()->AddPosState(400, &(pbBoss::Approaching));
+	this->RegistToRenderList(pbBoss::GetInstance());
+	GetStageTrigger()->AddPosState(20000, &(pbBoss::Approaching));
 	GetStageTrigger()->AddIDState(pbBoss::DIE, &(pbBoss::PostDieProcess));
 
 	LOGI("pbPlaySceneWrapper InitializeScene Complete");
@@ -250,13 +255,13 @@ void pbPlaySceneWrapper::UpdateScene(float fTime) {
 	if(!GetStageTrigger()->IsPaused())
 	{
 		GetStageTrigger()->Update(fTime);
-
 		pbBackgroundProcessor::GetInstance().Update(fTime);
 		pbUIProcessor::GetInstance()->Update(fTime);
 		pbCharacter::GetInstance()->Update(fTime);
 		pbBoss::GetInstance()->Update(fTime);
 		pbEffectManager::GetInstance()->Update(fTime);
-
+		nitroFrame::npTimer::getInstance().updateTime(fTime);
+		pbNoteProcessor::GetInstance()->Update(fTime);
 	}
 }
 
@@ -274,9 +279,8 @@ void pbPlaySceneWrapper::ClearScene() {
 	pbBoss::GetInstance()->ClearDataStore();
 	pbEffectManager::GetInstance()->ClearDataStore();
 	pbComboManager::GetInstance()->ClearDataStore();
-
-/*	pbNoteProcessor::GetInstance()->ClearDataStore();
-
+	pbNoteProcessor::GetInstance()->ClearDataStore();
+/*
 	pbGuideLineGenerator::GetInstance()->ClearDataStore();
 	*/
 	LOGI("pbPlaySceneWrapper ClearScene Complete");
@@ -301,7 +305,7 @@ void pbResultSceneWrapper::InitializeScene() {
 
 	TAGDATA BaseTagData, SecondTagData;
 	BaseTagData.SetData("ci", 150, 50);
-	SecondTagData.SetData("run", 50, 50);
+	SecondTagData.SetData("number", 50, 50);
 
 	m_ResultViewer->SetPos(200, 0);
 	m_ResultViewer->PushBackScoreView(0, 430, BaseTagData, SecondTagData, pbStageValue::GetScoreTotal());
@@ -353,14 +357,6 @@ pbShopSceneWrapper::~pbShopSceneWrapper() {
 void pbShopSceneWrapper::InitializeScene() {
 	StartFadeIn(0.3f);
 	GetStageTrigger()->Initialize();
-	//골드 UI 추가
-	TAGDATA BaseTagData, SecondTagData;
-	BaseTagData.SetData("ci", 100, 30);
-	SecondTagData.SetData("run", 25, 35);
-	pbNumber_Indicator* GoldUI = pbUIProcessor::GetInstance()->AddNumberUI(650, 450, BaseTagData, SecondTagData, 5, &(pbGoldPouch::CalcGold));
-	GoldUI->SetNumber( pbGoldPouch::GetInstance().GetGold());
-	this->RegistToRenderList(GoldUI);
-
 	// 캐릭터
 	pbCharacter::GetInstance()->LoadData(GetTag());
 	pbCharacter::GetInstance()->SetTouchFunction(&(pbCharacter::Shop_TouchFunc) );
@@ -375,6 +371,15 @@ void pbShopSceneWrapper::InitializeScene() {
 	pbShop::GetInstance().SetPos(0,0);
 	this->RegistToRenderList(&pbShop::GetInstance());
 	LOGI("pbShopSceneWrapper InitializeScene Complete");
+
+	//골드 UI 추가
+	TAGDATA BaseTagData, SecondTagData;
+	BaseTagData.SetData("ci", 100, 30);
+	SecondTagData.SetData("number", 25, 35);
+	pbNumber_Indicator* GoldUI = pbUIProcessor::GetInstance()->AddNumberUI(650, 450, BaseTagData, SecondTagData, 5, &(pbGoldPouch::CalcGold));
+	GoldUI->SetNumber( pbGoldPouch::GetInstance().GetGold());
+	this->RegistToRenderList(GoldUI);
+
 
 	pbStageValue::ResetShopRoute();
 }

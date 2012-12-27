@@ -10,6 +10,11 @@
 
 #include "../stdafx.h"
 
+	namespace SCENESTATE{
+		typedef enum {GAME_NONE = 0, GAME_CREATE , GAME_INTRO, GAME_RESULT, GAME_SHOP, GAME_PLAY,GAME_PAUSE,GAME_DESTROY}GAME;
+		typedef enum {LOAD_NONE = 100, LOAD_INTRO ,LOAD_MAINMENU, LOAD_PLAY, }LOAD;
+		typedef enum {ACTION_NONE = 200, ACTION_FORWARD, ACTION_BACKWARD, ACTION_RECURSIVE, ACTION_SELECT_1, ACTION_SELECT_2, }ACTION;
+	}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////-------------------------------------------------------씬에 대한 상태 기계------------------------------------------------------------------------------///////
