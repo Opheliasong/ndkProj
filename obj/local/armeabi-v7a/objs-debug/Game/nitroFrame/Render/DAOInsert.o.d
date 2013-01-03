@@ -158,7 +158,6 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/Render/DAOInsert.o: \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_io.c \
  jni//nitroFrame/Render/ScreenplayStore.h \
  jni//nitroFrame/Render/../NitroFrame.h \
- D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h. \
  jni//nitroFrame/Render/../npDefTypes.h \
  jni//nitroFrame/Render/../npMath.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/cmath \
@@ -559,8 +558,6 @@ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_string_io.c:
 jni//nitroFrame/Render/ScreenplayStore.h:
 
 jni//nitroFrame/Render/../NitroFrame.h:
-
-D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h.:
 
 jni//nitroFrame/Render/../npDefTypes.h:
 

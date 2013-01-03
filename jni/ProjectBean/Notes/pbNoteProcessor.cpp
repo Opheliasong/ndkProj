@@ -28,6 +28,8 @@ pbNoteDropper::pbNoteDropper() {
 	m_pTargetNoteRentalUnit->Initialize(20);
 	m_pNinjaNoteRentalunit->Initialize(10);
 
+	m_pPatternGenerator = new pbNotePatternGenerator();
+
 	LOGE("Create Note Dropper!");
 }
 pbNoteDropper::~pbNoteDropper() {
@@ -63,9 +65,93 @@ pbNoteDropper::~pbNoteDropper() {
 		delete m_pNinjaNoteRentalunit;
 		m_pNinjaNoteRentalunit = NULL;
 	}
+
+	if(NP_IS_NOT_EMPTY(m_pPatternGenerator)){
+		delete m_pPatternGenerator;
+		m_pPatternGenerator = NULL;
+	}
 }
 
-void pbNoteDropper::NoteDropCheck(){
+void pbNoteDropper::SettingPatternGenerator() {
+	//임시로 수동세팅 한다
+	pbNotePatternGroup* pCreatePatternGroup = NULL;
+
+	float safeDistance;	// 다음 패턴으로 넘어가면 이전 패턴 노트와 겹칠수 있으므로 시작시간을 띄워둬서 거리를 확보한다
+	//패턴 1 : 탭 노트
+	safeDistance = 200;
+	pCreatePatternGroup = new pbNotePatternGroup();
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::TABNOTE, safeDistance + 100, 400);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::TABNOTE, safeDistance + 300, 300);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::TABNOTE, safeDistance + 500, 200);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::TABNOTE, safeDistance + 700, 100);
+	m_pPatternGenerator->AddPatternGroup(pCreatePatternGroup);
+
+	//패턴 2 : 더블탭 노트
+	safeDistance = 300;
+	pCreatePatternGroup = new pbNotePatternGroup();
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::DTABNOTE, safeDistance + 100, 200);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::DTABNOTE, safeDistance + 400, 400);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::DTABNOTE, safeDistance + 700, 100);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::DTABNOTE, safeDistance + 1000, 300);
+	m_pPatternGenerator->AddPatternGroup(pCreatePatternGroup);
+
+	//패턴 3 : 롱 노트
+	safeDistance = 900;
+	pCreatePatternGroup = new pbNotePatternGroup();
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 100, 200);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 1000, 400);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 1900, 100);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 2800, 300);
+	m_pPatternGenerator->AddPatternGroup(pCreatePatternGroup);
+
+	//패턴 4 : 닌자 노트
+	safeDistance = 300;
+	pCreatePatternGroup = new pbNotePatternGroup();
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::NINJA, safeDistance + 100, 200);
+	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 400, 400);
+	m_pPatternGenerator->AddPatternGroup(pCreatePatternGroup);
+}
+
+void pbNoteDropper::NoteDropCheck(float fTime){
+	m_pPatternGenerator->Update(fTime);
+
+	pbNotePattern* pPattern = m_pPatternGenerator->GetCurrentPattern();
+	if( pPattern != NULL) {
+		int type = pPattern->m_NoteType;
+		float PosY = pPattern->m_fPosY;
+		if(type == pbNoteElement::TABNOTE ) {
+			pbTabNotes* newOne = m_pTargetNoteRentalUnit->RentalMemory();
+			newOne->ResetNoteState();
+			newOne->setNotePosition(900,PosY);
+			newOne->setTargetMarkSize(65.f,65.f);
+			pbNoteProcessor::GetInstance()->AddNotes(newOne);
+		}
+		else if(type == pbNoteElement::DTABNOTE ) {
+			pbDTabNotes* newOne = m_pDoubleTapNoteRentalUnit->RentalMemory();
+			newOne->ResetNoteState();
+			newOne->setNotePosition(900, PosY);
+			newOne->setTargetMarkSize(65.f,65.f);
+			pbNoteProcessor::GetInstance()->AddNotes(newOne);
+		}
+		else if(type == pbNoteElement::LONGPRESS ) {
+			pbLongPressNotes* newOne = m_pLongNoteRentalUnit->RentalMemory();
+			newOne->ResetNoteState();
+			newOne->setNotePosition(900,PosY);
+			newOne->setTargetMarkSize(65.f,65.f);
+			pbNoteProcessor::GetInstance()->AddNotes(newOne);
+		}
+		else if(type == pbNoteElement::NINJA ) {
+			pbNinjaNotes* newOne = m_pNinjaNoteRentalunit->RentalMemory();
+			newOne->ResetNoteState();
+			newOne->setNotePosition(900,PosY);
+			newOne->setNoteSize(110.f,110.f);
+			newOne->setTargetMarkSize(65.f,65.f);
+			pbNoteProcessor::GetInstance()->AddNotes(newOne);
+		}
+
+		//패턴 사용후 리셋
+		m_pPatternGenerator->ResetCurrentPattern();
+	}
 }
 
 void pbNoteDropper::RemoveNoteAndReturningMemory(pbNoteElement* pNote) {
@@ -190,24 +276,26 @@ void pbNoteProcessor::Create(){
 
 		LOGI("pbNoteProcess Initialize Complete");
 		//NoteDropper 타이머 등록
-		nitroFrame::npTimer::getInstance().registerObserver(SingleObject->m_NoteDropper,nitroFrame::npTimer::REPEATLOOP,1120.f);
+		//nitroFrame::npTimer::getInstance().registerObserver(SingleObject->m_NoteDropper,nitroFrame::npTimer::REPEATLOOP,1120.f);
 		return;
 	}
 
 	LOGE("pbNoteProcess Initialize Failed");
 }
 
+void pbNoteProcessor::LoadData() {
+	m_NoteDropper->SettingPatternGenerator();
+}
+
 void pbNoteProcessor::Update(float time){
-	npLinkNode<pbNoteElement*>* iterator;
-	npLinkNode<pbNoteElement*>* head = m_ControlledNoteStore;
+	m_NoteDropper->NoteDropCheck(time);
 	//1)delete Stack에 올라간 Note가 존재하는지 확인.
 	DeleteStackArrangement();
 	CheckMissNote();
 	CheckTargetingAbleOrUnalbe();
 
-//	m_NoteDropper->NoteDropCheck();
-
-
+	npLinkNode<pbNoteElement*>* iterator;
+	npLinkNode<pbNoteElement*>* head = m_ControlledNoteStore;
 	iterator = head->getNext();
 	while (iterator != head) {
 		pbNoteElement* pNote = iterator->getKernel();

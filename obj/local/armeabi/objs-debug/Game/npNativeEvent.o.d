@@ -161,7 +161,6 @@ obj/local/armeabi/objs-debug/Game/npNativeEvent.o: jni/npNativeEvent.cpp \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/KHR/khrplatform.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glext.h \
  jni/./ProjectBean/Scene/../../nitroFrame/NitroFrame.h \
- D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h. \
  jni/./ProjectBean/Scene/../../nitroFrame/npDefTypes.h \
  jni/./ProjectBean/Scene/../../nitroFrame/npDebugUtill.h \
  jni/./ProjectBean/Scene/../../nitroFrame/npMath.h \
@@ -615,8 +614,6 @@ D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/KHR/khrplatform.h:
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/glext.h:
 
 jni/./ProjectBean/Scene/../../nitroFrame/NitroFrame.h:
-
-D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h.:
 
 jni/./ProjectBean/Scene/../../nitroFrame/npDefTypes.h:
 

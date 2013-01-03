@@ -17,6 +17,8 @@
 #include "pbLongPressNotes.h"
 #include "pbNinjaNotes.h"
 
+#include "pbNotePatternGenerator.h"
+
 class pbNoteElement;
 //class pbTabNotes;
 //class pbDTabNotes;
@@ -29,7 +31,9 @@ public:
 	pbNoteDropper();
 	~pbNoteDropper();
 
-	void NoteDropCheck();
+	void SettingPatternGenerator();	//PatternGenerator XML 세팅하는곳
+
+	void NoteDropCheck(float fTime);	//PatternGenerator에 의해서 노트를 생성
 
 	void onTimeAlerts();		//Timer에 의해서 Event Signal이 발생하였을 경우 작동될 로직
 
@@ -47,6 +51,9 @@ private:
 	pbMemoryRentalUnit<pbDTabNotes>* m_pDoubleTapNoteRentalUnit;
 	pbMemoryRentalUnit<pbLongPressNotes>* m_pLongNoteRentalUnit;
 	pbMemoryRentalUnit<pbNinjaNotes>* m_pNinjaNoteRentalunit;
+
+	//패턴 제너레이터
+	pbNotePatternGenerator* m_pPatternGenerator;
 };
 
 //======================================================================================//
@@ -61,6 +68,9 @@ private:
 
 public:
 	static void Create();
+
+	//XML 파싱 하는 곳
+	void LoadData();
 
 	//AddNotes 함수군.
 	void AddNotes(pbTabNotes* TabNote)	;
@@ -97,6 +107,7 @@ private:
 	pbNoteDropper* m_NoteDropper;
 	npLinkNode<pbNoteElement*>* m_ControlledNoteStore;
 	npLinkNode<pbNoteElement*>* m_deleteStacks;
+
 };
 
 #endif /* PBNOTEPROCESSER_H_ */

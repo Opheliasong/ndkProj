@@ -2,7 +2,7 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/Render/ScreenplayStore.o: \
  jni//nitroFrame/Render/ScreenplayStore.cpp \
  jni//nitroFrame/Render/ScreenplayStore.h \
  jni//nitroFrame/Render/../NitroFrame.h \
- D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h. \
+ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stdio.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_cprolog.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/config/features.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_stlport_version.h \
@@ -14,9 +14,6 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/Render/ScreenplayStore.o: \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/config/_gcc.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/config/stl_confix.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/config/_native_headers.h \
- D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_epilog.h \
- D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h \
- D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stdio.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/stdio.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/sys/cdefs.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/sys/cdefs_elf.h \
@@ -34,6 +31,8 @@ obj/local/armeabi-v7a/objs-debug/Game//nitroFrame/Render/ScreenplayStore.o: \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/linux/types.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/machine/kernel.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/sys/sysmacros.h \
+ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_epilog.h \
+ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stdlib.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/stdlib.h \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/string.h \
@@ -242,7 +241,7 @@ jni//nitroFrame/Render/ScreenplayStore.h:
 
 jni//nitroFrame/Render/../NitroFrame.h:
 
-D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h.:
+D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stdio.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_cprolog.h:
 
@@ -265,12 +264,6 @@ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/config/_gcc.h:
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/config/stl_confix.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/config/_native_headers.h:
-
-D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_epilog.h:
-
-D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h:
-
-D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stdio.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/stdio.h:
 
@@ -305,6 +298,10 @@ D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/linux/types.h:
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/machine/kernel.h:
 
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/sys/sysmacros.h:
+
+D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_epilog.h:
+
+D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stdlib.h:
 

@@ -141,7 +141,6 @@ obj/local/armeabi/objs-debug/Game//nitroFrame/Render/Sprite.o: \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h \
  jni//nitroFrame/Render/ScreenplayStore.h \
  jni//nitroFrame/Render/../NitroFrame.h \
- D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h. \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/assert.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/assert.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/GLES/gl.h \
@@ -522,8 +521,6 @@ D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h:
 jni//nitroFrame/Render/ScreenplayStore.h:
 
 jni//nitroFrame/Render/../NitroFrame.h:
-
-D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h.:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/assert.h:
 

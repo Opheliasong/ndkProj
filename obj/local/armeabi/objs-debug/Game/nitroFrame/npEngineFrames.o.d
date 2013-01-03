@@ -147,7 +147,6 @@ obj/local/armeabi/objs-debug/Game//nitroFrame/npEngineFrames.o: \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager_jni.h \
  jni//nitroFrame/NitroFrame.h \
- D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h. \
  D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/assert.h \
  D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/../include/assert.h \
  jni//nitroFrame/log.h jni//nitroFrame/npDefTypes.h \
@@ -531,8 +530,6 @@ D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manag
 D:/SDKs/android-ndk/platforms/android-9/arch-arm/usr/include/android/asset_manager_jni.h:
 
 jni//nitroFrame/NitroFrame.h:
-
-D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/stddef.h.:
 
 D:/SDKs/android-ndk/sources/cxx-stl/stlport/stlport/assert.h:
 

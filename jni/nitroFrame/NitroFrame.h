@@ -8,14 +8,13 @@
 #ifndef NPNITROFRAME_H_
 #define NPNITROFRAME_H_
 
-#include <stddef.h.>
+//#include <stddef.h.>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include <GLES/gl.h>
 #include <GLES/glext.h>
-#include <stdlib.h>
 
 #include "log.h"
 #include "npDefTypes.h"

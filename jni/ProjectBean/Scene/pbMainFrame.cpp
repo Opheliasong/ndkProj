@@ -79,6 +79,7 @@ void pbMainFrame::npShowIntro() {
 		pbEffectManager::Create();
 		pbComboManager::Create();
 		pbNoteProcessor::Create();
+		pbNoteProcessor::GetInstance()->LoadData();
 
 		pbInventory::GetInstance().LoadData();
 		pbVehicle::GetInstance().LoadData();

@@ -76,6 +76,8 @@ npNativeEvent.cpp\
 /ProjectBean/Scene/ShopScene/pbItem.cpp\
 /ProjectBean/Scene/ShopScene/pbShop.cpp\
 /ProjectBean/Scene/pbSceneWrapper.cpp\
+/ProjectBean/Notes/pbNotePatternGroup.cpp\
+/ProjectBean/Notes/pbNotePatternGenerator.cpp\
 /ProjectBean/Notes/pbTargetingNotes.cpp\
 /ProjectBean/Notes/pbDTabNotes.cpp\
 /ProjectBean/Notes/pbLongPressNotes.cpp\
