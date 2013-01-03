@@ -1,0 +1,126 @@
+<texture
+    filename="running.png"
+    height="512"
+    width="512" >
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="102"
+        x="0"
+        y="0" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="101"
+        x="102"
+        y="0" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="101"
+        x="203"
+        y="0" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="101"
+        x="304"
+        y="0" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="102"
+        x="405"
+        y="0" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="102"
+        x="0"
+        y="102" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="101"
+        x="102"
+        y="102" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="101"
+        x="203"
+        y="102" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="101"
+        x="304"
+        y="102" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="102"
+        x="405"
+        y="102" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="102"
+        x="0"
+        y="204" >
+run.png
+    </sprite>
+
+    <sprite
+        height="102"
+        tag="run"
+        transformpoint="center"
+        width="101"
+        x="102"
+        y="204" >
+run.png
+    </sprite>
+
+</texture>
