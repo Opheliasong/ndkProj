@@ -1,5 +1,7 @@
 package nps.nitroframe.lib;
 
+import android.util.Log;
+
 public class npNativeEvent {
 	public static native void npSurfaceCreate(int width, int height,Object asset, String apkPath);
 	public static native void npSurfaceChanged(int width, int height);
@@ -21,4 +23,9 @@ public class npNativeEvent {
 	public static native void npAndroidStatePause(int state);
 	public static native void npOnResume();
 	public static native void npOnPause();
+	
+	public static void staticKillProcess(){
+		Log.e("","Call Kill Process");
+		android.os.Process.killProcess(android.os.Process.myPid());
+	}
 }

@@ -61,14 +61,22 @@ void pbMemoryRentalUnit<T>::Initialize(int Size){
 }
 template <typename T>
 void pbMemoryRentalUnit<T>::Release(){
+	LOGE("pbMemoryRentalUnit::Release() DEBUG 1-1");
 	if( m_pMemoryStore != NULL)
 	{
+		LOGE("pbMemoryRentalUnit::Release() DEBUG 1-2");
 		delete[] m_pMemoryStore;
+		LOGE("pbMemoryRentalUnit::Release() DEBUG 1-3");
 	}
 
-	if( m_piDestroyedIndexArray != NULL)
+	LOGE("pbMemoryRentalUnit::Release() DEBUG 2-1");
+	if( m_piDestroyedIndexArray != NULL) {
+		LOGE("pbMemoryRentalUnit::Release() DEBUG 2-2");
 		free(m_piDestroyedIndexArray);
+		LOGE("pbMemoryRentalUnit::Release() DEBUG 2-3");
+	}
 
+	LOGE("pbMemoryRentalUnit::Release() DEBUG 3");
 	m_pMemoryStore = NULL;
 	m_piDestroyedIndexArray = NULL;
 	//LOGI("RentalUnit Release");

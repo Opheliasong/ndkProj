@@ -9,6 +9,14 @@
 #define PBNOTEELEMENT_H_
 
 #include "../stdafx.h"
+#include "../../nitroFrame/Render/npRenderTypedef.h"
+#include "../../nitroFrame/Render/Sprite.h"
+#include "../../nitroFrame/Drawable/npDrawable.h"
+#include "../../nitroFrame/TouchLayer/TouchLayer.h"
+#include "../../nitroFrame/TouchLayer/TouchObserver.h"
+#include "../../nitroFrame/Timer/npTimerObserver.h"
+#include "../Scene/pbBasicDrawUnit.h"
+#include "../pbTypes.h"
 
 class pbNoteElement: public npDrawable, public iTouchObserver, public npTimerObserver {
 public:
@@ -36,6 +44,7 @@ public:
 	virtual void setNotePosition(float x, float y);
 	void setNoteSize(float width, float height);
 
+	void NoteIsDead();
 protected:
 	virtual void ReleaseNote();
 	npTextureRect* BodyActor;

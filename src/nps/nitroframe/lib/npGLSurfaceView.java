@@ -3,12 +3,14 @@ package nps.nitroframe.lib;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -91,6 +93,8 @@ public class npGLSurfaceView extends GLSurfaceView {
 			Display display = ((WindowManager)m_Context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 			m_Width = display.getWidth();
 			m_Height = display.getHeight();
+			Log.e("","display Width : "+display.getWidth());
+			Log.e("","display height : "+display.getHeight());
 		}catch(Exception e){
 			Log.e("GLView", "GLView CTOR Exception: "+e.toString());
 		}
@@ -136,6 +140,7 @@ public class npGLSurfaceView extends GLSurfaceView {
 	 * brif : 터치 이벤트에 관련된 로직 수행
 	 * runalbe을 이용하여 EventQueue에 등록하여 수행하게 한다.
 	*/
+	@TargetApi(Build.VERSION_CODES.ECLAIR)
 	@Override
 	public boolean onTouchEvent(MotionEvent event) 
 	{
@@ -174,6 +179,7 @@ public class npGLSurfaceView extends GLSurfaceView {
 		return false;
 	}
 	
+	@TargetApi(Build.VERSION_CODES.ECLAIR)
 	private void sendNativeTouchEvent(MotionEvent event,final int action, final int pointerIndex){
 		final float x = event.getX(pointerIndex);
 		final float y = event.getY(pointerIndex);
@@ -206,7 +212,8 @@ public class npGLSurfaceView extends GLSurfaceView {
     	return false;
     }
     
-    public boolean dualTouchEventProcess(MotionEvent event){
+    @TargetApi(Build.VERSION_CODES.ECLAIR)
+	public boolean dualTouchEventProcess(MotionEvent event){
     	int action = event.getAction();
     	
     	switch(action & MotionEvent.ACTION_MASK){
@@ -247,7 +254,8 @@ public class npGLSurfaceView extends GLSurfaceView {
     	return false;
     }
     
-    public boolean detourDualProcess(MotionEvent event){
+    @TargetApi(Build.VERSION_CODES.ECLAIR)
+	public boolean detourDualProcess(MotionEvent event){
     	int action = event.getAction();
     	
     	switch(action & MotionEvent.ACTION_MASK){
@@ -291,5 +299,14 @@ public class npGLSurfaceView extends GLSurfaceView {
 			npNativeEvent.npDoubleTap((int)event.getX(), (int)event.getY());
 			return true;
 		}
+	}
+	
+	public void onDestroy(){
+		queueEvent(new Runnable() {
+			
+		public void run() {
+			m_renderer.onDestroy();
+		}
+		});
 	}
 }

@@ -24,8 +24,6 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNI
 		str = env->GetStringUTFChars(apkPath, &isCopy);
 		gameFrame->npGameCreate(env,w,h, assetManager, str);
 	}*/
-	//LOGE("Width :%d", w);
-	//LOGE("Height :%d", h);
 	JavaVM* javaVm;
 	env->GetJavaVM(&javaVm);
 
@@ -35,6 +33,7 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npSurfaceCreate(JNI
 	LOGE("Create & Initialize Framework");
 	nitroFrame::pbMainFrame::GetInstance()->npGameCreate(env,str);
 	npRenderprocess::getInstance().setDeviceResolution(w,h);
+	LOGE("Device Width : %d / Device Height : %d", w,h);
 	//npRenderprocess::getInstance().setRenderingResolution(480,800);
 	npRenderprocess::getInstance().setRenderingResolution(800,480);
 
@@ -88,12 +87,39 @@ JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npUpdateGame(JNIEnv
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npDestroy(JNIEnv* env, jclass thiz)
 {
+	//1) env empty test
+	if(env == NULL){
+		return;
+	}
+
+	//2) Memory reelase
 	/*
 	projectBean::pbProjectBeanFrame* gameFrame = projectBean::pbProjectBeanFrame::MainFrame;
 	gameFrame->npGameDestroy();
 	delete projectBean::pbProjectBeanFrame::MainFrame;
 	*/
 	nitroFrame::pbMainFrame::GetInstance()->npGameDestroy();
+
+
+	//3) Java VM get & empty test
+	static JavaVM* s_JavaVM = NULL;
+	if(s_JavaVM == NULL){
+		env->GetJavaVM(&s_JavaVM);
+	}
+
+	//Current thread attach
+	s_JavaVM->AttachCurrentThread(&env,NULL);
+
+	//Method setting
+	jclass nativeClass = env->FindClass("nps/nitroframe/lib/npNativeEvent");
+	jmethodID methodID = env->GetStaticMethodID(nativeClass,"staticKillProcess","()V");
+
+	if(methodID == NULL || nativeClass == NULL){
+		return;
+	}
+
+	//method call
+	env->CallStaticVoidMethod(nativeClass,methodID);
 }
 
 JNIEXPORT void JNICALL Java_nps_nitroframe_lib_npNativeEvent_npRendering(JNIEnv *env, jclass thiz){

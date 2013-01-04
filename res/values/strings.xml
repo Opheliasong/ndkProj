@@ -4,5 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="alertExitMsg">게임을 종료 하시겠습니까?</string>
+    <string name="alertExitTitle">종료하시겠습니까?</string>
+    <string name="alertExitYES">네.</string>
+    <string name="alertExitNO">아니요.</string>
 
 </resources>

@@ -401,6 +401,19 @@ void pbNoteProcessor::CheckTargetingAbleOrUnalbe() {
 	}
 }
 
+void pbNoteProcessor::PushExterminateButton() {
+	npLinkNode<pbNoteElement*>* iterator;
+	npLinkNode<pbNoteElement*>* head = m_ControlledNoteStore;
+
+	iterator = head->getNext();
+	while (iterator != head) {
+		pbNoteElement* pNote = iterator->getKernel();
+		iterator = iterator->getNext();
+		pNote->NoteIsDead();
+	}
+
+}
+
 void pbNoteProcessor::ClearDataStore(){
 	if( m_ControlledNoteStore != NULL) {
 		npLinkNode<pbNoteElement*>::clearList(m_ControlledNoteStore);

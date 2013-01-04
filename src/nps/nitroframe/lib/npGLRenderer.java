@@ -45,9 +45,12 @@ public class npGLRenderer implements Renderer {
 		}
     	last = now;
 	}
+	
+	public void onDestroy(){
+		npNativeEvent.npDestroy();
+	}
 
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
-		// TODO Auto-generated method stub
 		npNativeEvent.npSurfaceChanged(width, height);		
 	}
 

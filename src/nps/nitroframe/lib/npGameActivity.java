@@ -1,12 +1,16 @@
 package nps.nitroframe.lib;
 
+import nps.nitroframe.test.R;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 
 /**
@@ -37,6 +41,30 @@ public class npGameActivity extends Activity {
 		this.GLSurfaceView.NativeInitialize();
 	}
 	
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event){
+		switch(keyCode){
+		case KeyEvent.KEYCODE_BACK:
+			String alertTitle = getResources().getString(R.string.alertExitTitle);
+			String alertText = getResources().getString(R.string.alertExitMsg);
+			String alertYesBTN = getResources().getString(R.string.alertExitYES);
+			String alertNoBTN = getResources().getString(R.string.alertExitNO);
+			
+		    new AlertDialog.Builder(this)
+		      .setTitle(alertTitle)
+		      .setMessage(alertText)
+		      .setPositiveButton(alertYesBTN, new DialogInterface.OnClickListener() {
+		       
+		       public void onClick(DialogInterface dialog, int which) {
+		    	   npGameActivity.this.onDestory();
+		       }
+		      })
+		      .setNegativeButton(alertNoBTN, null)
+		      .show();
+		     }
+		    return true;
+	}
+	
 	//onResume 이벤트 처리
 	protected void onResume(){
 		super.onResume();
@@ -46,5 +74,10 @@ public class npGameActivity extends Activity {
 	protected void onPause(){
 		super.onPause();
 		this.GLSurfaceView.onPause();
+	}
+	
+	public void onDestory(){
+		super.onDestroy();
+		this.GLSurfaceView.onDestroy();
 	}
 }

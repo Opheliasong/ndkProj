@@ -578,9 +578,6 @@ pbEffectManager::pbEffectManager(){
 
 }
 pbEffectManager::~pbEffectManager(){
-	if(SingleObject != NULL) {
-		ClearDataStore();
-	}
 }
 
 
@@ -721,7 +718,6 @@ void pbEffectManager::Release()
 			SingleObject->m_pHomingMissileEffectRentalUnit = NULL;
 		}
 
-
 		if( SingleObject->m_pEffectLinkHeader != NULL) {
 			delete SingleObject->m_pEffectLinkHeader;
 			SingleObject->m_pEffectLinkHeader =NULL;
@@ -729,6 +725,8 @@ void pbEffectManager::Release()
 
 		delete SingleObject;
 		SingleObject = NULL;
+
+		LOGE("pbEffectManager::Release() Complete");
 	}
 }
 

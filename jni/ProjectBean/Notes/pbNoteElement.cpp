@@ -11,6 +11,10 @@
 pbNoteElement::pbNoteElement() {
 	m_bEndPhase = false;
 	noteState = NOTECREATE;
+
+	BodyActor = 0;
+	Effector = 0;
+	DeadActor = 0;
 }
 
 pbNoteElement::~pbNoteElement() {
@@ -93,7 +97,7 @@ bool pbNoteElement::IsHitThis() {
 	int TouchPointY = TouchLayer::GetInstance().pointY;
 
 	//TODO 해상도의 Width에 맞추어서 Remaster 할 수 있게 하자.
-	float RemasteredY = npRenderprocess::getInstance().getDeviceWidth() - TouchPointY;
+//	float RemasteredY = 480.f - TouchPointY;
 
 	if(TouchPointX > left && TouchPointX < right){
 		if(TouchPointY < top && TouchPointY > bottom){
@@ -102,6 +106,11 @@ bool pbNoteElement::IsHitThis() {
 	}
 	return false;
 }
+
+void pbNoteElement::NoteIsDead() {
+	this->m_bEndPhase = true;
+}
+
 
 
 

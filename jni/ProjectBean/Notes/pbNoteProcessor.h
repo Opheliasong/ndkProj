@@ -98,6 +98,8 @@ public:
 	static pbNoteDropper* GetNoteDropper() { return SingleObject->m_NoteDropper; }
 
 	void RequestRemoveNote(pbNoteElement* pNote);
+
+	void PushExterminateButton();
 private:
 	void CheckMissNote();
 	void CheckTargetingAbleOrUnalbe();

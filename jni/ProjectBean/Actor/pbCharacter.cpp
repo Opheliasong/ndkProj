@@ -1,4 +1,5 @@
 #include "pbCharacter.h"
+#include "../Notes/pbNoteProcessor.h"
 
 using namespace projectBean;
 
@@ -265,7 +266,7 @@ void pbCharacter::WalkOut() {
 ///////---------------------------------------------------------------------Fever-----------------------------------------------------------------------------------------------//
 void pbCharacter::FeverEffectOn() {
 	/////TODO:: 피버시 동작
-
+	pbNoteProcessor::GetInstance()->PushExterminateButton();
 /*	m_iFeverEffectMode = FEVER_EXPAND;
 	m_fFeverEffectDistance = 0.0f;
 	m_fFeverDestDistance = FEVER_DISTANCE_EXPLOSION;*/
