@@ -29,3 +29,7 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+.cproject
+.project
+.settings/org.eclipse.core.runtime.prefs
+gen/nps/nitroframe/test/R.java
