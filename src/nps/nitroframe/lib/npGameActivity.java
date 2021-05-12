@@ -39,6 +39,8 @@ public class npGameActivity extends Activity {
 		this.GLSurfaceView = new npGLSurfaceView(this, this.assetManager);
 		this.setContentView(this.GLSurfaceView);
 		this.GLSurfaceView.NativeInitialize();
+		
+		Log.e("", "call on Create");
 	}
 	
 	
@@ -69,6 +71,21 @@ public class npGameActivity extends Activity {
 	protected void onResume(){
 		super.onResume();
 		this.GLSurfaceView.onResume();
+	}
+	
+	protected void onStop(){
+		super.onStop();
+		Log.e("", "Activity call on stop");
+	}
+	
+	protected void onStart(){
+		super.onStart();
+		Log.e("", "Activity call on Start");
+	}
+	
+	protected void onRestart(){
+		super.onRestart();
+		Log.e("","Activity call on restart");
 	}
 	
 	protected void onPause(){

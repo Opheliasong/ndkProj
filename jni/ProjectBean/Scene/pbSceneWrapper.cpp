@@ -179,7 +179,7 @@ void pbPlaySceneWrapper::InitializeScene() {
 
 	TAGDATA BaseTagData, SecondTagData;
 	//background
-	BaseTagData.SetData("ci", 800, 480);
+	BaseTagData.SetData("back", 800, 480);
 	pbBackground* pCreateBG = pbBackgroundProcessor::GetInstance().AddScrollBackGround(400, 240, BaseTagData, 0.1f);
 	this->RegistToRenderList(pCreateBG);
 

@@ -12,7 +12,7 @@ pbTabNotes::pbTabNotes() {
 
 	LOGE("pbTabNotes()");
 
-	this->BodyActor = new npTextureRect("normal");
+	this->BodyActor = new npTextureRect("dog");
 	this->BodyActor->SetPosition(&this->positionX, &this->positionY);
 
 	this->TargetMarker = new npTextureRect("target");

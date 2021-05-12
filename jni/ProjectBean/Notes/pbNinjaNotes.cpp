@@ -16,7 +16,7 @@ pbNinjaNotes::pbNinjaNotes() {
 	this->avoidPoints = 3;
 	this->DoAvoid = false;
 
-	this->BodyActor = new npTextureRect("ghost");
+	this->BodyActor = new npTextureRect("vampire");
 	this->BodyActor->SetPosition(&this->positionX, &this->positionY);
 
 	this->TargetMarker = new npTextureRect("target");

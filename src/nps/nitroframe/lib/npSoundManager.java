@@ -84,7 +84,7 @@ public class npSoundManager {
 	 * 
 	 */
 	
-	static public void PlayEffectSound(int key){
+	static public void PlayEffectSound(int key) {
 		
 	   	float streamCurrent = m_AudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 	   	float streamMax = m_AudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);

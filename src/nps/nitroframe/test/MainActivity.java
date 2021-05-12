@@ -1,6 +1,8 @@
 package nps.nitroframe.test;
 
 import nps.nitroframe.lib.npGameActivity;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.NativeActivity;

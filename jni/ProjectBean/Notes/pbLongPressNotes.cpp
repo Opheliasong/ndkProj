@@ -13,7 +13,7 @@ pbLongPressNotes::pbLongPressNotes() {
 	this->pressTime = 0;
 	this->RequirePressTouchTime = 1000.f;
 
-	this->BodyActor = new npTextureRect("knight");
+	this->BodyActor = new npTextureRect("Circle");
 	this->BodyActor->SetPosition(&this->positionX, &this->positionY);
 
 	this->TargetMarker = new npTextureRect("target");
@@ -85,9 +85,13 @@ void pbLongPressNotes::onTimeAlerts() {
 
 void pbLongPressNotes::Update(float fTime) {
 //	float x = positionX + pbGlobalInGameVariable::fWorldMoveX;
-	//float x = positionX;
-	float x = positionX - (pbStageValue::GetStageMoveSpeed()*fTime);
-	float y = positionY;
+//	float x = positionX;
+	float x = this->positionX;
+	float y = this->positionY;
+	if(this->pressOn == false){
+		x = positionX - (pbStageValue::GetStageMoveSpeed()*fTime);
+		y = positionY;
+	}
 
 	setNotePosition(x,y);
 	pbTargetingNotes::Update(fTime);

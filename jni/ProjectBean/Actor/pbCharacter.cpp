@@ -47,14 +47,13 @@ void pbCharacter::LoadData(sceneTag RegistSceneTag) {
 	m_RegistSceneTag.clear();
 	m_RegistSceneTag.append(RegistSceneTag);
 
-	m_pBodyDrawUnit->SetTextureTAG("run");
+	//TODO : 메인 캐릭터 TAG 설정
+	m_pBodyDrawUnit->SetTextureTAG("witch");
 	m_pBodyDrawUnit->SetSize(104, 110);
 
 	//----------탈것 세팅----------//
 	m_fVehiclePosY = -(m_pBodyDrawUnit->getHeight()/4) ;
 	pbVehicle::GetInstance().ChangeVehicle(pbInventory::GetInstance().GetMountedItemCode());
-
-
 
 	/////-----------------------------마리오네트 ---------------------------------------//
 	m_pMarionette->AddLineMoveState(APPEARED, 200, 0, &(pbCharacter::AppearedCondition));

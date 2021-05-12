@@ -96,7 +96,7 @@ void npContainerDAO::LoadTextureByXMLpath(const char* xmlPath) {
 	LOGE("Load Texture By XML Path: %s",xmlPath);
 
 	InsertXMLParser->SetupXMLPath(xmlPath);
-	LOGE("Done Setup XML path");
+//	LOGE("Done Setup XML path");
 	InsertXMLParser->DoParsing();
 }
 

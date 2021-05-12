@@ -72,6 +72,10 @@ void pbMainFrame::npShowIntro() {
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
 		npContainerDAO::GetInstance().LoadTextureByXMLpath("texture.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("witch.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("longnote_sprite.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("Dog_sprite.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("vampire_sprite.xml");
 
 		pbUIProcessor::Create();
 		pbCharacter::Create();
@@ -139,7 +143,7 @@ void pbMainFrame::npShowIntro() {
 		pbSceneNavigator::GetInstance().SearchAndReadyToMoveScene(SCENESTATE::ACTION_FORWARD);
 
 		m_bFirstLoad = true;
-		LOGI("pbMainFrame::npShowIntro() Complete");
+//		LOGI("pbMainFrame::npShowIntro() Complete");
 
 		m_GameStates = GAMEUPDATE;
 

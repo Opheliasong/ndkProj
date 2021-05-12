@@ -81,8 +81,8 @@ char* npXMLParser::OpenAssetsByPath(xmlPath path) {
 		LOGE("XMLparser) not open zipFile");
 		return NULL;
 	}
-	LOGE("done zip fopen");
-	LOGE("zip Left Bytes: %d",apkZipFile->bytes_left);
+//	LOGE("done zip fopen");
+//	LOGE("zip Left Bytes: %d",apkZipFile->bytes_left);
 
 	char* buffer= new char[apkZipFile->bytes_left];
 	zip_fread(apkZipFile,buffer,apkZipFile->bytes_left);

@@ -20,11 +20,6 @@
 #include "pbNotePatternGenerator.h"
 
 class pbNoteElement;
-//class pbTabNotes;
-//class pbDTabNotes;
-//class pbLongPressNotes;
-//class pbNinjaNotes;
-
 //--------------------------------Note Droper------------------------------------------------------------------------------------//
 class pbNoteDropper : public npTimerObserver{
 public:

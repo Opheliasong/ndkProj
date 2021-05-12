@@ -64,6 +64,14 @@ void pbMainFrame::npShowIntro() {
 		npRenderprocess::getInstance().setLookat(-400.0f, -240.0f,  0.0f,
 																	-400.0f , -240.0f,  -1.0f,
 																	0.0f,1.0f,0.0f);
+
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("texture.xml");
+		LOGE("Load Texture xmls ci+running+texture");
+		npContainerDAO::GetInstance().LoadTextureByXMLpath("witch.xml");
+		LOGE("Load Texture witchs xml");
+
 		//XMLParsingBufferCreater::GetInstance().SetArchive(apkPath);
 		pbUIProcessor::Create();
 //		pbCharacter::Create();
@@ -71,16 +79,10 @@ void pbMainFrame::npShowIntro() {
 		pbEffectProcess::Create();
 		pbGuideLineGenerator::Create();
 		pbComboManager::Create();
-
 		pbBoss::Create();
-
 		pbNoteProcessor::Create();*/
-
 		//FIXLOG[10-10] : 초기화는 공용 오브젝트만 초기화, 다른 초기화는 게임스테이트에 따라 다르게 초기화 한다
 //		npContainerDAO::GetInstance().LoadTextureByXMLpath("ScriptTexture.xml");
-		npContainerDAO::GetInstance().LoadTextureByXMLpath("ci.xml");
-		npContainerDAO::GetInstance().LoadTextureByXMLpath("running.xml");
-		npContainerDAO::GetInstance().LoadTextureByXMLpath("texture.xml");
 
 		//노트 Process 관련 시작
 		pbNoteProcessor::Create();

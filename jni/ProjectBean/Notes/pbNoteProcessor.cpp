@@ -5,249 +5,6 @@
  *      Author: NitroPigSoft02
  */
 #include "pbNoteProcessor.h"
-//#include "npTimer.h"
-//#include "pbTouchLayer.h"
-//#include "pbRenderProcess.h"
-//#include "pbDataStorage.h"
-
-//=======================================
-//Note Process Area
-//=======================================
-pbNoteDropper::pbNoteDropper() {
-	//m_pDriedNoteArray = new pbDriedNoteArray;
-	m_fGenerateTime = 0.0f;
-	m_bGenerateState = false;
-
-	m_pTargetNoteRentalUnit = new pbMemoryRentalUnit<pbTabNotes>;
-	m_pDoubleTapNoteRentalUnit =  new pbMemoryRentalUnit<pbDTabNotes>;
-	m_pLongNoteRentalUnit = new pbMemoryRentalUnit<pbLongPressNotes>;
-	m_pNinjaNoteRentalunit = new pbMemoryRentalUnit<pbNinjaNotes>;
-
-	m_pDoubleTapNoteRentalUnit->Initialize(10);
-	m_pLongNoteRentalUnit->Initialize(10);
-	m_pTargetNoteRentalUnit->Initialize(20);
-	m_pNinjaNoteRentalunit->Initialize(10);
-
-	m_pPatternGenerator = new pbNotePatternGenerator();
-
-	LOGE("Create Note Dropper!");
-}
-pbNoteDropper::~pbNoteDropper() {
-	/*
-	if( m_pDriedNoteArray != NULL ) {
-		m_pDriedNoteArray->ReleaseArray();
-		delete m_pDriedNoteArray;
-
-		LOGI("pbNoteDropper Destructor");
-	}
-	*/
-
-	if (NP_IS_NOT_EMPTY(m_pDoubleTapNoteRentalUnit)) {
-		m_pDoubleTapNoteRentalUnit->Release();
-		delete m_pDoubleTapNoteRentalUnit;
-		m_pDoubleTapNoteRentalUnit = NULL;
-	}
-
-	if (NP_IS_NOT_EMPTY(m_pLongNoteRentalUnit)) {
-		m_pLongNoteRentalUnit->Release();
-		delete m_pLongNoteRentalUnit;
-		m_pLongNoteRentalUnit = NULL;
-	}
-
-	if (NP_IS_NOT_EMPTY(m_pTargetNoteRentalUnit)) {
-		m_pTargetNoteRentalUnit->Release();
-		delete m_pTargetNoteRentalUnit;
-		m_pTargetNoteRentalUnit = NULL;
-	}
-
-	if(NP_IS_NOT_EMPTY(m_pNinjaNoteRentalunit)){
-		m_pNinjaNoteRentalunit->Release();
-		delete m_pNinjaNoteRentalunit;
-		m_pNinjaNoteRentalunit = NULL;
-	}
-
-	if(NP_IS_NOT_EMPTY(m_pPatternGenerator)){
-		delete m_pPatternGenerator;
-		m_pPatternGenerator = NULL;
-	}
-}
-
-void pbNoteDropper::SettingPatternGenerator() {
-	//임시로 수동세팅 한다
-	pbNotePatternGroup* pCreatePatternGroup = NULL;
-
-	float safeDistance;	// 다음 패턴으로 넘어가면 이전 패턴 노트와 겹칠수 있으므로 시작시간을 띄워둬서 거리를 확보한다
-	//패턴 1 : 탭 노트
-	safeDistance = 200;
-	pCreatePatternGroup = new pbNotePatternGroup();
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::TABNOTE, safeDistance + 100, 400);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::TABNOTE, safeDistance + 300, 300);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::TABNOTE, safeDistance + 500, 200);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::TABNOTE, safeDistance + 700, 100);
-	m_pPatternGenerator->AddPatternGroup(pCreatePatternGroup);
-
-	//패턴 2 : 더블탭 노트
-	safeDistance = 300;
-	pCreatePatternGroup = new pbNotePatternGroup();
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::DTABNOTE, safeDistance + 100, 200);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::DTABNOTE, safeDistance + 400, 400);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::DTABNOTE, safeDistance + 700, 100);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::DTABNOTE, safeDistance + 1000, 300);
-	m_pPatternGenerator->AddPatternGroup(pCreatePatternGroup);
-
-	//패턴 3 : 롱 노트
-	safeDistance = 900;
-	pCreatePatternGroup = new pbNotePatternGroup();
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 100, 200);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 1000, 400);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 1900, 100);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 2800, 300);
-	m_pPatternGenerator->AddPatternGroup(pCreatePatternGroup);
-
-	//패턴 4 : 닌자 노트
-	safeDistance = 300;
-	pCreatePatternGroup = new pbNotePatternGroup();
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::NINJA, safeDistance + 100, 200);
-	pCreatePatternGroup->AddNotePattern(pbNoteElement::LONGPRESS, safeDistance + 400, 400);
-	m_pPatternGenerator->AddPatternGroup(pCreatePatternGroup);
-}
-
-void pbNoteDropper::NoteDropCheck(float fTime){
-	m_pPatternGenerator->Update(fTime);
-
-	pbNotePattern* pPattern = m_pPatternGenerator->GetCurrentPattern();
-	if( pPattern != NULL) {
-		int type = pPattern->m_NoteType;
-		float PosY = pPattern->m_fPosY;
-		if(type == pbNoteElement::TABNOTE ) {
-			pbTabNotes* newOne = m_pTargetNoteRentalUnit->RentalMemory();
-			newOne->ResetNoteState();
-			newOne->setNotePosition(900,PosY);
-			newOne->setTargetMarkSize(65.f,65.f);
-			pbNoteProcessor::GetInstance()->AddNotes(newOne);
-		}
-		else if(type == pbNoteElement::DTABNOTE ) {
-			pbDTabNotes* newOne = m_pDoubleTapNoteRentalUnit->RentalMemory();
-			newOne->ResetNoteState();
-			newOne->setNotePosition(900, PosY);
-			newOne->setTargetMarkSize(65.f,65.f);
-			pbNoteProcessor::GetInstance()->AddNotes(newOne);
-		}
-		else if(type == pbNoteElement::LONGPRESS ) {
-			pbLongPressNotes* newOne = m_pLongNoteRentalUnit->RentalMemory();
-			newOne->ResetNoteState();
-			newOne->setNotePosition(900,PosY);
-			newOne->setTargetMarkSize(65.f,65.f);
-			pbNoteProcessor::GetInstance()->AddNotes(newOne);
-		}
-		else if(type == pbNoteElement::NINJA ) {
-			pbNinjaNotes* newOne = m_pNinjaNoteRentalunit->RentalMemory();
-			newOne->ResetNoteState();
-			newOne->setNotePosition(900,PosY);
-			newOne->setNoteSize(110.f,110.f);
-			newOne->setTargetMarkSize(65.f,65.f);
-			pbNoteProcessor::GetInstance()->AddNotes(newOne);
-		}
-
-		//패턴 사용후 리셋
-		m_pPatternGenerator->ResetCurrentPattern();
-	}
-}
-
-void pbNoteDropper::RemoveNoteAndReturningMemory(pbNoteElement* pNote) {
-	switch(pNote->getNoteType()){
-		case pbNoteElement::TABNOTE:{
-			pbTabNotes* removeTarget = (pbTabNotes*)pNote;
-			RemoveNoteAndReturningMemory(removeTarget);
-			break;
-		}
-		case pbNoteElement::DTABNOTE:{
-			pbDTabNotes* removeTarget = (pbDTabNotes*)pNote;
-			RemoveNoteAndReturningMemory(removeTarget);
-			break;
-		}
-		case pbNoteElement::LONGPRESS:{
-			pbLongPressNotes* removeTarget = (pbLongPressNotes*)pNote;
-			RemoveNoteAndReturningMemory(removeTarget);
-			break;
-		}
-		case pbNoteElement::NINJA:{
-			pbNinjaNotes* removeTarget = (pbNinjaNotes*)pNote;
-			RemoveNoteAndReturningMemory(removeTarget);
-			break;
-		}
-	}
-}
-
-void pbNoteDropper::RemoveNoteAndReturningMemory(pbTabNotes* pNote) {
-	if ( NP_IS_NOT_EMPTY(pNote)) {
-		m_pTargetNoteRentalUnit->ReturningRentalMemory(pNote);
-	}
-}
-
-void pbNoteDropper::RemoveNoteAndReturningMemory(pbDTabNotes* pNote) {
-	if ( NP_IS_NOT_EMPTY(pNote)) {
-		m_pDoubleTapNoteRentalUnit->ReturningRentalMemory(pNote);
-	}
-}
-
-void pbNoteDropper::RemoveNoteAndReturningMemory(pbLongPressNotes* pNote) {
-	if ( NP_IS_NOT_EMPTY(pNote)) {
-		m_pLongNoteRentalUnit->ReturningRentalMemory(pNote);
-	}
-}
-
-void pbNoteDropper::RemoveNoteAndReturningMemory(pbNinjaNotes* pNote) {
-	if(NP_IS_NOT_EMPTY(pNote)){
-		m_pNinjaNoteRentalunit->ReturningRentalMemory(pNote);
-	}
-}
-
-void pbNoteDropper::onTimeAlerts() {
-	float PosY, fSecondValueX, fSecondValueY;
-	srand(time(NULL));
-	int type = rand() % 4;
-//	int type = 2;
-	int Stair = rand() % 10;
-	PosY = Stair *30 + 100;
-
-	if(type == 0 ) {
-		pbTabNotes* newOne = m_pTargetNoteRentalUnit->RentalMemory();
-		newOne->ResetNoteState();
-		newOne->setNotePosition(900,PosY);
-		newOne->setTargetMarkSize(65.f,65.f);
-		pbNoteProcessor::GetInstance()->AddNotes(newOne);
-	}
-	else if(type == 1 ) {
-		pbDTabNotes* newOne = m_pDoubleTapNoteRentalUnit->RentalMemory();
-		newOne->ResetNoteState();
-		newOne->setNotePosition(900, PosY);
-		newOne->setTargetMarkSize(65.f,65.f);
-		pbNoteProcessor::GetInstance()->AddNotes(newOne);
-	}
-	else if(type == 2 ) {
-		pbLongPressNotes* newOne = m_pLongNoteRentalUnit->RentalMemory();
-		newOne->ResetNoteState();
-		newOne->setNotePosition(900,PosY);
-		newOne->setTargetMarkSize(65.f,65.f);
-		pbNoteProcessor::GetInstance()->AddNotes(newOne);
-	}
-	else if(type == 3 ) {
-		pbNinjaNotes* newOne = m_pNinjaNoteRentalunit->RentalMemory();
-		newOne->ResetNoteState();
-		newOne->setNotePosition(900,PosY);
-		newOne->setNoteSize(110.f,110.f);
-		newOne->setTargetMarkSize(65.f,65.f);
-		pbNoteProcessor::GetInstance()->AddNotes(newOne);
-	}
-
-}
-
-//float pbNoteDropper::resetWakeTime() {
-//	return m_fGenerateTime;
-//}
-
-//======================================================================================//
 
 //=======================================
 //Note Process Area
@@ -266,17 +23,15 @@ pbNoteProcessor::~pbNoteProcessor(){
 void pbNoteProcessor::Create(){
 	LOGE("pbNoteProcessor) Note Processor Create");
 	if(SingleObject == NULL){
-		LOGE("pbNoteProcessor) Note Processor Not Has");
+//		LOGE("pbNoteProcessor) Note Processor Not Has");
 		SingleObject = new pbNoteProcessor;
-		SingleObject->m_NoteDropper = new pbNoteDropper;
+//		SingleObject->m_NoteDropper = new pbNoteDropper;
 		SingleObject->m_ControlledNoteStore = new npLinkNode<pbNoteElement*>;
 		SingleObject->m_deleteStacks = new npLinkNode<pbNoteElement*>;
 		SingleObject->m_ControlledNoteStore->setHeader();
 		SingleObject->m_deleteStacks->setHeader();
 
 		LOGI("pbNoteProcess Initialize Complete");
-		//NoteDropper 타이머 등록
-		//nitroFrame::npTimer::getInstance().registerObserver(SingleObject->m_NoteDropper,nitroFrame::npTimer::REPEATLOOP,1120.f);
 		return;
 	}
 
@@ -284,15 +39,15 @@ void pbNoteProcessor::Create(){
 }
 
 void pbNoteProcessor::LoadData() {
-	m_NoteDropper->SettingPatternGenerator();
+//	m_NoteDropper->SettingPatternGenerator();
 }
 
 void pbNoteProcessor::Update(float time){
-	m_NoteDropper->NoteDropCheck(time);
-	//1)delete Stack에 올라간 Note가 존재하는지 확인.
+//	//1)delete Stack에 올라간 Note가 존재하는지 확인.
 	DeleteStackArrangement();
+
+	//캐릭터와 충돌하는 노트가 있는지 확인
 	CheckMissNote();
-	CheckTargetingAbleOrUnalbe();
 
 	npLinkNode<pbNoteElement*>* iterator;
 	npLinkNode<pbNoteElement*>* head = m_ControlledNoteStore;
@@ -311,7 +66,6 @@ void pbNoteProcessor::DeleteStackArrangement() {
 		npLinkNode<pbNoteElement*>* deleteIterator = m_deleteStacks->getNext();
 		int cnt=0;
 		for(; deleteIterator != m_deleteStacks;){
-			cnt++;
 			npLinkNode<pbNoteElement*>* deleteNodeBakup = deleteIterator->getNext();
 			npLinkNode<pbNoteElement*>::findRemove(deleteIterator,m_ControlledNoteStore);
 			m_NoteDropper->RemoveNoteAndReturningMemory(deleteIterator->getKernel());
@@ -475,19 +229,19 @@ void pbNoteProcessor::AddNotes(pbNinjaNotes* NinjaNote) {
 }
 
 void pbNoteProcessor::ReleaseNote(pbTabNotes* TabNote) {
-	m_NoteDropper->RemoveNoteAndReturningMemory(TabNote);
+//	m_NoteDropper->RemoveNoteAndReturningMemory(TabNote);
 }
 
 void pbNoteProcessor::ReleaseNote(pbDTabNotes* DTabNote) {
-	m_NoteDropper->RemoveNoteAndReturningMemory(DTabNote);
+//	m_NoteDropper->RemoveNoteAndReturningMemory(DTabNote);
 }
 
 void pbNoteProcessor::ReleaseNote(pbLongPressNotes* LongPressNote) {
-	m_NoteDropper->RemoveNoteAndReturningMemory(LongPressNote);
+//	m_NoteDropper->RemoveNoteAndReturningMemory(LongPressNote);
 }
 
 void pbNoteProcessor::ReleaseNote(pbNinjaNotes* NinjaNote) {
-	m_NoteDropper->RemoveNoteAndReturningMemory(NinjaNote);
+//	m_NoteDropper->RemoveNoteAndReturningMemory(NinjaNote);
 }
 
 void pbNoteProcessor::RequestRemoveNote(pbNoteElement* pNote) {

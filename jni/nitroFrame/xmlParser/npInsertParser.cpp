@@ -49,9 +49,9 @@ void npInsertParser::DoParsing(){
 	textureHeadNode->ToElement()->Attribute("height",&textureHeight);
 
 	const char* texturePath = textureHeadNode->ToElement()->Attribute("filename");
-	LOGE("Generate Texture");
+//	LOGE("Generate Texture");
 	GLuint textureIndex = npContainerDAO::GetInstance().GenerateTextureByPNGPath(texturePath);
-	LOGE("Done Generate Texture");
+//	LOGE("Done Generate Texture");
 	//-----------------UV 파싱----------------------//
 
 	RawDataPacket tempRawPacket;
@@ -75,7 +75,7 @@ void npInsertParser::DoParsing(){
 		npContainerDAO::GetInstance().InsertUVData(tempRawPacket);
 		spriteNode = spriteNode->NextSibling();
 	}
-	LOGE("Done Insert Parser");
+//	LOGE("Done Insert Parser");
 }
 
 

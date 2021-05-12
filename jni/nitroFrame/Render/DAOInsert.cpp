@@ -76,7 +76,7 @@ void npInsertDAO::InsertScreenplayPackets(ScreenplayPacket& screenplayPacket) {
 
 	screenMapIter screenplayIter = screenplayStore->screenplayContainer.find(screenplayPacket.tag);
 
-	LOGE("Inserting TAG:%s",screenplayPacket.tag.c_str());
+//	LOGE("Inserting TAG:%s",screenplayPacket.tag.c_str());
 
 	if(screenplayIter == screenplayStore->screenplayContainer.end()){
 		npLinkNode<int>* insertSceond = new npLinkNode<int>;

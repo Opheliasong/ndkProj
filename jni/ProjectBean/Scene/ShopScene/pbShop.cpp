@@ -80,38 +80,38 @@ void pbShop::LoadData() {
 		Price = 250;
 		AddItem_Pass(670, 380, ItemTagData, DescriptionTagData, 1, Price);
 		///---------------------------------------포션-------------------------------------------------------//
-		ItemTagData.SetData("run", 80, 80);
+		ItemTagData.SetData("item01", 80, 80);
 		DescriptionTagData.SetData("ci", 150, 150);
 		Price = 10;
 		AddItem_Potion(100, 400, ItemTagData, DescriptionTagData, ITEMCODE_POTION_LIFE, Price);
 
-		ItemTagData.SetData("run", 80, 80);
+		ItemTagData.SetData("item02", 80, 80);
 		DescriptionTagData.SetData("ci", 150, 150);
 		Price = 50;
 		AddItem_Potion(200, 400, ItemTagData, DescriptionTagData, ITEMCODE_POTION_FEVERPOINT, Price);
 
-		ItemTagData.SetData("run", 80, 80);
+		ItemTagData.SetData("item03", 80, 80);
 		DescriptionTagData.SetData("ci", 150, 150);
 		Price = 110;
 		AddItem_Potion(100, 300, ItemTagData, DescriptionTagData, ITEMCODE_POTION_SPEEDDOWN, Price);
 
-		ItemTagData.SetData("run", 80, 80);
+		ItemTagData.SetData("item04", 80, 80);
 		DescriptionTagData.SetData("ci", 150, 150);
 		Price = 250;
 		AddItem_Potion(200, 300, ItemTagData, DescriptionTagData, ITEMCODE_POTION_SCOREPLUS, Price);
 
 		///---------------------------------------탈것-------------------------------------------------------//
-		ItemTagData.SetData("run", 115, 80);
+		ItemTagData.SetData("airframe01", 115, 80);
 		DescriptionTagData.SetData("ci", 150, 150);
 		Price = 150;
 		AddItem_Vehicle(80, 100, ItemTagData, DescriptionTagData, ITEMCODE_VEHICLE_DEFAULT, Price);
 
-		ItemTagData.SetData("run", 115, 80);
+		ItemTagData.SetData("airframe02", 115, 80);
 		DescriptionTagData.SetData("ci", 150, 150);
 		Price = 150;
 		AddItem_Vehicle(200, 100, ItemTagData, DescriptionTagData, ITEMCODE_VEHICLE_NO_1, Price);
 
-		ItemTagData.SetData("run", 115, 80);
+		ItemTagData.SetData("airframe03", 115, 80);
 		DescriptionTagData.SetData("ci", 150, 150);
 		Price = 150;
 		AddItem_Vehicle(320, 100, ItemTagData, DescriptionTagData, ITEMCODE_VEHICLE_NO_2, Price);
